@@ -1,0 +1,62 @@
+# Xcode-Projekt aus Textbeschreibung (XcodeGen): `xcodegen generate` erzeugt Onda.xcodeproj.
+# Zwei App-Targets laufen parallel auf demselben Kern (OndaCore).
+name: Onda
+options:
+  bundleIdPrefix: ch.onda
+  deploymentTarget:
+    iOS: "17.0"
+    tvOS: "17.0"
+  createIntermediateGroups: true
+packages:
+  OndaCore:
+    path: OndaCore
+settings:
+  base:
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+targets:
+  OndaTV:
+    type: application
+    platform: tvOS
+    sources:
+      - Apps/OndaTV
+      - Apps/Shared
+    dependencies:
+      - package: OndaCore
+    info:
+      path: Apps/OndaTV/Info.plist
+      properties:
+        CFBundleDisplayName: Onda
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ch.onda.app
+    scheme: {}
+  OndaMobile:
+    type: application
+    platform: iOS
+    sources:
+      - Apps/OndaMobile
+      - Apps/Shared
+    dependencies:
+      - package: OndaCore
+    info:
+      path: Apps/OndaMobile/Info.plist
+      properties:
+        CFBundleDisplayName: Onda
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UIBackgroundModes:
+          - audio
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: ch.onda.app
+        TARGETED_DEVICE_FAMILY: "1,2"
+    scheme: {}

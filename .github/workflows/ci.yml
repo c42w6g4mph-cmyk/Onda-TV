@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  core:
+    name: OndaCore (Tests)
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Swift-Version
+        run: swift --version
+      - name: Tests
+        run: swift test --package-path OndaCore
+
+  apps:
+    name: App ${{ matrix.scheme }}
+    runs-on: macos-15
+    needs: core
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - scheme: OndaTV
+            sdk: appletvsimulator
+            destination: generic/platform=tvOS Simulator
+          - scheme: OndaMobile
+            sdk: iphonesimulator
+            destination: generic/platform=iOS Simulator
+    steps:
+      - uses: actions/checkout@v4
+      - name: XcodeGen installieren
+        run: brew install xcodegen
+      - name: Projekt erzeugen
+        run: xcodegen generate
+      - name: Bauen (Simulator, ohne Signatur)
+        run: >
+          xcodebuild -project Onda.xcodeproj -scheme "${{ matrix.scheme }}"
+          -sdk ${{ matrix.sdk }} -destination "${{ matrix.destination }}"
+          CODE_SIGNING_ALLOWED=NO build

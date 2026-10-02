@@ -1,0 +1,11 @@
+# Xcode / Swift
+Onda.xcodeproj/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+DerivedData/
+.build/
+.swiftpm/
+*.xcuserstate
+Apps/*/Info.plist
+# System
+.DS_Store
