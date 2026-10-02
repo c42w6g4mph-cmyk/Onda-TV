@@ -173,10 +173,10 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 /* Regale: seitenweise wie im App Store – drei Poster bzw. eine Senderspalte füllen die Breite exakt, Punkte zeigen die Seiten */
 .shrow{display:flex;gap:12px;padding:2px 20px 4px;scroll-snap-type:x mandatory;scroll-padding-inline:20px;overscroll-behavior-x:contain;container-type:inline-size;-webkit-overflow-scrolling:touch}
 .shrow>*{flex:none;scroll-snap-align:none}
-.shrow>.poster{width:calc((100cqw - 24px)/3)}
-.shrow>.poster:nth-child(3n):not(:last-child){margin-right:28px}
+.shrow:not(.ch)>*{width:calc((100cqw - 24px)/3)}
+.shrow:not(.ch)>:nth-child(3n):not(:last-child){margin-right:28px}
 .shrow>.sfill{visibility:hidden}
-.shrow>.poster:nth-child(3n+1){scroll-snap-align:start;scroll-snap-stop:always}
+.shrow:not(.ch)>:nth-child(3n+1){scroll-snap-align:start;scroll-snap-stop:always}
 .shrow.ch{display:grid;grid-auto-flow:column;grid-template-rows:repeat(2,auto);grid-auto-columns:auto;gap:10px 40px}
 .shrow.ch.one{grid-template-rows:auto}
 .shrow.ch>.chcard{width:100cqw;min-width:0}
@@ -488,6 +488,60 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 #player.pip .pipctl .pbtn{width:28px;height:28px}
 #player.pip .pipctl svg{width:14px;height:14px}
 
+
+/* ---------- Umbau nach MyTVOnline+-Abläufen ---------- */
+.nowbar{--h:200;display:flex;align-items:center;gap:12px;margin:2px 20px 24px;padding:10px;border-radius:18px;background:var(--surface);position:relative}
+.nb-thumb{position:relative;flex:none;width:112px;aspect-ratio:16/9;border-radius:11px;overflow:hidden;background:hsl(var(--h) 40% 10%);display:grid;place-items:center}
+.nb-thumb .pv-anim{inset:-30%}
+.nb-thumb .logo{position:relative;z-index:1}
+.nb-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.nb-txt .livebadge{align-self:flex-start;font-size:9.5px;padding:2px 6px}
+.nb-txt b{font-size:15.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb-txt span.m{font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nb-txt .bar{margin-top:3px}
+.nb-play{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--fg);color:var(--bg)}
+.nb-play svg{width:16px;height:16px;margin-left:2px}
+.ltile{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lt-logo{--h:210;aspect-ratio:16/10;border-radius:12px;display:grid;place-items:center;font-weight:800;font-size:17px;letter-spacing:.02em;color:#fff;background:linear-gradient(150deg,hsl(var(--h) 62% 46%),hsl(calc(var(--h) + 30) 70% 24%));box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);position:relative;overflow:hidden}
+.lt-logo .bar{position:absolute;left:8px;right:8px;bottom:7px;height:3px;background:rgba(0,0,0,.35)}
+.ltile b{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.ltile small{font-size:11.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;margin-top:-4px}
+.rank{position:absolute;left:6px;top:0;z-index:2;font-family:var(--f1);font-size:38px;line-height:1;color:rgba(10,14,22,.35);-webkit-text-stroke:1.5px #fff;letter-spacing:-.04em;text-shadow:0 2px 10px rgba(0,0,0,.35);pointer-events:none}
+.shelf h3 .tsrc{margin-left:auto;font-size:10.5px;font-weight:800;letter-spacing:.12em;color:var(--faint)}
+/* Live: Gruppen zum Hineintippen */
+.gbar{display:flex;align-items:center;gap:10px;width:calc(100% - 32px);margin:0 16px 8px;padding:12px 14px;border-radius:14px;background:var(--surface);text-align:left}
+.gbar svg{width:18px;height:18px;flex:none;color:var(--dim)}
+.gbar b{flex:1;min-width:0;font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gcnt{flex:none;font-size:12.5px;font-weight:700;color:var(--dim);background:var(--surface2);padding:2px 9px;border-radius:10px;font-variant-numeric:tabular-nums}
+.gstick{position:sticky;top:0;z-index:4;padding-top:4px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.glist2{display:flex;flex-direction:column;padding:0 16px 8px}
+.grow{display:flex;align-items:center;gap:12px;padding:13px 6px 13px 8px;border-bottom:1px solid var(--line);text-align:left;width:100%}
+.grow:last-child{border-bottom:0}
+.grow b{flex:1;min-width:0;font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.grow.on b{color:var(--accent)}
+.grow svg{width:16px;height:16px;color:var(--faint);flex:none}
+.grow .gic{width:20px;color:var(--gold);font-size:15px;text-align:center;flex:none}
+.plchips{display:flex;gap:8px;padding:0 20px 14px;flex-wrap:wrap}
+.plchips .chip.sel{background:var(--fg);color:var(--bg)}
+/* Player: kompakte Info unter dem Bild, Programm aufklappbar */
+.pnow{display:flex;align-items:center;gap:12px;padding:2px 20px 0;text-align:left;width:100%}
+.pnow-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.pnow-t b{font-size:17px;font-weight:700}
+.pnow-t .t{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnow-t .tm{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.pnow .exp{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface);transition:transform .25s}
+.pnow .exp svg{width:16px;height:16px;transform:rotate(90deg)}
+.pnow.open .exp{transform:rotate(180deg)}
+.pnow-bar{margin:10px 20px 0}
+.psched{margin:10px 16px 0;border-radius:14px;background:var(--surface);overflow:hidden}
+.psr{display:flex;gap:12px;padding:10px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+.psr:last-child{border-bottom:0}
+.psr time{flex:none;width:44px;color:var(--dim);font-variant-numeric:tabular-nums}
+.psr span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.psr.now span{font-weight:700}
+.psr.now time{color:var(--live);font-weight:700}
+#player .gbar{margin-top:16px}
+
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -693,6 +747,8 @@ const abadge=t=>t.avail?'<span class="avail ok">✓ Verfügbar</span>':'<span cl
 /* ---------- Symbole ---------- */
 const sv_=(p,cls="i")=>`<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
 const IC={
+ chL:sv_('<path d="M15 5l-7 7 7 7"/>'),chR:sv_('<path d="M9 5l7 7-7 7"/>'),
+ skipB:sv_('<path d="M6 5v14"/><path d="M19 5.5v13L9 12z" fill="currentColor" stroke="none"/>'),skipF:sv_('<path d="M18 5v14"/><path d="M5 5.5v13L15 12z" fill="currentColor" stroke="none"/>'),
  home:sv_('<path d="M3.5 11 12 4l8.5 7v8.5a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>'),
  tv:sv_('<rect x="2.5" y="6.5" width="19" height="13" rx="2.5"/><path d="M8 2.5l4 4 4-4"/>'),
  guide:sv_('<rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9.5h18M9 9.5V20M15 9.5V20"/>'),
@@ -770,7 +826,7 @@ const SETTINGS=[
 const ALLIT=SETTINGS.flatMap(s=>s.items);
 const itOf=k=>ALLIT.find(i=>i.k===k);
 const S={
-  tab:"home",mseg:"m",group:LS.get("group","ch"),
+  tab:"home",mseg:"m",group:LS.get("group","ch"),lvView:"list",recentG:LS.get("recentG",[]),
   favCh:new Set(LS.get("favCh",[1,2,16,31])),favVod:new Set(LS.get("favVod",["m6","s0"])),
   reminders:new Set(LS.get("rem",[])),recent:LS.get("recent",[1,16]),
   set:Object.assign({theme:2},LS.get("set",{})),
@@ -792,7 +848,7 @@ const EN={
 "✓ Verfügbar":"✓ Available","Nicht in Playlist":"Not in playlist","✓ In deiner Playlist":"✓ In your playlist","Nicht in deiner Playlist":"Not in your playlist","In deiner Playlist verfügbar":"Available in your playlist","Gefunden als":"Found as",
 "▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes","＋ Merken und benachrichtigen":"＋ Save and notify me","✓ Auf der Merkliste":"✓ On your watchlist","Stattdessen neu in deiner Playlist":"New in your playlist instead",
 "Neu hinzugefügt":"Recently added","Action":"Action","Science-Fiction":"Science fiction","Drama & Thriller":"Drama & thriller","Komödie & Animation":"Comedy & animation","Alle Serien":"All series","Krimi & Thriller":"Crime & thriller","Drama":"Drama","Sci-Fi, Fantasy & Komödie":"Sci-fi, fantasy & comedy",
-"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Im Trend":"Trending",
+"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Trendfilme":"Trending movies","Trendserien":"Trending series","Gruppen":"Groups","Zuletzt genutzt":"Recently used","Alle Gruppen":"All groups","Gruppe wählen":"Choose group","Jetzt":"Now","Vorheriger in der Liste":"Previous in list","Nächster in der Liste":"Next in list","Im Trend":"Trending",
 "Handlung, Besetzung und Bewertung lädt die echte App automatisch aus einer Film-Datenbank (z. B. TMDB).":"Plot, cast and rating are loaded automatically from a film database (e.g. TMDB) in the real app.",
 "▶ Fortsetzen":"▶ Resume","Von vorne":"From the beginning","★ In Favoriten":"★ In favourites","☆ Zu Favoriten":"☆ Add to favourites","Zu Favoriten hinzugefügt":"Added to favourites","Aus Favoriten entfernt":"Removed from favourites",
 "Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Saved. Onda will let you know once the title shows up in your playlist.","Von der Merkliste entfernt":"Removed from watchlist",
@@ -945,7 +1001,7 @@ function initShelf(r){
   if(r._sh)return;r._sh=1;
   const per=r.classList.contains("ch")?(r.classList.contains("one")?1:2):3,n=r.children.length,pages=Math.ceil(n/per);
   if(pages<2)return;
-  if(per===3)for(let k=n%3?3-n%3:0;k>0;k--){const f=document.createElement("div");f.className="poster sfill";f.setAttribute("aria-hidden","true");r.append(f)}
+  if(per===3)for(let k=n%3?3-n%3:0;k>0;k--){const f=document.createElement("div");f.className=(r.firstElementChild.classList.contains("ltile")?"ltile":"poster")+" sfill";f.setAttribute("aria-hidden","true");r.append(f)}
   const d=document.createElement("div");d.className="sdots";d.setAttribute("aria-hidden","true");
   d.innerHTML=Array.from({length:pages},(_,i)=>`<i class="${i?"":"on"}"></i>`).join("");
   r.after(d);
@@ -977,10 +1033,11 @@ const hbtn=()=>`<div class="hbtns"><button class="gbtn" data-act="settings" aria
 /* ---------- Bausteine ---------- */
 const qOf=o=>o.raw&&/4K/i.test(o.raw)?"4K":"";
 const poster=(o,act)=>`<div class="poster ${act?"tap":""}" style="--h:${o.hue}" ${act?`data-act="${act}" role="button"`:""}>${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${o.prog?`<div class="pprog"><i style="width:${o.prog/o.d*100}%"></i></div>`:""}</div>`;
-const tposter=(o,act)=>`<div class="poster ${act?"tap":""} ${o.avail?"":"dim"}" style="--h:${o.hue}" ${act?`data-act="${act}" role="button"`:""}>${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>`;
+const tposter=(o,act,rank)=>`<div class="poster ${act?"tap":""} ${o.avail?"":"dim"}" style="--h:${o.hue}" ${act?`data-act="${act}" role="button"`:""}>${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>`;
 const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+" · "+esc(t.g);
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
+const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo" style="--h:${c.hue}">${esc(abbr(c.name))}<div class="bar"><i style="width:${pct(p)}%"></i></div></div><b>${esc(c.name)}</b><small>${esc(p.title)}</small></div>`};
 const shelf=(title,items,actFn)=>shelfH(esc(title),items.map(o=>poster(o,actFn(o))).join(""));
 const chCard=c=>{const p=nowP(c);return `<div class="chcard tap" data-act="playf:${c.id}" role="button"><div class="cc-top">${logo(c,"sm")}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now">${esc(p.title)}</div></div></div><div class="bar"><i style="width:${pct(p)}%"></i></div></div>`};
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
@@ -1002,30 +1059,39 @@ function renderHome(){
   const favs=CH.filter(c=>S.favCh.has(c.id)&&chVisible(c)),VIS=chOf("all");
   const hc=VIS.find(c=>c.genre==="sport"&&S.favCh.has(c.id))||VIS.find(c=>c.genre==="sport")||VIS[0]||CH[0],hp=nowP(hc);
   const mine=[...favs,...S.recent.map(chById).filter(c=>c&&chVisible(c)&&!S.favCh.has(c.id))],pool=mine.length?mine:VIS.slice(0,8);
-  const trendAv=["m","s"].flatMap(k=>trendList(k).filter(ix=>TREND[k][ix].avail).map(ix=>TREND[k][ix]));
+  const tr=k=>trendList(k).map((ix,r)=>({t:TREND[k][ix],r:r+1})).filter(o=>o.t.avail).map(o=>tposter(o.t,"trend:"+o.t.k+":"+o.t.i,o.r)).join("");
+  const tsh=(title,k)=>{const h=tr(k);return h?`<section class="shelf"><h3>${title}<span class="tsrc">TMDB</span></h3><div class="shrow sx">${h}</div></section>`:""};
   $("#v-home").innerHTML=`<div class="scroller">
    <div class="lhdr"><div class="brand">${WAVE(30,"ogh")}<span class="wordmark">onda</span><span class="proto">Prototyp</span></div>${hbtn()}</div>
-   <div class="hhero tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
-     <div class="pv-screen" style="--h:${hc.hue}"><div class="pv-anim"></div><span class="livebadge">LIVE</span>${logo(hc,"sm")}</div>
-     <div class="hh-body"><div class="eyebrow">Jetzt live</div><h2>${esc(hp.title)}</h2>
-      <div class="hh-meta"><span>${esc(hc.name)}</span><span>${fmt(hp.start)} – ${fmt(hp.end)}</span></div>
-      <div class="bar"><i style="width:${pct(hp)}%"></i></div>
-      <div class="btns" style="margin-top:6px"><button class="btn primary" data-act="play:${hc.id}">▶ Live ansehen</button></div></div>
+   <div class="nowbar tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
+     <div class="nb-thumb" style="--h:${hc.hue}"><div class="pv-anim"></div>${logo(hc,"sm")}</div>
+     <div class="nb-txt"><span class="livebadge">LIVE</span><b>${esc(hp.title)}</b><span class="m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><div class="bar"><i style="width:${pct(hp)}%"></i></div></div>
+     <span class="nb-play" aria-hidden="true">${IC.play}</span>
    </div>
-   ${shelfCh("Meine Sender",pool)}
+   ${pool.length?`<section class="shelf"><h3>Meine Sender</h3><div class="shrow sx">${pool.map(ltile).join("")}</div></section>`:""}
+   ${tsh("Trendfilme","m")}
+   ${tsh("Trendserien","s")}
    ${shelf("Weiterschauen",MOVIES.filter(m=>m.prog),o=>"movie:"+o.i)}
-   ${shelfH("Im Trend",trendAv.map(t=>tposter(t,"trend:"+t.k+":"+t.i)).join(""))}
   </div>`;
 }
 
 /* ---------- Live TV ---------- */
 function renderLive(){
   if(!liveGroups().some(g=>g.id===S.group))S.group="fav";
-  $("#v-live").innerHTML=`<div class="scroller" id="lvScroll"><div class="lhdr"><h1>Live TV</h1>${hbtn()}</div>
-   <div class="chips sx stick lv-chips" id="grpChips">${liveGroups().map(g=>`<button class="chip ${g.id===S.group?"sel":""}" data-act="group:${g.id}">${esc(g.name)}</button>`).join("")}</div>
+  const L=$("#v-live");
+  if(S.lvView==="groups"){
+    const gs=liveGroups(),cnt=g=>chOf(g.id).length,rg=(S.recentG||[]).map(id=>gs.find(g=>g.id===id)).filter(Boolean).slice(0,3);
+    const row=g=>`<button class="grow tap ${g.id===S.group?"on":""}" data-act="group:${g.id}">${g.id==="fav"?'<span class="gic">★</span>':""}<b>${esc(g.name)}</b><span class="gcnt">${cnt(g)}</span>${IC.chR}</button>`;
+    const pls=S.playlists.length>1?`<div class="plchips">${S.playlists.map((p,i)=>`<button class="chip ${p.active?"sel":""}" data-act="plsel:${i}">${esc(p.name)}</button>`).join("")}</div>`:"";
+    L.innerHTML=`<div class="scroller" id="lvScroll"><div class="lhdr"><h1>Gruppen</h1>${hbtn()}</div>${pls}
+     ${rg.length?`<div class="colhead">Zuletzt genutzt</div><div class="glist2">${rg.map(row).join("")}</div>`:""}
+     <div class="colhead">Alle Gruppen</div><div class="glist2">${gs.map(row).join("")}</div></div>`;
+    return;
+  }
+  L.innerHTML=`<div class="scroller" id="lvScroll"><div class="lhdr"><h1>Live TV</h1>${hbtn()}</div>
+   <div class="gstick"><button class="gbar tap" data-act="lvgroups" id="gbar">${IC.chL}<b>${esc(gName(S.group))}</b><span class="gcnt">${chOf(S.group).length}</span></button></div>
    <div class="list" id="chList"></div></div>`;
   renderChList();
-  const s=$("#grpChips .sel"),gc=$("#grpChips");if(s)gc.scrollLeft=s.offsetLeft-gc.clientWidth/2+s.offsetWidth/2;
 }
 function renderChList(){
   const list=chOf(S.group);
@@ -1323,11 +1389,12 @@ function toPip(){
 function fromPip(){P.mode="full";$("#player").classList.remove("pip");APP.classList.add("pl");updPlayer();showCtl();anim()}
 function ctlHTML(){
   const live=P.type==="live",c=live?chById(P.ch):null,p=live?nowP(c):null,nx=live?nextP(c):null,land=APP.classList.contains("land");
-  const top=`<div class="pc-top"><button class="pbtn" data-act="pclose" aria-label="Schliessen">${IC.down}</button><div class="pc-tt">${live?esc(c.name):esc(P.vod.title)}</div><button class="pbtn ${P.route?"on":""}" data-act="airplay" aria-label="AirPlay">${IC.airplay}</button><button class="pbtn" data-act="pip" aria-label="Bild-in-Bild">${IC.pip}</button><button class="pbtn" data-act="rotate" aria-label="Vollbild">${land?IC.exitfull:IC.full}</button></div>`;
+  const fv=live&&S.favCh.has(c.id);
+  const top=`<div class="pc-top"><button class="pbtn" data-act="pclose" aria-label="Schliessen">${IC.down}</button><div class="pc-tt">${live?esc(c.name):esc(P.vod.title)}</div><button class="pbtn" data-act="pmenu:av" aria-label="Ton & Untertitel">${IC.bubble}</button>${live?`<button class="pbtn ${fv?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${fv?IC.starF:IC.star}</button>`:""}<button class="pbtn ${P.route?"on":""}" data-act="airplay" aria-label="AirPlay">${IC.airplay}</button><button class="pbtn" data-act="pip" aria-label="Bild-in-Bild">${IC.pip}</button></div>`;
   const pp=`<button class="pbig" data-act="ppause" aria-label="Wiedergabe/Pause">${P.paused?IC.play:IC.pause}</button>`;
-  const mid=`<div class="pc-mid">${live?pp:`<button class="pskip" data-act="seek:-10" aria-label="10 s zurück">${IC.b10}</button>${pp}<button class="pskip" data-act="seek:10" aria-label="10 s vor">${IC.f10}</button>`}</div>`;
+  const mid=`<div class="pc-mid">${live?`<button class="pskip" data-act="zapd:-1" aria-label="Vorheriger in der Liste">${IC.skipB}</button>${pp}<button class="pskip" data-act="zapd:1" aria-label="Nächster in der Liste">${IC.skipF}</button>`:`<button class="pskip" data-act="seek:-10" aria-label="10 s zurück">${IC.b10}</button>${pp}<button class="pskip" data-act="seek:10" aria-label="10 s vor">${IC.f10}</button>`}</div>`;
   const prev=live&&P.prevCh&&P.prevCh!==P.ch?`<button class="pbtn" data-act="zap:${P.prevCh}" aria-label="Vorheriger Sender">${IC.prev}</button>`:"";
-  const acts=`<div class="pb-acts">${live?`<button class="pbtn land-only" data-act="chpanel" aria-label="Kanalliste">${IC.list}</button>`:""}${prev}<button class="pbtn" data-act="pmenu:av" aria-label="Ton & Untertitel">${IC.bubble}</button><button class="pbtn" data-act="pmenu:more" aria-label="Mehr">${IC.more}</button></div>`;
+  const acts=`<div class="pb-acts">${live?`<button class="pbtn land-only" data-act="chpanel" aria-label="Kanalliste">${IC.list}</button>`:""}${prev}<button class="pbtn" data-act="pmenu:more" aria-label="Mehr">${IC.more}</button><button class="pbtn" data-act="rotate" aria-label="Vollbild">${land?IC.exitfull:IC.full}</button></div>`;
   const q=sv("osd")!==2?`<span class="pi-q pq">${qBadges(analyse())}</span>`:"";
   if(live)return top+mid+`<div class="pc-bot"><div class="pb-info"><b>${esc(p.title)}</b><span>${fmt(p.start)} – ${fmt(p.end)}${nx?` · Danach ${fmt(nx.start)} · ${esc(nx.title)}`:""}</span></div>
      <div class="bar land-only"><i style="width:${pct(p)}%"></i></div>
@@ -1338,12 +1405,11 @@ function ctlHTML(){
 }
 function belowHTML(){
   if(P.type==="live"){
-    const c=chById(P.ch),p=nowP(c),nx=nextP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN)),pv=P.prevCh&&P.prevCh!==P.ch?chById(P.prevCh):null;
-    return `<div class="pbl"><div class="pbl-ch">${logo(c)}<div class="pbl-cn"><b>${esc(c.name)}</b><span>${esc(gName(c.group))}</span></div>${starBtn(c)}</div>
-     <h2 class="pbl-t">${esc(p.title)}</h2><div class="pbl-time">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</div><div class="bar"><i style="width:${pct(p)}%"></i></div>
-     ${nx?`<div class="pv-next">Danach ${fmt(nx.start)} <b>${esc(nx.title)}</b></div>`:""}
-     ${pv?`<button class="prevbtn tap" data-act="zap:${pv.id}">${IC.prev}<span>Vorheriger Sender · ${esc(pv.name)}</span></button>`:""}</div>
-     <div class="colhead" style="margin-top:14px">${esc(P.listName)}</div><div class="list">${P.list.map(x=>chRow(x,"zap",P.ch)).join("")}</div>`;
+    const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
+    let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
+    return `<button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b><span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span></span><span class="exp">${IC.chR}</span></button>
+     <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
+     <button class="gbar tap" data-act="pgroups">${IC.chL}<b>${esc(P.listName)}</b><span class="gcnt">${P.list.length}</span></button><div class="list">${P.list.map(x=>chRow(x,"zap",P.ch)).join("")}</div>`;
   }
   const v=P.vod;let next="";
   if(v.ep){const s=SERIES[v.si],e=v.e+1;if(e<=s.seasons[v.se-1])next=`<div class="colhead" style="margin-top:14px">Nächste Folge</div><div class="ep tap" data-act="eplay:${s.i}:${v.se}:${e}" role="button"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">E${e}</div><div><div class="ep-t">${esc(epTitle(s,v.se,e))}</div><div class="ep-m">${epDur(s,v.se,e)} Min.</div></div></div>`}
@@ -1402,6 +1468,10 @@ function renderPMenu(){
     body=`${pv?`<div class="pm-h">Vorheriger Sender</div><div class="pk-list"><div class="pk-opt tap" data-act="zap:${pv.id}" role="button"><span class="pk-check">↩</span><span class="pk-txt"><b>${esc(pv.name)}</b></span></div></div>`:""}<div class="pm-h">Sleep-Timer</div>${opts("sleep")}<div class="pm-h">Stream-Details</div>${statsHTML()}`}
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Player-Menü</h2><div class="pm-tabs">${tabs}</div>${body}`,"",'pmenu');
 }
+function openPGroups(){
+  const gs=liveGroups().filter(g=>chOf(g.id).length);
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Gruppe wählen</h2><div class="glist2" style="padding:0">${gs.map(g=>`<button class="grow tap ${g.name===P.listName?"on":""}" data-act="pgsel:${g.id}">${g.id==="fav"?'<span class="gic">★</span>':""}<b>${esc(g.name)}</b><span class="gcnt">${chOf(g.id).length}</span>${IC.chR}</button>`).join("")}</div>`,"","pgroups");
+}
 function openChPanel(){
   const rec=S.recent.filter(id=>id!==P.ch).slice(0,3).map(chById).filter(Boolean);
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Kanalliste</h2>${rec.length?`<div class="colhead" style="padding-left:2px">Zuletzt gesehen</div><div class="list">${rec.map(c=>chRow(c,"zap")).join("")}</div>`:""}<div class="colhead" style="padding-left:2px">${esc(P.listName)}</div><div class="list">${P.list.map(c=>chRow(c,"zap",P.ch)).join("")}</div>`,"left","chpanel");
@@ -1441,7 +1511,13 @@ function act(el){
     case"tab":showTab(x[0]);break;
     case"settings":openSettings();break;
     case"back":popPage();break;
-    case"group":S.group=x[0];persist();$$("#grpChips .chip").forEach(g=>g.classList.toggle("sel",g===el));renderChList();{const sc=$("#lvScroll"),h=$("#grpChips");if(sc&&sc.scrollTop>h.offsetTop)sc.scrollTop=h.offsetTop-0}break;
+    case"group":S.group=x[0];S.recentG=[x[0],...(S.recentG||[]).filter(g=>g!==x[0])].slice(0,4);LS.set("recentG",S.recentG);persist();S.lvView="list";renderLive();break;
+    case"lvgroups":S.lvView="groups";renderLive();break;
+    case"plsel":S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();renderLive();toast("Playlist „"+S.playlists[+x[0]].name+"“ aktiv · Prototyp mit Testdaten");break;
+    case"zapd":zap(+x[0]);showCtl();break;
+    case"pnowx":P.sx=!P.sx;{const b=$("#p-below"),st=b.scrollTop;b.innerHTML=belowHTML();b.scrollTop=st}break;
+    case"pgroups":openPGroups();break;
+    case"pgsel":P.list=chOf(x[0]);P.listName=gName(x[0]);closeSheet();updPlayer();break;
     case"play":openLive(x[0],chOf(S.group));break;
     case"playq":openLive(x[0],chOf("all"));break;
     case"playf":{const f=chOf("fav");openLive(x[0],f.length?f:chOf("all"),f.length?"Favoriten":"Alle Kanäle");break}
