@@ -41,7 +41,7 @@ button:focus-visible,.tap:focus-visible{outline:2px solid var(--accent);outline-
 .sx{overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
 .sy::-webkit-scrollbar,.sx::-webkit-scrollbar,.scroller::-webkit-scrollbar,.eg::-webkit-scrollbar{display:none}
 .tap{cursor:pointer;transition:transform .15s ease,background-color .15s ease}
-.tap:active{transform:scale(.97)}
+.tap:active{transform:scale(.97);transition-delay:60ms}
 svg.i{width:22px;height:22px;flex:none}
 
 /* ---------- Bühne & Gerätrahmen ---------- */
@@ -1605,8 +1605,16 @@ function openSched(id){
   openSheet(`<div class="es-top">${logo(c,"lg")}<div><b class="cx-n">${esc(c.name)}</b><div class="es-time">Programm</div></div></div>
    <div class="pk-list sched">${list.map(p=>{const key=c.id+":"+p.start,live=p.start<=now&&p.end>now;return `<div class="ap tap" data-act="cell:${key}" role="button"><span class="st">${fmt(p.start)}</span><b>${esc(p.title)}</b>${live?'<span class="tag live">Live</span>':S.reminders.has(key)?"⏰":""}</div>`}).join("")}</div>`,"","sched");
 }
+/* Tipp-Schutz: Ein Tipp zählt nur, wenn der Finger ruhig blieb und nichts gescrollt hat.
+   Wer in eine laufende Scroll-Bewegung tippt, stoppt sie nur – wie in nativen iOS-Apps. */
+let TD=null,lastScroll=0;
+document.addEventListener("scroll",()=>{lastScroll=performance.now()},{capture:true,passive:true});
+APP.addEventListener("pointerdown",e=>{const t=performance.now();TD={x:e.clientX,y:e.clientY,t,moving:t-lastScroll<150,moved:false}},{capture:true,passive:true});
+APP.addEventListener("pointermove",e=>{if(TD&&!TD.moved&&Math.hypot(e.clientX-TD.x,e.clientY-TD.y)>9)TD.moved=true},{capture:true,passive:true});
+const tapBlocked=()=>!!TD&&(TD.moved||TD.moving||lastScroll>TD.t+30);
 APP.addEventListener("click",e=>{
   if(LPfired){LPfired=false;if(!e.target.closest("#sheet")){e.preventDefault();return}}
+  if(tapBlocked()&&!e.target.closest("#pv")){e.preventDefault();e.stopPropagation();return}
   const el=e.target.closest("[data-act]");if(!el||!APP.contains(el))return;
   if(el.closest("#pv")&&!el.closest("button"))return;
   e.preventDefault();act(el);
