@@ -73,6 +73,7 @@ body.native #app{border-radius:0}
 body.native .island,body.native .sbar,body.native .homeind{display:none}
 body.native{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px)}
 body.native.standalone{--sat:env(safe-area-inset-top,0px)}
+html:has(body.standalone),body.standalone{background:var(--bg)}
 body.native.standalone #device.land #app{--sat:0px}
 #device.land #app{--sat:0px;--sab:12px;--sal:44px;--sar:44px}
 body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--sal:env(safe-area-inset-left,0px);--sar:env(safe-area-inset-right,0px)}
@@ -907,11 +908,14 @@ new MutationObserver(()=>{if(sv("theme")===2)applyLook(false)}).observe(document
 /* ---------- Bühne: Gerätrahmen oder Vollbild ---------- */
 const NATIVE=matchMedia("(max-width: 600px)").matches&&matchMedia("(pointer: coarse)").matches;
 if(NATIVE)document.body.classList.add("native");
-if(NATIVE&&(navigator.standalone||matchMedia("(display-mode: standalone)").matches))document.body.classList.add("standalone");
+const STANDALONE=NATIVE&&(navigator.standalone===true||matchMedia("(display-mode: standalone)").matches);
+if(STANDALONE)document.body.classList.add("standalone");
 let SC=1,FL=false;
 function fit(){
   if(NATIVE){
-    const W=innerWidth,H=Math.min(innerHeight,document.documentElement.clientHeight||innerHeight),rot=FL&&H>W;
+    let W=innerWidth,H=Math.min(innerHeight,document.documentElement.clientHeight||innerHeight);
+    if(STANDALONE){const a=Math.min(screen.width,screen.height),b=Math.max(screen.width,screen.height);if(W>H){W=b;H=a}else{W=a;H=b}}
+    const rot=FL&&H>W;
     DEV.classList.toggle("land",FL||W>H);
     if(rot){DEV.style.width=H+"px";DEV.style.height=W+"px";DEV.style.transform=`translate(${W}px,0) rotate(90deg)`}
     else{DEV.style.width=W+"px";DEV.style.height=H+"px";DEV.style.transform="none"}
