@@ -573,6 +573,78 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .nowcard h2{margin:0;font-size:21px;line-height:1.15;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .nowcard .bar{margin-top:6px;background:rgba(255,255,255,.2)}
 .nowcard .nb-play{width:46px;height:46px;background:#eef2f8;color:#0a0d14}
+
+/* ---------- Echte Cover & Detailseite im Apple-TV-Stil ---------- */
+.poster.img{background:var(--img) center/cover no-repeat,hsl(var(--h) 30% 16%)}
+.poster.img::before,.poster.img .pt,.poster.img .py{display:none}
+.poster.img::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.14);pointer-events:none}
+.adetail{position:relative;margin-top:calc(-1 * (var(--sat) + 50px))}
+.ahero{--h:200;position:relative;height:min(62vh,560px);min-height:380px;overflow:hidden;background:hsl(var(--h) 40% 10%)}
+.ah-img,.ah-grad{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ah-grad{background:radial-gradient(80% 60% at 70% 20%,hsl(var(--h) 60% 40% / .9),transparent 70%),linear-gradient(170deg,hsl(var(--h) 45% 22%),hsl(var(--h) 35% 8%))}
+.ah-vid{position:absolute;inset:0;overflow:hidden;opacity:0;animation:ahv .8s ease 2.2s forwards;pointer-events:none}
+.ah-vid iframe{position:absolute;top:50%;left:50%;height:100%;width:calc(100% * 16 / 9 * 1.0);min-width:100%;aspect-ratio:16/9;transform:translate(-50%,-50%) scale(1.35);border:0}
+@keyframes ahv{to{opacity:1}}
+.ah-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 22%,transparent 45%,color-mix(in srgb,var(--bg) 70%,transparent) 75%,var(--bg))}
+.ah-txt{position:absolute;left:20px;right:20px;bottom:14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.ah-logo{max-width:72%;max-height:96px;object-fit:contain;filter:drop-shadow(0 4px 18px rgba(0,0,0,.45))}
+.ah-txt h1{margin:0;font-family:var(--f2);font-weight:400;font-size:36px;line-height:1.02;text-wrap:balance;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.ah-meta{font-size:13.5px;font-weight:600;color:rgba(238,242,248,.86)}
+.ah-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.bdg{font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:3px 6px;border-radius:5px;color:rgba(238,242,248,.92);box-shadow:inset 0 0 0 1px rgba(238,242,248,.45)}
+.bdg.vote{color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,201,90,.5)}
+.abody{position:relative;padding:6px 20px 8px;display:flex;flex-direction:column;gap:14px}
+.aavail{align-self:center;font-size:12.5px;font-weight:600;color:var(--dim);text-align:center}
+.aavail.ok{color:var(--ok)}
+.amain{display:flex;flex-direction:column;gap:14px}
+.abtn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px 16px;border-radius:14px;font-size:16.5px;font-weight:700;background:var(--surface2);overflow:hidden}
+.abtn.primary{background:#eef2f8;color:#0a0d14}
+.abtn svg{width:16px;height:16px}
+.abtn span{display:inline-flex;align-items:center;gap:8px}
+.abtn small{font-size:13px;font-weight:600;opacity:.6}
+.abar{position:absolute;left:16px;right:16px;bottom:7px;height:3px;border-radius:2px;background:rgba(10,13,20,.15)}
+.abar b{display:block;height:100%;border-radius:2px;background:#0a0d14}
+.aacts{display:flex;justify-content:center;gap:28px}
+.aacts:empty{display:none}
+.around{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--dim)}
+.around span{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--surface2);color:var(--fg);font-size:20px;font-weight:600}
+.around svg{width:16px;height:16px;margin-left:2px}
+.atag{margin:0;font-size:15px;font-weight:700}
+.aov{margin:0;font-size:14.5px;line-height:1.5;color:var(--dim);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.aov.open{-webkit-line-clamp:unset;display:block}
+.asec{margin-top:22px}
+.asec h3{font-size:20px;font-weight:700;margin:0 20px 10px}
+.aeps{display:flex;gap:12px;padding:6px 20px 4px;scroll-snap-type:x mandatory;scroll-padding-inline:20px;overscroll-behavior-x:contain}
+.aep{flex:none;width:78%;scroll-snap-align:start;display:flex;flex-direction:column;gap:4px}
+.aep-img{--h:200;position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:linear-gradient(140deg,hsl(var(--h) 50% 34%),hsl(calc(var(--h) + 40) 60% 14%))}
+.aep-img img{width:100%;height:100%;object-fit:cover;display:block}
+.aep-pl{position:absolute;left:10px;bottom:10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(10,14,22,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff}
+.aep-pl svg{width:12px;height:12px;margin-left:2px}
+.aep-n{font-size:12px;font-weight:600;color:var(--dim);margin-top:4px}
+.aep-t{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aep-o{font-size:13px;line-height:1.4;color:var(--dim);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.acast{display:flex;gap:14px;padding:0 20px 4px}
+.acp{flex:none;width:76px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px}
+.acp-img{width:72px;height:72px;border-radius:50%;overflow:hidden;background:var(--surface2);display:grid;place-items:center;font-weight:700;color:var(--dim);margin-bottom:4px}
+.acp-img img{width:100%;height:100%;object-fit:cover}
+.acp b{font-size:12px;line-height:1.25;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.acp small{font-size:11px;color:var(--dim);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ainfo{margin:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.ainfo dt{font-size:12px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.06em}
+.ainfo dd{margin:3px 0 0;font-size:14px}
+.asrc{margin:26px 20px 0;font-size:11px;line-height:1.45;color:var(--faint)}
+.akey{display:flex;flex-direction:column;gap:3px;margin:26px 20px 0;padding:14px 16px;border-radius:16px;background:var(--surface);text-align:left;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 40%,transparent)}
+.akey b{font-size:15px;color:var(--accent)}
+.akey span{font-size:13px;color:var(--dim)}
+.tin{width:100%;padding:13px 14px;border-radius:12px;border:0;background:var(--surface2);color:var(--fg);font:15px var(--ui);margin-top:6px}
+.trl{position:absolute;inset:0;z-index:60;background:#000;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+.trl.in{opacity:1}
+.trl-v{width:100%;aspect-ratio:16/9}
+.trl-v iframe{width:100%;height:100%;border:0}
+.trl-x{position:absolute;top:calc(var(--sat) + 10px);left:14px;z-index:2}
+#app[data-look="light"] .abtn.primary{background:#121826;color:#fff}
+#app[data-look="light"] .abar{background:rgba(255,255,255,.25)}#app[data-look="light"] .abar b{background:#fff}
+
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -881,7 +953,7 @@ const EN={
 "✓ Verfügbar":"✓ Available","Nicht in Playlist":"Not in playlist","✓ In deiner Playlist":"✓ In your playlist","Nicht in deiner Playlist":"Not in your playlist","In deiner Playlist verfügbar":"Available in your playlist","Gefunden als":"Found as",
 "▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes","＋ Merken und benachrichtigen":"＋ Save and notify me","✓ Auf der Merkliste":"✓ On your watchlist","Stattdessen neu in deiner Playlist":"New in your playlist instead",
 "Neu hinzugefügt":"Recently added","Action":"Action","Science-Fiction":"Science fiction","Drama & Thriller":"Drama & thriller","Komödie & Animation":"Comedy & animation","Alle Serien":"All series","Krimi & Thriller":"Crime & thriller","Drama":"Drama","Sci-Fi, Fantasy & Komödie":"Sci-fi, fantasy & comedy",
-"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Trendfilme":"Trending movies","Gruppe":"Group","Sender":"channels","Trendserien":"Trending series","Gruppen":"Groups","Zuletzt genutzt":"Recently used","Alle Gruppen":"All groups","Gruppe wählen":"Choose group","Jetzt":"Now","Vorheriger in der Liste":"Previous in list","Nächster in der Liste":"Next in list","Im Trend":"Trending",
+"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Trendfilme":"Trending movies","Abspielen":"Play","Fortsetzen":"Resume","Merkliste":"Watchlist","Gemerkt":"Saved","Trailer":"Trailer","Von vorne":"Start over","Besetzung":"Cast","Info":"Info","Originaltitel":"Original title","Regie":"Director","Idee":"Created by","Erschienen":"Released","Studio":"Studio","Laufzeit":"Runtime","Altersfreigabe":"Age rating","Ähnliches in deiner Playlist":"More like this in your playlist","Stattdessen in deiner Playlist":"In your playlist instead","Echte Cover, Trailer und Infos laden":"Load real artwork, trailers and info","Gruppe":"Group","Sender":"channels","Trendserien":"Trending series","Gruppen":"Groups","Zuletzt genutzt":"Recently used","Alle Gruppen":"All groups","Gruppe wählen":"Choose group","Jetzt":"Now","Vorheriger in der Liste":"Previous in list","Nächster in der Liste":"Next in list","Im Trend":"Trending",
 "Handlung, Besetzung und Bewertung lädt die echte App automatisch aus einer Film-Datenbank (z. B. TMDB).":"Plot, cast and rating are loaded automatically from a film database (e.g. TMDB) in the real app.",
 "▶ Fortsetzen":"▶ Resume","Von vorne":"From the beginning","★ In Favoriten":"★ In favourites","☆ Zu Favoriten":"☆ Add to favourites","Zu Favoriten hinzugefügt":"Added to favourites","Aus Favoriten entfernt":"Removed from favourites",
 "Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Saved. Onda will let you know once the title shows up in your playlist.","Von der Merkliste entfernt":"Removed from watchlist",
@@ -1085,8 +1157,9 @@ const hbtn=()=>`<div class="hbtns"><button class="gbtn" data-act="settings" aria
 
 /* ---------- Bausteine ---------- */
 const qOf=o=>o.raw&&/4K/i.test(o.raw)?"4K":"";
-const poster=(o,act)=>`<div class="poster ${act?"tap":""}" style="--h:${o.hue}" ${act?`data-act="${act}" role="button"`:""}>${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${o.prog?`<div class="pprog"><i style="width:${o.prog/o.d*100}%"></i></div>`:""}</div>`;
-const tposter=(o,act,rank)=>`<div class="poster ${act?"tap":""} ${o.avail?"":"dim"}" style="--h:${o.hue}" ${act?`data-act="${act}" role="button"`:""}>${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>`;
+const posterImg=o=>{const m=metaOf(o);return m&&m.poster?`;--img:url(&quot;${TMDB.img("w342",m.poster)}&quot;)`:""};
+const poster=(o,act)=>`<div class="poster ${act?"tap":""} ${posterImg(o)?"img":""}" data-mk="${o.key}" aria-label="${esc(o.t)}" style="--h:${o.hue}${posterImg(o)}" ${act?`data-act="${act}" role="button"`:""}>${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${o.prog?`<div class="pprog"><i style="width:${o.prog/o.d*100}%"></i></div>`:""}</div>`;
+const tposter=(o,act,rank)=>`<div class="poster ${act?"tap":""} ${o.avail?"":"dim"} ${posterImg(o)?"img":""}" data-mk="${o.key}" aria-label="${esc(o.t)}" style="--h:${o.hue}${posterImg(o)}" ${act?`data-act="${act}" role="button"`:""}>${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>`;
 const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+" · "+esc(t.g);
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
@@ -1252,35 +1325,63 @@ function openTrend(k,ix){const r=TREND[k][ix].avail;pushPage(el=>detailHTML(el._
 function openMovie(i){pushPage(el=>detailHTML(el._d||(el._d={type:"m",i})))}
 function openSeries(i){pushPage(el=>detailHTML(el._d||(el._d={type:"s",i,season:1})))}
 function detailHTML(d){
-  const favB=k=>`<button class="btn icon" data-act="vfav:${k}" aria-label="Favorit">${S.favVod.has(k)?"★":"☆"}</button>`;
-  if(d.type==="t"){
-    const t=TREND[d.k][d.ix],watch=S.watch.has(t.key);let btns,extra="",chip;
-    if(d.match){const o=d.match.o;chip='<span class="hchip ok">✓ In deiner Playlist</span>';
-      btns=d.k==="m"?`<div class="row2"><button class="btn primary wide" data-act="mplay:${o.i}">▶ Abspielen</button>${favB(o.key)}</div>`
-        :`<div class="row2"><button class="btn primary wide" data-act="eplay:${o.i}:1:1">▶ S1 E1 abspielen</button>${favB(o.key)}</div><button class="btn" data-act="series:${o.i}">Staffeln & Folgen</button>`;
-    }else{chip='<span class="hchip">Nicht in deiner Playlist</span>';
-      btns=`<button class="btn primary" data-act="watch:${t.key}">${watch?"✓ Gemerkt":"＋ Merken"}</button>`;
-      const pool=d.k==="m"?MOVIES:SERIES,sim=pool.slice().sort((a,b)=>b.y-a.y).slice(0,8);
-      extra=`<div class="d-sim">${shelf("Stattdessen neu in deiner Playlist",sim,o=>(d.k==="m"?"movie:":"series:")+o.i)}</div>`;
-    }
-    return `${pnav(t.t)}<div class="detail" style="--h:${t.hue}"><div class="d-bg"></div><div class="d-head">${tposter(t,"")}<h1>${esc(t.t)}</h1><div class="d-meta"><span>${tmeta(t)}</span></div>${chip}</div>
-     <div class="d-body"><div class="dbtns">${btns}</div><p class="d-desc">${esc(DESC_NOTE)}</p></div>${extra}</div>`;
-  }
-  if(d.type==="m"){
-    const m=MOVIES[d.i];
-    return `${pnav(m.t)}<div class="detail" style="--h:${m.hue}"><div class="d-bg"></div><div class="d-head">${poster(m,"")}<h1>${esc(m.t)}</h1><div class="d-meta"><span>${m.y}</span><span>·</span><span>${esc(m.g)}</span><span>·</span><span>${m.d} Min.</span></div></div>
-     <div class="d-body"><div class="dbtns"><div class="row2">${m.prog?`<button class="btn primary wide" data-act="mplay:${m.i}:r">↻ Fortsetzen bei ${mmss(m.prog*60)}</button>`:`<button class="btn primary wide" data-act="mplay:${m.i}">▶ Abspielen</button>`}${favB(m.key)}</div>${m.prog?`<button class="btn" data-act="mplay:${m.i}">Von vorne</button>`:""}</div>
-     <p class="d-desc">${esc(DESC_NOTE)}</p></div></div>`;
-  }
-  const s=SERIES[d.i],se=d.season,eps=s.seasons[se-1];
-  let ep="";for(let e=1;e<=eps;e++)ep+=`<div class="ep tap" data-act="eplay:${s.i}:${se}:${e}" role="button"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">E${e}</div><div><div class="ep-t">${esc(epTitle(s,se,e))}</div><div class="ep-m">${epDur(s,se,e)} Min.</div></div></div>`;
-  return `${pnav(s.t)}<div class="detail" style="--h:${s.hue}"><div class="d-bg"></div><div class="d-head">${poster(s,"")}<h1>${esc(s.t)}</h1><div class="d-meta"><span>seit ${s.y}</span><span>·</span><span>${esc(s.g)}</span><span>·</span><span>${s.seasons.length} ${s.seasons.length>1?"Staffeln":"Staffel"}</span></div></div>
-   <div class="d-body"><div class="dbtns"><div class="row2"><button class="btn primary wide" data-act="eplay:${s.i}:1:1">▶ S1 E1 abspielen</button>${favB(s.key)}</div></div><p class="d-desc">${esc(DESC_NOTE)}</p></div>
-   <div class="seasons sx">${s.seasons.map((_,k)=>`<button class="chip ${k+1===se?"sel":""}" data-act="season:${k+1}">Staffel ${k+1}</button>`).join("")}</div>
-   <div class="eps">${ep}</div></div>`;
+  const tr=d.type==="t",isS=tr?d.k==="s":d.type==="s";
+  const o=tr?TREND[d.k][d.ix]:d.type==="m"?MOVIES[d.i]:SERIES[d.i];
+  const own=tr?(d.match?d.match.o:null):o;           /* Eintrag in der Playlist */
+  const m=metaOf(o)||(own&&metaOf(own));
+  const rr=()=>{const p=PG.find(p=>p._d===d);if(p)p._r()};
+  if(!m&&tmKey()&&!META[mKey(o)])loadMeta(o).then(x=>{if(x){paintKey(mKey(o));rr()}});
+  const title=m?m.title:o.t,yr=m&&m.year||o.y||"";
+  const metaL=[...(m?m.genres.slice(0,2):[o.g]),yr,isS?((m&&m.nsea)||(own&&own.seasons.length)||"")+((m&&m.nsea||own&&own.seasons.length)?(((m&&m.nsea)||own.seasons.length)>1?" Staffeln":" Staffel"):""):(m&&m.rt?dur(m.rt):own&&own.d?dur(own.d):"")].filter(Boolean);
+  const badges=[own&&qOf(own)?`<span class="bdg">${qOf(own)}</span>`:own?'<span class="bdg">HD</span>':"",m&&m.cert?`<span class="bdg">FSK ${esc(m.cert)}</span>`:"",m&&m.vote?`<span class="bdg vote">★ ${m.vote.toLocaleString(loc())}</span>`:""].join("");
+  const auto=m&&m.trailer&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hero=`<div class="ahero" style="--h:${o.hue}">
+    ${m&&m.back?`<img class="ah-img" src="${TMDB.img("w780",m.back)}" alt="">`:`<div class="ah-grad"></div>`}
+    ${auto?`<div class="ah-vid"><iframe src="https://www.youtube-nocookie.com/embed/${m.trailer}?autoplay=1&mute=1&controls=0&loop=1&playlist=${m.trailer}&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1" allow="autoplay; encrypted-media; picture-in-picture" tabindex="-1" title="Vorschau" loading="lazy"></iframe></div>`:""}
+    <div class="ah-fade"></div>
+    <div class="ah-txt">${m&&m.logo?`<img class="ah-logo" src="${TMDB.img("w500",m.logo)}" alt="${esc(title)}">`:`<h1>${esc(title)}</h1>`}
+     <div class="ah-meta">${metaL.map(esc).join(" · ")}</div>${badges?`<div class="ah-badges">${badges}</div>`:""}</div>
+  </div>`;
+  /* Hauptknopf */
+  let main="";
+  if(own&&!isS){const mv=own;main=mv.prog?`<button class="abtn primary" data-act="mplay:${mv.i}:r"><span>${IC.play}Fortsetzen</span><small>noch ${dur(mv.d-mv.prog)}</small><i class="abar"><b style="width:${mv.prog/mv.d*100}%"></b></i></button>`:`<button class="abtn primary" data-act="mplay:${mv.i}">${IC.play}<span>Abspielen</span></button>`}
+  else if(own&&isS)main=`<button class="abtn primary" data-act="eplay:${own.i}:1:1">${IC.play}<span>S1 · F1 abspielen</span></button>`;
+  else main=`<button class="abtn primary" data-act="watch:${o.key}">${S.watch.has(o.key)?"✓ Auf der Merkliste":"＋ Auf die Merkliste"}</button>`;
+  const fk=own?own.key:null,fav=fk&&S.favVod.has(fk);
+  const acts=`<div class="aacts">${fk?`<button class="around" data-act="vfav:${fk}" aria-label="Merkliste"><span>${fav?"✓":"＋"}</span><small>${fav?"Gemerkt":"Merkliste"}</small></button>`:""}${m&&m.trailer?`<button class="around" data-act="trailer:${m.trailer}" aria-label="Trailer"><span>${IC.play}</span><small>Trailer</small></button>`:""}${own&&!isS&&own.prog?`<button class="around" data-act="mplay:${own.i}" aria-label="Von vorne"><span>↺</span><small>Von vorne</small></button>`:""}</div>`;
+  const avail=tr?`<div class="aavail ${d.match?"ok":""}">${d.match?"✓ In deiner Playlist":"Nicht in deiner Playlist · Onda meldet sich, sobald der Titel auftaucht"}</div>`:"";
+  const ov=m&&m.ov?m.ov:DESC_NOTE;
+  /* Staffeln & Folgen */
+  let eps="";
+  if(own&&isS){const se=d.season||1,n=own.seasons[se-1],sm=m&&m.sea[se];
+    if(m&&!sm)loadSeason(metaOf(own)?own:o,se).then(x=>{if(x)rr()});
+    let cards="";for(let e=1;e<=n;e++){const em=sm&&sm.find(x=>x.n===e);cards+=`<div class="aep tap" data-act="eplay:${own.i}:${se}:${e}" role="button"><div class="aep-img" style="--h:${(o.hue+e*9)%360}">${em&&em.still?`<img src="${TMDB.img("w300",em.still)}" alt="" loading="lazy">`:""}<span class="aep-pl">${IC.play}</span></div><div class="aep-n">Folge ${e}${em&&em.rt?" · "+em.rt+" Min.":" · "+epDur(own,se,e)+" Min."}</div><div class="aep-t">${esc(em&&em.t||epTitle(own,se,e))}</div>${em&&em.ov?`<div class="aep-o">${esc(em.ov)}</div>`:""}</div>`}
+    eps=`<section class="asec"><div class="seasons sx">${own.seasons.map((_,k)=>`<button class="chip ${k+1===se?"sel":""}" data-act="season:${k+1}">Staffel ${k+1}</button>`).join("")}</div><div class="aeps sx">${cards}</div></section>`}
+  const cast=m&&m.cast.length?`<section class="asec"><h3>Besetzung</h3><div class="acast sx">${m.cast.map(c=>`<div class="acp"><div class="acp-img">${c.p?`<img src="${TMDB.img("w185",c.p)}" alt="" loading="lazy">`:`<span>${esc(c.n.split(" ").map(w=>w[0]).join("").slice(0,2))}</span>`}</div><b>${esc(c.n)}</b><small>${esc(c.r||"")}</small></div>`).join("")}</div></section>`:"";
+  /* Ähnliches aus der Playlist */
+  const pool=isS?SERIES:MOVIES,simIdx=m?m.sim:[];
+  let sim=pool.filter(x=>x!==own&&simIdx.includes(norm(x.t)));if(sim.length<6)sim=[...sim,...pool.filter(x=>x!==own&&!sim.includes(x)&&(x.g===(own||o).g))].slice(0,9);
+  const simH=shelf(tr&&!d.match?"Stattdessen in deiner Playlist":"Ähnliches in deiner Playlist",sim.slice(0,9),x=>(isS?"series:":"movie:")+x.i);
+  const info=m?`<section class="asec"><h3>Info</h3><dl class="ainfo">${[["Originaltitel",m.orig!==m.title?m.orig:""],[m.type==="movie"?"Regie":"Idee",m.dir.join(", ")],["Erschienen",m.date?new Date(m.date).toLocaleDateString(loc(),{day:"numeric",month:"long",year:"numeric"}):""],[m.type==="movie"?"Studio":"Sender",m.studio],["Laufzeit",m.rt?dur(m.rt):""],["Altersfreigabe",m.cert?"FSK "+m.cert:""]].filter(r=>r[1]).map(r=>`<div><dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd></div>`).join("")}</dl></section>`:"";
+  const src=tmKey()?`<p class="asrc">Bilder und Infos: TMDB. Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.</p>`
+    :`<button class="akey tap" data-act="tmdbkey"><b>Echte Cover, Trailer und Infos laden</b><span>Einmalig einen kostenlosen TMDB-Schlüssel eingeben</span></button>`;
+  return `${pnav(title)}<div class="adetail">${hero}<div class="abody">${avail}<div class="amain">${main}${acts}</div>
+    ${m&&m.tag?`<p class="atag">${esc(m.tag)}</p>`:""}${m&&m.ov?`<p class="aov tap" data-act="ovx" role="button">${esc(ov)}</p>`:""}</div>${eps}${cast}${simH}${info}${src}</div>`;
+}
+const dur=min=>min>=60?Math.floor(min/60)+" Std."+(min%60?" "+(min%60)+" Min.":""):min+" Min.";
+function openTrailer(k){
+  const el=document.createElement("div");el.className="trl";el.innerHTML=`<button class="pbtn trl-x" data-act="trlclose" aria-label="Schliessen">${IC.close}</button><div class="trl-v"><iframe src="https://www.youtube-nocookie.com/embed/${k}?autoplay=1&playsinline=1&rel=0&modestbranding=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Trailer"></iframe></div>`;
+  APP.appendChild(el);requestAnimationFrame(()=>el.classList.add("in"));
+}
+function openKeySheet(){
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TMDB-Schlüssel</h2>
+   <p class="foot" style="margin-top:0">Damit lädt der Prototyp echte Cover, Hintergrundbilder, Trailer, Handlung, Besetzung und Folgen. Die fertige App bringt einen eigenen Schlüssel mit, dort musst du nichts eingeben.</p>
+   <ol class="foot" style="padding-left:18px;line-height:1.6"><li>Kostenloses Konto auf themoviedb.org anlegen</li><li>Einstellungen › API › Schlüssel anfordern (privat, kostenlos)</li><li>«API-Lesezugriffstoken» oder «API-Schlüssel» kopieren und hier einfügen</li></ol>
+   <input id="tmdbIn" class="tin" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Schlüssel oder Token einfügen" value="${esc(tmKey())}">
+   <div class="btns col" style="margin-top:12px"><button class="btn primary" data-act="tmdbsave">Speichern und Cover laden</button>${tmKey()?'<button class="btn" data-act="tmdbdel">Schlüssel entfernen</button>':""}</div>
+   <p class="foot">Der Schlüssel bleibt nur auf diesem Gerät gespeichert.</p>`,"","tmdb");
 }
 
-/* ---------- Einstellungen ---------- */
 function openSettings(){pushPage(()=>settingsHTML())}
 function settingsHTML(){
   return `${pnav("Einstellungen")}<h1 class="ptitle">Einstellungen</h1>
@@ -1593,6 +1694,12 @@ function act(el){
     case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();topPage()._r();toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Von der Merkliste entfernt");break}
     case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu Favoriten hinzugefügt":"Aus Favoriten entfernt");topPage()._r();break}
     case"season":{const pg=topPage();pg._d.season=+x[0];pg._r();break}
+    case"trailer":openTrailer(x[0]);break;
+    case"trlclose":{const t=$(".trl");if(t){t.classList.remove("in");setTimeout(()=>t.remove(),300)}break}
+    case"ovx":el.classList.toggle("open");break;
+    case"tmdbkey":openKeySheet();break;
+    case"tmdbsave":{const v=($("#tmdbIn").value||"").trim();if(!v){toast("Bitte Schlüssel einfügen");break}LS.set("tmdb",v);META={};LS.set("meta1",{});closeSheet();toast("Gespeichert · Cover werden geladen");$$("[data-mk].img").forEach(e=>e.classList.remove("img"));hydrate();const pg=topPage();if(pg)pg._r();break}
+    case"tmdbdel":LS.set("tmdb","");META={};LS.set("meta1",{});closeSheet();toast("Schlüssel entfernt");rerenderTab();{const pg=topPage();if(pg)pg._r()}break;
     case"mplay":{const m=MOVIES[+x[0]];openVod({title:m.t,sub:"Film · "+m.y+" · "+m.g,dur:m.d*60,pos:x[1]?m.prog*60:0,hue:m.hue,raw:m.raw});break}
     case"eplay":{const s=SERIES[+x[0]],se=+x[1],e=+x[2];openVod({title:epTitle(s,se,e),sub:s.t+" · Staffel "+se+", Folge "+e,dur:epDur(s,se,e)*60,hue:(s.hue+e*9)%360,raw:s.raw+(s.i%3?" FHD":""),ep:true,si:s.i,se,e});break}
     case"q":S.query=x[0];$("#q").value=x[0];renderSResults();break;
@@ -1676,6 +1783,68 @@ APP.addEventListener("click",e=>{
 });
 APP.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches('[role="button"]')){e.preventDefault();act(e.target)}if(e.key==="Escape"){if(!$("#sheet").hidden)closeSheet();else if(!$("#player").hidden&&P.mode==="full")stopPlayer();else if(PG.length)popPage()}});
 new MutationObserver(()=>$$('#app [role="button"]:not([tabindex])').forEach(el=>el.tabIndex=0)).observe(APP,{childList:true,subtree:true});
+
+
+/* ---------- Metadaten (TMDB): Cover, Hintergrund, Titel-Logo, Trailer, Handlung, Besetzung, Folgen ----------
+   Die echte App liest zuerst, was der Anbieter liefert (Xtream: cover, plot, cast, youtube_trailer)
+   und ergänzt Fehlendes aus TMDB mit eigenem App-Schlüssel. Der Prototyp braucht dafür einen TMDB-Schlüssel. */
+{const q=new URLSearchParams(location.search).get("tmdb");if(q){LS.set("tmdb",q.trim());history.replaceState(null,"",location.pathname)}}
+const TMDB={api:"https://api.themoviedb.org/3",img:(sz,p)=>p?"https://image.tmdb.org/t/p/"+sz+p:""};
+const tmKey=()=>LS.get("tmdb","");
+let META=LS.get("meta1",{});const MLOAD={},SLOAD={};let metaSaveT=0;
+const saveMeta=()=>{clearTimeout(metaSaveT);metaSaveT=setTimeout(()=>LS.set("meta1",META),400)};
+const mType=o=>(o.k||o.key[0])==="m"?"movie":"tv";
+const mKey=o=>mType(o)+":"+norm(o.t)+":"+(o.y||"");
+const metaOf=o=>{const m=META[mKey(o)];return m&&!m.none?m:null};
+async function tmGet(path,params){
+  const k=tmKey(),u=new URL(TMDB.api+path),h={accept:"application/json"};
+  Object.entries(params||{}).forEach(([a,b])=>{if(b!=null&&b!=="")u.searchParams.set(a,b)});
+  if(k.startsWith("eyJ"))h.Authorization="Bearer "+k;else u.searchParams.set("api_key",k);
+  const r=await fetch(u,{headers:h});if(!r.ok){const e=new Error("TMDB "+r.status);e.status=r.status;throw e}return r.json();
+}
+const tmLang=()=>isEN()?"en-US":"de-DE";
+function pickVideo(v){const l=(v&&v.results||[]).filter(x=>x.site==="YouTube");const sc=x=>(x.type==="Trailer"?4:x.type==="Teaser"?2:0)+(x.official?1:0)+(x.iso_639_1===(isEN()?"en":"de")?3:x.iso_639_1==="en"?1:0);return (l.sort((a,b)=>sc(b)-sc(a))[0]||{}).key||""}
+function pickLogo(im){const l=(im&&im.logos||[]);const p=x=>x.iso_639_1===(isEN()?"en":"de")?3:x.iso_639_1==="en"?2:x.iso_639_1==null?1:0;const b=l.filter(x=>!/\.svg$/.test(x.file_path)).sort((a,b)=>p(b)-p(a)||b.vote_average-a.vote_average)[0];return b?b.file_path:""}
+function certOf(d,type){try{if(type==="movie"){const r=(d.release_dates.results||[]).find(x=>x.iso_3166_1==="DE")||(d.release_dates.results||[]).find(x=>x.iso_3166_1==="CH");return r?((r.release_dates.find(x=>x.certification)||{}).certification||""):""}const r=(d.content_ratings.results||[]).find(x=>x.iso_3166_1==="DE");return r?r.rating:""}catch(e){return""}}
+function loadMeta(o){
+  const key=mKey(o);if(META[key]&&Date.now()-META[key].ts<7*864e5)return Promise.resolve(META[key]);
+  if(!tmKey())return Promise.resolve(null);if(MLOAD[key])return MLOAD[key];
+  const type=mType(o);
+  return MLOAD[key]=(async()=>{
+    try{
+      const yk=type==="movie"?"primary_release_year":"first_air_date_year";
+      let r=await tmGet("/search/"+type,{query:o.t,language:tmLang(),[yk]:o.y||""});
+      if(!r.results.length&&o.y)r=await tmGet("/search/"+type,{query:o.t,language:tmLang()});
+      const hit=r.results[0];if(!hit){META[key]={none:1,ts:Date.now()};saveMeta();return null}
+      const d=await tmGet("/"+type+"/"+hit.id,{language:tmLang(),append_to_response:"videos,credits,images,"+(type==="movie"?"release_dates":"content_ratings")+",similar",include_image_language:(isEN()?"en":"de")+",en,null",include_video_language:(isEN()?"en":"de")+",en,null"});
+      let ov=d.overview;if(!ov&&!isEN()){try{ov=(await tmGet("/"+type+"/"+hit.id,{language:"en-US"})).overview}catch(e){}}
+      const crew=(d.credits&&d.credits.crew)||[];
+      const m={ts:Date.now(),id:hit.id,type,title:d.title||d.name,orig:d.original_title||d.original_name,ov:ov||"",tag:d.tagline||"",poster:d.poster_path||"",back:d.backdrop_path||"",logo:pickLogo(d.images),
+        genres:(d.genres||[]).map(g=>g.name).slice(0,3),rt:d.runtime||((d.episode_run_time||[])[0])||0,vote:d.vote_average?Math.round(d.vote_average*10)/10:0,year:(d.release_date||d.first_air_date||"").slice(0,4),
+        date:d.release_date||d.first_air_date||"",nsea:d.number_of_seasons||0,trailer:pickVideo(d.videos),cert:certOf(d,type),
+        studio:((type==="tv"?(d.networks||[])[0]:(d.production_companies||[])[0])||{}).name||"",
+        dir:type==="movie"?crew.filter(c=>c.job==="Director").map(c=>c.name).slice(0,2):(d.created_by||[]).map(c=>c.name).slice(0,2),
+        cast:((d.credits&&d.credits.cast)||[]).slice(0,12).map(c=>({n:c.name,r:c.character,p:c.profile_path||""})),
+        sim:((d.similar&&d.similar.results)||[]).slice(0,20).map(x=>norm(x.title||x.name)),sea:{}};
+      META[key]=m;saveMeta();return m;
+    }catch(e){if(e.status===401){toast("TMDB-Schlüssel ungültig");LS.set("tmdb","")}return null}
+    finally{delete MLOAD[key]}
+  })();
+}
+function loadSeason(o,n){
+  const m=metaOf(o);if(!m||m.type!=="tv")return Promise.resolve(null);if(m.sea[n])return Promise.resolve(m.sea[n]);
+  const k=m.id+":"+n;if(SLOAD[k])return SLOAD[k];
+  return SLOAD[k]=tmGet("/tv/"+m.id+"/season/"+n,{language:tmLang()}).then(r=>{m.sea[n]=(r.episodes||[]).map(e=>({n:e.episode_number,t:e.name,ov:e.overview||"",still:e.still_path||"",rt:e.runtime||0}));saveMeta();return m.sea[n]}).catch(()=>null).finally(()=>delete SLOAD[k]);
+}
+/* Alle sichtbaren Cover nachladen (max. 4 Anfragen gleichzeitig) */
+const ALLV=()=>[...MOVIES,...SERIES,...TREND.m,...TREND.s];
+const byKey=k=>ALLV().find(o=>o.key===k);
+const MQ=[];let mRun=0;
+function mPump(){while(mRun<4&&MQ.length){const o=MQ.shift();mRun++;loadMeta(o).then(m=>{if(m)paintKey(mKey(o))}).finally(()=>{mRun--;mPump()})}}
+function paintKey(mk){$$(`[data-mk]`).forEach(el=>{const o=byKey(el.dataset.mk);if(o&&mKey(o)===mk)paintPoster(el,o)});}
+function paintPoster(el,o){const m=metaOf(o);if(!m||!m.poster||el.classList.contains("img"))return;const im=new Image();im.onload=()=>{el.style.setProperty("--img",`url("${im.src}")`);el.classList.add("img")};im.src=TMDB.img("w342",m.poster)}
+function hydrate(){if(!tmKey())return;$$("[data-mk]:not(.img)").forEach(el=>{const o=byKey(el.dataset.mk);if(!o)return;if(metaOf(o))paintPoster(el,o);else if(!META[mKey(o)]&&!MQ.includes(o))MQ.push(o)});mPump()}
+{let hT=0;new MutationObserver(()=>{cancelAnimationFrame(hT);hT=requestAnimationFrame(hydrate)}).observe(document.getElementById("app"),{childList:true,subtree:true})}
 
 /* ---------- Start ---------- */
 fit();clock();setInterval(clock,15000);
