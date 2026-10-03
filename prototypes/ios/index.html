@@ -650,8 +650,8 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .logo.haslogo,.lt-logo.haslogo{background:#1b2130;font-size:0;color:transparent;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.1)}
 .logo.haslogo .ab,.lt-logo.haslogo .ab{display:none}
 .logo.haslogo,.lt-logo.haslogo{display:flex;align-items:center;justify-content:center}
-.logo img{width:78%;height:66%;object-fit:contain;display:block}
-.lt-logo img{width:70%;height:52%;object-fit:contain;display:block;filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.logo img{position:relative;width:78%;height:66%;object-fit:contain;display:block}
+
 .lt-logo{display:flex;align-items:center;justify-content:center}
 #app[data-look="light"] .logo.haslogo,#app[data-look="light"] .lt-logo.haslogo{background:#eef1f6;box-shadow:inset 0 0 0 .5px rgba(20,32,60,.1)}
 .segw.form button{flex:1}
@@ -665,6 +665,26 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .shrow:not(.ch)>.sfill.poster{aspect-ratio:auto;height:1px}
 .epgbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 16px 10px;padding:10px 14px;border-radius:12px;background:var(--surface);font-size:13px;color:var(--dim);text-align:left;flex:none}
 .epgbar b{color:var(--accent);font-weight:700;white-space:nowrap}
+/* Senderkacheln: Logo verschmilzt mit seinem eigenen, weichgezeichneten Farbschein */
+.lt-logo{position:relative;overflow:hidden;isolation:isolate;transition:transform .25s cubic-bezier(.3,1.4,.5,1),box-shadow .25s}
+.lt-logo.haslogo{background:#141925;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.12),inset 0 1px 0 rgba(255,255,255,.08)}
+.lt-glow{position:absolute;z-index:-1;left:50%;top:50%;width:150%!important;height:190%!important;transform:translate(-50%,-50%);object-fit:cover!important;filter:blur(30px) saturate(1.5) brightness(.75);opacity:.55;pointer-events:none}
+.lt-logo.haslogo::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.10),transparent 55%),linear-gradient(180deg,rgba(10,13,20,.25),rgba(10,13,20,.65));pointer-events:none}
+.lt-main{position:relative;width:66%!important;height:46%!important;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
+.lt-live{position:absolute;top:9px;left:9px;width:7px;height:7px;border-radius:50%;background:var(--live);box-shadow:0 0 0 3px rgba(255,77,66,.22);animation:ltpulse 2.4s ease-in-out infinite}
+@keyframes ltpulse{50%{box-shadow:0 0 0 5px rgba(255,77,66,0)}}
+.lt-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.14)}
+.lt-bar i{display:block;height:100%;background:var(--accent);border-radius:0 2px 2px 0}
+.ltile:active .lt-logo{transform:scale(.95)}
+@media (hover:hover){.ltile:hover .lt-logo{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.35),inset 0 0 0 .5px rgba(255,255,255,.18)}}
+@media (prefers-reduced-motion:reduce){.lt-live{animation:none}}
+#app[data-look="light"] .lt-logo.haslogo{background:#e9edf4}
+#app[data-look="light"] .lt-logo.haslogo::before{background:radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.5),transparent 60%),linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.45))}
+#app[data-look="light"] .lt-glow{opacity:.45;filter:blur(26px) saturate(1.6)}
+/* Logos in Listen: gleicher Farbschein, dezenter */
+.logo.haslogo{position:relative;overflow:hidden;isolation:isolate}
+.logo .lg-glow{position:absolute;z-index:-1;inset:-40%;width:180%!important;height:180%!important;object-fit:cover!important;filter:blur(14px) saturate(1.5) brightness(.75);opacity:.45}
+
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -824,7 +844,7 @@ const nextP=c=>{const s=sched(c),i=s.indexOf(nowP(c));return s[i+1]};
 const pct=p=>Math.min(100,Math.max(0,(Date.now()-p.start)/(p.end-p.start)*100));
 function abbr(name){const s=name.replace(/\s+/g,"");if(s.length<=5)return s.toUpperCase();const w=name.split(/\s+/).filter(x=>/[A-Za-zÄÖÜäöü0-9]/.test(x));return w.length>1?w.map(x=>x[0]).join("").slice(0,4).toUpperCase():name.slice(0,3).toUpperCase()}
 function chQ(c){const r=hash(c.name+"src")%10;return c.genre==="sport"&&r<3?"4K":(c.genre==="news"||r>7)?"HD":r===5?"SD":"FHD"}
-const logo=(c,cls="")=>c.logo?`<div class="logo ${cls} haslogo" style="--h:${c.hue}"><img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()"><span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span></div>`:`<div class="logo ${cls}" style="--h:${c.hue}">${esc(abbr(c.real?cleanT(c.name):c.name))}</div>`;
+const logo=(c,cls="")=>c.logo?`<div class="logo ${cls} haslogo" style="--h:${c.hue}"><img class="lg-glow" src="${esc(c.logo)}" alt="" aria-hidden="true" loading="lazy"><img src="${esc(c.logo)}" alt="" loading="lazy" onerror="var t=this.parentNode;t.classList.remove('haslogo');t.querySelector('.lg-glow')&&t.querySelector('.lg-glow').remove();this.remove()"><span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span></div>`:`<div class="logo ${cls}" style="--h:${c.hue}">${esc(abbr(c.real?cleanT(c.name):c.name))}</div>`;
 
 const MOVIES=[
  ["Inception",2010,"Sci-Fi",148],["The Dark Knight",2008,"Action",152],["Interstellar",2014,"Sci-Fi",169],["Dune",2021,"Sci-Fi",155],["Oppenheimer",2023,"Drama",180],
@@ -1193,7 +1213,7 @@ const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+(t.g?" · "+esc(t.
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
 const gbar=(name,n,act)=>`<button class="gbar tap" data-act="${act}" id="${act==="lvgroups"?"gbar":"pgbar"}" aria-label="Gruppe wechseln, aktuell ${esc(name)}"><span class="gb-ic">${IC.list}</span><span class="gb-t"><small>Gruppe</small><b>${esc(name)}</b></span><span class="gcnt">${n} Sender</span><span class="gb-sw">${IC.updown}</span></button>`;
-const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${c.logo?"haslogo":""}" style="--h:${c.hue}">${c.logo?`<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${noEpg(c)?"":`<div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div><b>${esc(c.name)}</b><small>${esc(noEpg(c)?gName(c.group):p.title)}</small></div>`};
+const ltile=c=>{const p=nowP(c),ep=!noEpg(c),L=c.logo?esc(c.logo):"";return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${L?"haslogo":""}" style="--h:${c.hue}">${L?`<img class="lt-glow" src="${L}" alt="" aria-hidden="true" loading="lazy"><img class="lt-main" src="${L}" alt="" loading="lazy" onerror="var t=this.parentNode;t.classList.remove('haslogo');t.querySelector('.lt-glow')&&t.querySelector('.lt-glow').remove();this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${ep?`<span class="lt-live" aria-hidden="true"></span><div class="lt-bar"><i style="width:${pct(p)}%"></i></div>`:""}</div><b>${esc(c.name)}</b><small>${esc(ep?p.title:gName(c.group))}</small></div>`};
 const shelf=(title,items,actFn)=>shelfH(esc(title),items.map(o=>poster(o,actFn(o))).join(""));
 const chCard=c=>{const p=nowP(c);return `<div class="chcard tap" data-act="playf:${c.id}" role="button"><div class="cc-top">${logo(c,"sm")}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now">${esc(p.title)}</div></div></div><div class="bar"><i style="width:${pct(p)}%"></i></div></div>`};
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
