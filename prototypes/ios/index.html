@@ -647,6 +647,19 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 #app[data-look="light"] .abtn.primary{background:#121826;color:#fff}
 #app[data-look="light"] .abar{background:rgba(255,255,255,.25)}#app[data-look="light"] .abar b{background:#fff}
 
+.logo.haslogo,.lt-logo.haslogo{background:#1b2130;font-size:0;color:transparent;box-shadow:inset 0 0 0 .5px rgba(255,255,255,.1)}
+.logo img,.lt-logo img{max-width:82%;max-height:74%;object-fit:contain;display:block}
+.lt-logo{display:grid;place-items:center}
+#app[data-look="light"] .logo.haslogo,#app[data-look="light"] .lt-logo.haslogo{background:#eef1f6;box-shadow:inset 0 0 0 .5px rgba(20,32,60,.1)}
+.segw.form button{flex:1}
+/* Poster mit Titel darunter */
+.pwrap{display:flex;flex-direction:column;gap:7px;min-width:0}
+.pwrap .poster{width:100%!important}
+.pwrap .poster .py{display:none}
+.pcap{display:flex;flex-direction:column;gap:1px;padding:0 2px;min-width:0}
+.pcap b{font-size:13px;font-weight:600;line-height:1.25;letter-spacing:-.005em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg)}
+.pcap small{font-size:11.5px;line-height:1.25;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shrow:not(.ch)>.sfill.poster{aspect-ratio:auto;height:1px}
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -757,7 +770,9 @@ body[data-look="light"] #cap{--fg:#121826;--dim:#4a5468;--faint:#7c8598}
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const LS={get(k,d){try{const v=localStorage.getItem("onda.ios."+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("onda.ios."+k,JSON.stringify(v))}catch(e){}}};
+const REAL=(()=>{try{return localStorage.getItem("onda.ios.src")==="real"}catch(e){return false}})();
+const LSH=new Set(["set","tmdb","meta1","pl"]);const lsk=k=>(LSH.has(k)||!REAL?"onda.ios.":"onda.ios.r.")+k;
+const LS={get(k,d){try{const v=localStorage.getItem(lsk(k));return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(lsk(k),JSON.stringify(v))}catch(e){}}};
 function hash(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const MIN=60000;
@@ -787,10 +802,11 @@ const GEN={
 };
 const CH=[];let n=1;
 GROUPS.forEach(g=>g.names.forEach(name=>{CH.push({id:n,num:n,name,group:g.id,genre:g.genre,hue:hash(name)%360});n++}));
-const chById=id=>CH.find(c=>c.id===+id);
+let CHM=null;const chById=id=>{if(!CHM){CHM=new Map();CH.forEach(c=>CHM.set(c.id,c))}return CHM.get(+id)};
 const DAY0=(()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()})();
 function sched(c){
   if(c._s)return c._s;
+  if(c.real)return c._s=[{ch:c.id,start:DAY0-7*864e5,end:DAY0+3*864e5,title:"Keine Programmdaten",desc:"Für Sendungen eine EPG-Quelle (XMLTV) hinzufügen."}];
   const R=rng(c.id*7919),G=GEN[c.genre],arr=[];
   let t=DAY0-7*24*60*MIN;const end=DAY0+48*60*MIN;
   while(t<end){const d=G.d[R()*G.d.length|0];arr.push({ch:c.id,start:t,end:t+d*MIN,title:G.t[R()*G.t.length|0],desc:G.x[R()*G.x.length|0]});t+=d*MIN}
@@ -801,7 +817,7 @@ const nextP=c=>{const s=sched(c),i=s.indexOf(nowP(c));return s[i+1]};
 const pct=p=>Math.min(100,Math.max(0,(Date.now()-p.start)/(p.end-p.start)*100));
 function abbr(name){const s=name.replace(/\s+/g,"");if(s.length<=5)return s.toUpperCase();const w=name.split(/\s+/).filter(x=>/[A-Za-zÄÖÜäöü0-9]/.test(x));return w.length>1?w.map(x=>x[0]).join("").slice(0,4).toUpperCase():name.slice(0,3).toUpperCase()}
 function chQ(c){const r=hash(c.name+"src")%10;return c.genre==="sport"&&r<3?"4K":(c.genre==="news"||r>7)?"HD":r===5?"SD":"FHD"}
-const logo=(c,cls="")=>`<div class="logo ${cls}" style="--h:${c.hue}">${esc(abbr(c.name))}</div>`;
+const logo=(c,cls="")=>c.logo?`<div class="logo ${cls} haslogo" style="--h:${c.hue}"><img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()">${esc(abbr(c.real?cleanT(c.name):c.name))}</div>`:`<div class="logo ${cls}" style="--h:${c.hue}">${esc(abbr(c.real?cleanT(c.name):c.name))}</div>`;
 
 const MOVIES=[
  ["Inception",2010,"Sci-Fi",148],["The Dark Knight",2008,"Action",152],["Interstellar",2014,"Sci-Fi",169],["Dune",2021,"Sci-Fi",155],["Oppenheimer",2023,"Drama",180],
@@ -936,8 +952,8 @@ const ALLIT=SETTINGS.flatMap(s=>s.items);
 const itOf=k=>ALLIT.find(i=>i.k===k);
 const S={
   tab:"home",mseg:"m",group:LS.get("group","ch"),lvView:"list",recentG:LS.get("recentG",[]),
-  favCh:new Set(LS.get("favCh",[1,2,16,31])),favVod:new Set(LS.get("favVod",["m6","s0"])),
-  reminders:new Set(LS.get("rem",[])),recent:LS.get("recent",[1,16]),
+  favCh:new Set(LS.get("favCh",REAL?[]:[1,2,16,31])),favVod:new Set(LS.get("favVod",REAL?[]:["m6","s0"])),
+  reminders:new Set(LS.get("rem",[])),recent:LS.get("recent",REAL?[]:[1,16]),chLimit:300,
   set:Object.assign({theme:2},LS.get("set",{})),
   playlists:LS.get("pl",[{name:"Mein Anbieter",type:"Xtream Codes",info:CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien",active:true},{name:"Testliste",type:"M3U-URL",info:"nicht geladen",active:false}]),
   formType:"m3u",query:"",sendPl:0,trendAll:false,hidG:new Set(LS.get("hidG",[])),hidC:new Set(LS.get("hidC",[])),gOrder:LS.get("gOrder",[]),cOrder:LS.get("cOrder",{}),onlyAvail:LS.get("onlyAvail",false),watch:new Set(LS.get("watch",[])),epgDay:0,epgSlot:null
@@ -1162,25 +1178,26 @@ const hbtn=()=>`<div class="hbtns"><button class="gbtn" data-act="settings" aria
 /* ---------- Bausteine ---------- */
 const qOf=o=>o.raw&&/4K/i.test(o.raw)?"4K":"";
 const posterImg=o=>{const m=metaOf(o);return m&&m.poster?`;--img:url(&quot;${TMDB.img("w342",m.poster)}&quot;)`:""};
-const poster=(o,act)=>`<div class="poster ${act?"tap":""} ${posterImg(o)?"img":""}" data-mk="${o.key}" aria-label="${esc(o.t)}" style="--h:${o.hue}${posterImg(o)}" ${act?`data-act="${act}" role="button"`:""}>${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${o.prog?`<div class="pprog"><i style="width:${o.prog/o.d*100}%"></i></div>`:""}</div>`;
-const tposter=(o,act,rank)=>`<div class="poster ${act?"tap":""} ${o.avail?"":"dim"} ${posterImg(o)?"img":""}" data-mk="${o.key}" aria-label="${esc(o.t)}" style="--h:${o.hue}${posterImg(o)}" ${act?`data-act="${act}" role="button"`:""}>${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>`;
+const pcap=(o,sub)=>`<div class="pcap"><b>${esc(o.t)}</b><small>${esc(sub)}</small></div>`;
+const poster=(o,act)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${o.prog?`<div class="pprog"><i style="width:${o.prog/o.d*100}%"></i></div>`:""}</div>${pcap(o,[o.y,o.g].filter(Boolean).join(" · "))}</div>`;
+const tposter=(o,act,rank)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${o.avail?"":"dim"} ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>${pcap(o,[o.y,o.g].filter(Boolean).join(" · "))}</div>`;
 const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+" · "+esc(t.g);
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
 const gbar=(name,n,act)=>`<button class="gbar tap" data-act="${act}" id="${act==="lvgroups"?"gbar":"pgbar"}" aria-label="Gruppe wechseln, aktuell ${esc(name)}"><span class="gb-ic">${IC.list}</span><span class="gb-t"><small>Gruppe</small><b>${esc(name)}</b></span><span class="gcnt">${n} Sender</span><span class="gb-sw">${IC.updown}</span></button>`;
-const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo" style="--h:${c.hue}">${esc(abbr(c.name))}<div class="bar"><i style="width:${pct(p)}%"></i></div></div><b>${esc(c.name)}</b><small>${esc(p.title)}</small></div>`};
+const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${c.logo?"haslogo":""}" style="--h:${c.hue}">${c.logo?`<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()">`:""}${esc(abbr(c.real?cleanT(c.name):c.name))}${c.real?"":`<div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div><b>${esc(c.name)}</b><small>${esc(c.real?gName(c.group):p.title)}</small></div>`};
 const shelf=(title,items,actFn)=>shelfH(esc(title),items.map(o=>poster(o,actFn(o))).join(""));
 const chCard=c=>{const p=nowP(c);return `<div class="chcard tap" data-act="playf:${c.id}" role="button"><div class="cc-top">${logo(c,"sm")}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now">${esc(p.title)}</div></div></div><div class="bar"><i style="width:${pct(p)}%"></i></div></div>`};
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
 const liveGroups=()=>[{id:"fav",name:"Favoriten"},{id:"all",name:"Alle Kanäle"},...orderedGroups().filter(g=>!S.hidG.has(g.id))];
-function chOrdered(g){const list=CH.filter(c=>c.group===g),o=S.cOrder[g]||[];return list.sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?999+a.id:x)-(y<0?999+b.id:y)})}
+function chOrdered(g){const list=CH.filter(c=>c.group===g),o=S.cOrder[g]||[];return list.sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?1e6+(a.num||a.id):x)-(y<0?1e6+(b.num||b.id):y)})}
 const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group);
 function chOf(g){if(g==="fav")return CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));if(g==="all")return orderedGroups().flatMap(x=>chOrdered(x.id)).filter(chVisible);return chOrdered(g).filter(chVisible)}
 const gName=g=>(liveGroups().find(x=>x.id===g)||{}).name||"";
 const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${f?IC.starF:IC.star}</button>`};
 function chRow(c,act="play",curId){
   const p=nowP(c);
-  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div><div class="rs">${esc(p.title)}</div><div class="bar"><i style="width:${pct(p)}%"></i></div></div></div>`;
+  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${c.real?(S.group==="fav"||S.group==="all"||S.tab!=="live"?`<div class="rs">${esc(gName(c.group))}</div>`:""):`<div class="rs">${esc(p.title)}</div><div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
 function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
@@ -1197,7 +1214,7 @@ function renderHome(){
    <div class="nowcard tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
      <div class="pv-anim"></div>
      <div class="nc-top"><span class="livebadge">LIVE</span>${logo(hc,"sm")}</div>
-     <div class="nc-bot"><div class="nc-txt"><span class="nc-m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(hp.title)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div></div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
+     <div class="nc-bot"><div class="nc-txt">${hc.real?`<span class="nc-m">${esc(gName(hc.group))}</span><h2>${esc(hc.name)}</h2>`:`<span class="nc-m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(hp.title)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div>`}</div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
    </div>
    ${pool.length?`<section class="shelf"><h3>Meine Sender</h3><div class="shrow sx">${pool.map(ltile).join("")}</div></section>`:""}
    ${shelf("Weiterschauen",MOVIES.filter(m=>m.prog),o=>"movie:"+o.i)}
@@ -1225,8 +1242,8 @@ function renderLive(){
   renderChList();
 }
 function renderChList(){
-  const list=chOf(S.group);
-  $("#chList").innerHTML=list.length?list.map(c=>chRow(c)).join(""):`<div class="empty">Noch keine Favoriten.<br>Halte einen Sender gedrückt und wähle „Zu Favoriten“.</div>`;
+  const list=chOf(S.group),more=list.length>S.chLimit;
+  $("#chList").innerHTML=list.length?list.slice(0,S.chLimit).map(c=>chRow(c)).join("")+(more?`<button class="btn" style="margin:12px 20px" data-act="chmore">Weitere ${Math.min(300,list.length-S.chLimit)} von ${list.length-S.chLimit} laden</button>`:""):`<div class="empty">Noch keine Favoriten.<br>Halte einen Sender gedrückt und wähle „Zu Favoriten“.</div>`;
 }
 
 /* ---------- TV-Guide ---------- */
@@ -1243,7 +1260,7 @@ function renderEPG(){
   renderEpgGrid();
 }
 function renderEpgGrid(){
-  const W1=W0+ESPAN*MIN,list=chOf(S.group),now=Date.now(),TW=ESPAN*PPM,eg=$("#eg");
+  const W1=W0+ESPAN*MIN,list=chOf(S.group).slice(0,REAL?150:9999),now=Date.now(),TW=ESPAN*PPM,eg=$("#eg");
   const times=Array.from({length:ESPAN/30},(_,i)=>`<span style="left:${i*30*PPM}px">${fmt(W0+i*30*MIN)}</span>`).join("");
   const rows=list.map(c=>{
     const cells=sched(c).filter(p=>p.end>W0&&p.start<W1).map(p=>{
@@ -1281,7 +1298,9 @@ function vodHTML(k){
   const T=TREND[k],all=trendList(k),tl=S.trendAll?all:all.filter(ix=>T[ix].avail),a=o=>(k==="m"?"movie:":"series:")+o.i;
   const cards=tl.map(ix=>{const t=T[ix];return `<div class="thero tap" style="--h:${t.hue}" data-act="trend:${k}:${ix}" role="button"><div class="th-art" style="--h:${t.hue}">${t.avail?"":abadge(t)}<span class="pt ${t.ff}${lw(t.t)}">${esc(t.t)}</span></div><div class="th-txt"><div class="eyebrow">Platz ${all.indexOf(ix)+1}</div><h2 class="${t.ff}">${esc(t.t)}</h2><div class="th-meta">${tmeta(t)}</div>${t.avail?'<span class="hchip ok">✓ In deiner Playlist</span>':'<span class="hchip">Nicht in deiner Playlist</span>'}</div></div>`}).join("");
   let lists;
-  if(k==="m")lists=shelf("Weiterschauen",MOVIES.filter(m=>m.prog),a)+shelf("Neu hinzugefügt",MOVIES.filter(m=>m.y>=2024),a)+shelf("Action",MOVIES.filter(m=>m.g==="Action"),a)+shelf("Science-Fiction",MOVIES.filter(m=>m.g==="Sci-Fi"),a)+shelf("Drama & Thriller",MOVIES.filter(m=>m.g==="Drama"||m.g==="Thriller"),a)+shelf("Komödie & Animation",MOVIES.filter(m=>m.g==="Komödie"||m.g==="Animation"),a);
+  if(REAL){const pool=k==="m"?MOVIES:SERIES,cats=new Map();pool.forEach(o=>{if(!cats.has(o.g))cats.set(o.g,[]);cats.get(o.g).push(o)});
+    lists=(k==="m"?shelf("Weiterschauen",MOVIES.filter(m=>m.prog),a):"")+[...cats.entries()].sort((x,y)=>y[1].length-x[1].length).slice(0,14).map(([g,l])=>shelf(g+" ("+l.length+")",l.slice(0,30),a)).join("");}
+  else if(k==="m")lists=shelf("Weiterschauen",MOVIES.filter(m=>m.prog),a)+shelf("Neu hinzugefügt",MOVIES.filter(m=>m.y>=2024),a)+shelf("Action",MOVIES.filter(m=>m.g==="Action"),a)+shelf("Science-Fiction",MOVIES.filter(m=>m.g==="Sci-Fi"),a)+shelf("Drama & Thriller",MOVIES.filter(m=>m.g==="Drama"||m.g==="Thriller"),a)+shelf("Komödie & Animation",MOVIES.filter(m=>m.g==="Komödie"||m.g==="Animation"),a);
   else lists=shelf("Alle Serien",SERIES,a)+shelf("Krimi & Thriller",SERIES.filter(s=>s.g==="Krimi"||s.g==="Thriller"),a)+shelf("Drama",SERIES.filter(s=>s.g==="Drama"),a)+shelf("Sci-Fi, Fantasy & Komödie",SERIES.filter(s=>s.g==="Sci-Fi"||s.g==="Fantasy"||s.g==="Komödie"),a);
   return `<div class="shead"><h3>Im Trend</h3></div>
    <div class="tcar sx" id="tcar">${cards}<button class="tmore tap" data-act="trendall">${S.trendAll?"Nur verfügbare":"Alle anzeigen"}</button></div><div class="dots" id="tdots">${tl.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div>
@@ -1307,7 +1326,7 @@ function renderSResults(){
   if(!q){el.innerHTML=`<div class="subhead">Vorschläge</div><div class="suggest">${["Dune","Ted Lasso","Thriller","Sci-Fi","SRF","Bundesliga"].map(s=>`<button class="chip" data-act="q:${s}">${s}</button>`).join("")}</div>`;return}
   const ch=CH.filter(chVisible).filter(c=>c.name.toLowerCase().includes(q)||nowP(c).title.toLowerCase().includes(q));
   const mv=MOVIES.filter(m=>(m.t+" "+m.g).toLowerCase().includes(q)),se=SERIES.filter(s=>(s.t+" "+s.g).toLowerCase().includes(q));
-  el.innerHTML=(ch.length?`<div class="subhead">Kanäle (${ch.length})</div><div class="list" style="margin-bottom:20px">${ch.slice(0,20).map(c=>chRow(c,"playq")).join("")}</div>`:"")+shelf("Filme",mv,m=>"movie:"+m.i)+shelf("Serien",se,s=>"series:"+s.i)
+  el.innerHTML=(ch.length?`<div class="subhead">Kanäle (${ch.length})</div><div class="list" style="margin-bottom:20px">${ch.slice(0,20).map(c=>chRow(c,"playq")).join("")}</div>`:"")+shelf("Filme",mv.slice(0,30),m=>"movie:"+m.i)+shelf("Serien",se.slice(0,30),s=>"series:"+s.i)
    ||`<p class="empty">Keine Treffer für „${esc(S.query)}“. Gesucht wird in Kanalnamen, laufenden Sendungen, Filmen und Serien.</p>`;
 }
 
@@ -1406,16 +1425,19 @@ function openPicker(k){
   openSheet(`<div class="eyebrow">${esc(sec)}</div><h2 class="sh-t">${esc(it.l)}</h2><div class="pk-list">${optRows(it,sv(k),"pick")}</div>${it.pc?'<div class="pk-legend">Von schlecht nach gut · nur für Sender mit Halbbildern (1080i, 576i)</div>':""}`);
 }
 function renderForm(){
-  const x=S.formType==="xtream";
-  return `<h2 class="sh-t">Playlist hinzufügen</h2><p class="warn">Prototyp: Es wird nichts geladen oder gespeichert ausser dem Namen. Bitte hier keine echten Zugangsdaten eingeben.</p>
-   <div class="segw form"><button class="${!x?"on":""}" data-act="seg:m3u">M3U-URL</button><button class="${x?"on":""}" data-act="seg:xtream">Xtream Codes</button></div>
+  const t=S.formType,x=t==="xtream",f=t==="file",realOn=S.playlists.some(p=>p.real&&p.active);
+  return `<h2 class="sh-t">Playlist hinzufügen</h2><p class="foot" style="margin-top:0">Prototyp: Sender, Filme und Serien deiner Playlist werden angezeigt, abspielen geht noch nicht. Zugangsdaten werden nicht gespeichert und nirgends hochgeladen.</p>
+   <div class="segw form"><button class="${t==="m3u"?"on":""}" data-act="seg:m3u">M3U-URL</button><button class="${x?"on":""}" data-act="seg:xtream">Xtream</button><button class="${f?"on":""}" data-act="seg:file">Datei</button></div>
    <div class="field"><label for="fName">Name</label><input id="fName" class="finput" placeholder="z. B. Wohnzimmer"></div>
-   ${x?`<div class="field"><label for="fServer">Server</label><input id="fServer" class="finput" inputmode="url" placeholder="http://anbieter.example:8080"></div>
-   <div class="field"><label for="fUser">Benutzername</label><input id="fUser" class="finput" autocomplete="off"></div><div class="field"><label for="fPass">Passwort</label><input id="fPass" type="password" class="finput" autocomplete="off"></div>`
-   :`<div class="field"><label for="fUrl">Playlist-URL (.m3u / .m3u8)</label><input id="fUrl" class="finput" inputmode="url" placeholder="https://…/playlist.m3u"></div><div class="field"><label for="fEpg">EPG-URL (XMLTV, optional)</label><input id="fEpg" class="finput" inputmode="url" placeholder="https://…/epg.xml.gz"></div>`}
-   <div class="field"><label for="fUa">User-Agent (optional)</label><input id="fUa" class="finput" autocomplete="off" placeholder="Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt"></div>
-   <div class="btns col"><button class="btn primary" data-act="savepl">Speichern</button><button class="btn" data-act="sclose">Abbrechen</button></div>`;
+   ${f?`<div class="btns col"><label class="btn primary" style="cursor:pointer">M3U-Datei auswählen<input type="file" id="m3uFile" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,application/vnd.apple.mpegurl,*/*" hidden></label></div>
+     <p class="foot">Xtream: Lade die Datei einmal über den Link <code>…/get.php?username=…&password=…&type=m3u_plus</code> in «Dateien».</p>`
+   :x?`<div class="field"><label for="fServer">Server</label><input id="fServer" class="finput" inputmode="url" autocapitalize="off" placeholder="http://anbieter.example:8080"></div>
+   <div class="field"><label for="fUser">Benutzername</label><input id="fUser" class="finput" autocomplete="off" autocapitalize="off"></div><div class="field"><label for="fPass">Passwort</label><input id="fPass" type="password" class="finput" autocomplete="off"></div>`
+   :`<div class="field"><label for="fUrl">Playlist-URL (.m3u / .m3u8)</label><input id="fUrl" class="finput" inputmode="url" autocapitalize="off" placeholder="https://…/playlist.m3u"></div><div class="field"><label for="fEpg">EPG-URL (XMLTV, optional)</label><input id="fEpg" class="finput" inputmode="url" placeholder="https://…/epg.xml.gz"></div>`}
+   ${f?"":`<div class="field"><label for="fUa">User-Agent (optional)</label><input id="fUa" class="finput" autocomplete="off" placeholder="Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt"></div>`}
+   <div class="btns col">${f?"":`<button class="btn primary" data-act="loadpl">Laden</button>`}<button class="btn" data-act="sclose">Abbrechen</button>${realOn?'<button class="btn" data-act="totest">Zurück zu den Testdaten</button>':""}</div>`;
 }
+
 
 /* ---------- Senderliste bearbeiten (gleiche Schlüssel wie tvOS: stabil über die Sender-ID) ---------- */
 const mvBtns=(t,id,i,n)=>`<span class="mv"><button data-act="edmv:${t}:${id}:-1" ${i?"":"disabled"} aria-label="Nach oben">▲</button><button data-act="edmv:${t}:${id}:1" ${i<n-1?"":"disabled"} aria-label="Nach unten">▼</button></span>`;
@@ -1566,9 +1588,9 @@ function belowHTML(){
   if(P.type==="live"){
     const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
-    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b><span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span></span><span class="exp">${IC.chR}</span></button>
+    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${c.real?`<span class="tm">${esc(gName(c.group))} · keine Programmdaten</span>`:`<span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
-     ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${P.list.map(x=>chRow(x,"zap",P.ch)).join("")}</div></div>`;
+     ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
   const v=P.vod;let next="";
   if(v.ep){const s=SERIES[v.si],e=v.e+1;if(e<=s.seasons[v.se-1])next=`<div class="colhead" style="margin-top:14px">Nächste Folge</div><div class="ep tap" data-act="eplay:${s.i}:${v.se}:${e}" role="button"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">E${e}</div><div><div class="ep-t">${esc(epTitle(s,v.se,e))}</div><div class="ep-m">${epDur(s,v.se,e)} Min.</div></div></div>`}
@@ -1704,14 +1726,23 @@ function act(el){
     case"tmdbkey":openKeySheet();break;
     case"tmdbsave":{const v=($("#tmdbIn").value||"").trim();if(!v){toast("Bitte Schlüssel einfügen");break}LS.set("tmdb",v);META={};LS.set("meta1",{});closeSheet();toast("Gespeichert · Cover werden geladen");$$("[data-mk].img").forEach(e=>e.classList.remove("img"));hydrate();const pg=topPage();if(pg)pg._r();break}
     case"tmdbdel":LS.set("tmdb","");META={};LS.set("meta1",{});closeSheet();toast("Schlüssel entfernt");rerenderTab();{const pg=topPage();if(pg)pg._r()}break;
-    case"mplay":{const m=MOVIES[+x[0]];openVod({title:m.t,sub:"Film · "+m.y+" · "+m.g,dur:m.d*60,pos:x[1]?m.prog*60:0,hue:m.hue,raw:m.raw});break}
+    case"mplay":{const m=MOVIES[+x[0]];openVod({title:m.t,sub:"Film · "+(m.y?m.y+" · ":"")+m.g,dur:(m.d||120)*60,pos:x[1]?m.prog*60:0,hue:m.hue,raw:m.raw});break}
     case"eplay":{const s=SERIES[+x[0]],se=+x[1],e=+x[2];openVod({title:epTitle(s,se,e),sub:s.t+" · Staffel "+se+", Folge "+e,dur:epDur(s,se,e)*60,hue:(s.hue+e*9)%360,raw:s.raw+(s.i%3?" FHD":""),ep:true,si:s.i,se,e});break}
     case"q":S.query=x[0];$("#q").value=x[0];renderSResults();break;
     case"set":openPicker(x[0]);break;
     case"pick":{const it=itOf(x[0]);S.set[it.k]=+x[1];persist();closeSheet();const pg=topPage();if(pg)pg._r();
       if(it.k==="lang"||it.k==="theme")applyLook(true);toast(it.l+": "+it.o[sv(it.k)]);break}
-    case"pl":S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();topPage()._r();toast("„"+S.playlists[+x[0]].name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break;
-    case"addpl":S.formType="m3u";openSheet(renderForm(),"","form");break;
+    case"pl":{const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
+      if(!pp.real&&REAL){backToTest();break}
+      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();topPage()._r();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
+    case"addpl":S.formType="xtream";openSheet(renderForm(),"","form");break;
+    case"loadpl":{const x=S.formType==="xtream",nm=($("#fName").value||"").trim();let url;
+      if(x){const sv=$("#fServer").value,u=$("#fUser").value,p=$("#fPass").value;if(!sv.trim()||!u.trim()||!p.trim()){toast("Bitte Server, Benutzername und Passwort eingeben");break}url=xtreamUrl(sv,u,p)}
+      else{url=($("#fUrl").value||"").trim();if(!url){toast("Bitte Playlist-URL eingeben");break}}
+      toast("Lade Playlist …");tryFetch(url).then(r=>{if(r.text){importText(r.text,nm||(x?"Xtream":"Meine Playlist")).catch(e=>importHelp(url,"status"))}else importHelp(url,r.err)});break}
+    case"copylink":{const u=IMPURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>{prompt("Link kopieren:",u)});break}
+    case"totest":backToTest();break;
+    case"chmore":S.chLimit+=300;renderChList();break;
     case"seg":{const n=$("#fName").value;S.formType=x[0];openSheet(renderForm(),"","form");$("#fName").value=n;break}
     case"savepl":{const name=($("#fName").value||"").trim()||"Neue Playlist",ua=(($("#fUa")||{}).value||"").trim();S.playlists.push({name,type:S.formType==="xtream"?"Xtream Codes":"M3U-URL",info:ua?"User-Agent: "+ua:"nicht geladen",active:false,ua});persist();closeSheet();const pg=topPage();if(pg)pg._r();toast("Playlist „"+name+"“ angelegt");break}
     case"sclose":closeSheet();break;
@@ -1849,14 +1880,84 @@ function paintKey(mk){$$(`[data-mk]`).forEach(el=>{const o=byKey(el.dataset.mk);
 function paintPoster(el,o){const m=metaOf(o);if(!m||!m.poster){if(!el.classList.contains("img"))paintSample(el,o);return}if(el.classList.contains("img"))return;const im=new Image();im.onload=()=>{el.style.setProperty("--img",`url("${im.src}")`);el.classList.add("img")};im.src=TMDB.img("w342",m.poster)}
 function hydrate(){const k=tmKey();$$("[data-mk]:not(.img):not(.nimg)").forEach(el=>{const o=byKey(el.dataset.mk);if(!o)return;if(metaOf(o))paintPoster(el,o);else if(k&&!META[mKey(o)]){if(!MQ.includes(o))MQ.push(o)}else paintSample(el,o)});if(k)mPump()}
 const SIMG={};
-function paintSample(el,o){const u=SAMPLE[o.t];if(!u){el.classList.add("nimg");return}if(SIMG[u]==="bad"){el.classList.add("nimg");return}const set=()=>{el.style.setProperty("--img",`url("${u}")`);el.classList.add("img")};if(SIMG[u]==="ok")return set();el.classList.add("nimg");const im=new Image();im.onload=()=>{SIMG[u]="ok";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&SAMPLE[ob.t]===u){x.classList.remove("nimg");x.style.setProperty("--img",`url("${u}")`);x.classList.add("img")}})};im.onerror=()=>{SIMG[u]="bad"};im.src=u}
+function paintSample(el,o){const u=o.cover||SAMPLE[o.t];if(!u){el.classList.add("nimg");return}if(SIMG[u]==="bad"){el.classList.add("nimg");return}const set=()=>{el.style.setProperty("--img",`url("${u}")`);el.classList.add("img")};if(SIMG[u]==="ok")return set();el.classList.add("nimg");const im=new Image();im.onload=()=>{SIMG[u]="ok";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&(ob.cover||SAMPLE[ob.t])===u){x.classList.remove("nimg");x.style.setProperty("--img",`url("${u}")`);x.classList.add("img")}})};im.onerror=()=>{SIMG[u]="bad"};im.src=u}
 {let hT=0;new MutationObserver(()=>{cancelAnimationFrame(hT);hT=requestAnimationFrame(hydrate)}).observe(document.getElementById("app"),{childList:true,subtree:true})}
+
+
+/* ---------- Eigene Playlist (M3U / Xtream) laden – bleibt nur auf diesem Gerät ---------- */
+const IDB={db:null,open(){return this.db||(this.db=new Promise((res,rej)=>{const r=indexedDB.open("onda",1);r.onupgradeneeded=()=>r.result.createObjectStore("kv");r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}))},
+  async get(k){const db=await this.open();return new Promise((res,rej)=>{const q=db.transaction("kv").objectStore("kv").get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+  async set(k,v){const db=await this.open();return new Promise((res,rej)=>{const t=db.transaction("kv","readwrite");t.objectStore("kv").put(v,k);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)})}};
+const cleanT=x=>x.replace(/^\s*(\[[^\]]{1,8}\]|[A-Z]{2,5}(\s*[-|:]\s*|\s+-\s+))/,"").replace(/[\(\[]((19|20)\d\d)[\)\]]/g," ").replace(/\s[-–]\s(19|20)\d\d\b/g," ").replace(/\b(4K|UHD|FHD|HD|SD|HEVC|H\.?265|MULTI[\s-]?SUB|DUAL)\b/gi," ").replace(/\s{2,}/g," ").replace(/[\s\-|:]+$/,"").trim();
+const cleanG=g=>(g||"").replace(/^\s*(VOD|SERIEN|SERIES|SERIE|MOVIES?|FILME?|KINO)\s*[|:\-]\s*/i,"").trim()||g;
+function parseM3U(text){
+  if(!/#EXTM3U|#EXTINF/i.test(text.slice(0,5000)))throw new Error("Keine M3U-Datei");
+  const L=[],V=[],E=[];let inf=null;
+  for(const raw of text.split(/\r?\n/)){const line=raw.trim();if(!line)continue;
+    if(line.startsWith("#EXTINF")){const at=k=>{const m=line.match(new RegExp(k+'="([^"]*)"',"i"));return m?m[1]:""};const ci=line.lastIndexOf('",');const name=(ci>-1?line.slice(ci+2):line.slice(line.indexOf(",")+1)).trim()||at("tvg-name");inf={name,group:at("group-title")||"Ohne Gruppe",logo:at("tvg-logo"),tid:at("tvg-id")};continue}
+    if(line.startsWith("#"))continue;
+    if(inf){const u=line;const it={...inf,url:u};if(/\/series\//i.test(u)||/S\d{1,2}\s*E\d{1,3}/i.test(inf.name)&&/\.(mkv|mp4|avi)$/i.test(u))E.push(it);else if(/\/movie\//i.test(u)||/\.(mkv|mp4|avi|m4v)$/i.test(u))V.push(it);else L.push(it);inf=null}
+  }
+  return{L,V,E};
+}
+const hsafe=u=>u&&/^https:\/\//i.test(u)?u:u&&/^http:\/\//i.test(u)?u.replace(/^http:/i,"https:"):"";
+function applyReal(P0,name){
+  const{L,V,E}=P0;
+  GROUPS.length=0;CH.length=0;CHM=null;const gmap=new Map(),used=new Set();
+  L.forEach(x=>{let g=gmap.get(x.group);if(!g){g={id:"g"+(hash(x.group)%1e8).toString(36),name:x.group.trim(),genre:"general",names:[]};gmap.set(x.group,g);GROUPS.push(g)}
+    let id=hash(x.name+"|"+x.group)%2e9;while(used.has(id))id++;used.add(id);
+    CH.push({id,num:CH.length+1,name:x.name,group:g.id,genre:"general",hue:hash(x.name)%360,logo:hsafe(x.logo),url:x.url,real:1})});
+  MOVIES.length=0;V.forEach((x,i)=>{const t=cleanT(x.name)||x.name;MOVIES.push({i,key:"m"+hash(x.url).toString(36),t,y:yearOf(x.name)||null,g:cleanG(x.group),d:0,hue:hash(t)%360,ff:"ff"+(hash(t+"f")%3+1),prog:0,raw:x.name,cover:hsafe(x.logo),url:x.url})});
+  SERIES.length=0;const sm=new Map();
+  E.forEach(x=>{const m=x.name.match(/^(.*?)[\s._-]*S(\d{1,2})\s*E(\d{1,3})/i);const tt=cleanT(m?m[1]:x.name)||x.name,se=m?+m[2]:1,ep=m?+m[3]:1;
+    let o=sm.get(tt);if(!o){o={i:SERIES.length,key:"s"+hash(tt).toString(36),t:tt,g:cleanG(x.group),y:yearOf(x.name)||null,seasons:[],eps:{},hue:hash(tt)%360,ff:"ff"+(hash(tt+"f")%3+1),raw:x.name,cover:hsafe(x.logo)};sm.set(tt,o);SERIES.push(o)}
+    o.seasons[se-1]=Math.max(o.seasons[se-1]||0,ep);(o.eps[se]=o.eps[se]||{})[ep]=x.url});
+  SERIES.forEach(o=>{for(let k=0;k<o.seasons.length;k++)o.seasons[k]=o.seasons[k]||0;if(!o.seasons.length)o.seasons=[1]});
+  ["m","s"].forEach(k=>TREND[k].forEach(t=>{const r=findInPlaylist(t);t.avail=r;AVAIL[t.key]=!!r}));
+  if(!GROUPS.some(g=>g.id===S.group))S.group=GROUPS[0]?GROUPS[0].id:"all";
+  const info=CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien";
+  S.playlists=S.playlists.filter(p=>!p.real);S.playlists.forEach(p=>p.active=false);S.playlists.unshift({name:name||"Meine Playlist",type:"Eigene Playlist",info,active:true,real:true});LS.set("pl",S.playlists);
+  return info;
+}
+async function importText(text,name){
+  const p=parseM3U(text);if(!p.L.length&&!p.V.length&&!p.E.length)throw new Error("Keine Einträge gefunden");
+  await IDB.set("m3u",{text,name,ts:Date.now()});
+  try{localStorage.setItem("onda.ios.src","real")}catch(e){}
+  toast(`Geladen: ${p.L.length} Sender · ${p.V.length} Filme · ${p.E.length} Folgen`);setTimeout(()=>location.reload(),900);
+}
+async function tryFetch(url,name){
+  if(location.protocol==="https:"&&/^http:/i.test(url))return{err:"http"};
+  try{const r=await fetch(url,{cache:"no-store"});if(!r.ok)return{err:"status",status:r.status};return{text:await r.text()}}
+  catch(e){return{err:"blocked"}}
+}
+function xtreamUrl(sv,u,p){sv=sv.trim().replace(/\/+$/,"");if(!/^https?:\/\//i.test(sv))sv="http://"+sv;return `${sv}/get.php?username=${encodeURIComponent(u.trim())}&password=${encodeURIComponent(p.trim())}&type=m3u_plus&output=ts`}
+function importHelp(url,why){
+  const w=why==="http"?"Dein Anbieter liefert über unverschlüsseltes http. Das darf diese Seite im Browser nicht laden – die echte App schon.":why==="status"?"Der Server hat die Anfrage abgelehnt. Bitte Zugangsdaten prüfen.":"Der Server erlaubt keinen Abruf aus dem Browser (CORS). Das betrifft nur den Prototyp, nicht die echte App.";
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Direkt laden ging nicht</h2><p class="foot" style="margin-top:0">${esc(w)}</p>
+   <div class="grp-h" style="padding-left:2px">So klappt es über eine Datei</div>
+   <ol class="foot" style="padding-left:18px;line-height:1.6;margin-top:4px"><li>Unten «Link kopieren» tippen.</li><li>In <b>Safari</b> ein neues Tab öffnen, Link einfügen und laden. Erscheint Text: Teilen › «In Dateien sichern». Erscheint ein Player: zurück, den Link stattdessen lange drücken › «Verknüpfte Datei laden».</li><li>Zurück in Onda «Datei auswählen» tippen und die gespeicherte Datei wählen.</li></ol>
+   ${url?`<div class="btns col"><button class="btn" data-act="copylink">Link kopieren</button></div>`:""}
+   <div class="btns col" style="margin-top:10px"><label class="btn primary" style="cursor:pointer">Datei auswählen<input type="file" id="m3uFile2" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,application/vnd.apple.mpegurl,*/*" hidden></label></div>
+   <p class="foot">Die Datei und deine Zugangsdaten bleiben auf diesem iPhone und werden nirgends hochgeladen.</p>`,"","imp");
+  IMPURL=url;
+}
+let IMPURL="";
+APP.addEventListener("change",e=>{const inp=e.target;if(!inp||!/^m3uFile/.test(inp.id)||!inp.files||!inp.files[0])return;const f=inp.files[0];
+  toast("Lese „"+f.name+"“ …");const r=new FileReader();r.onload=()=>{importText(String(r.result),($("#fName")&&$("#fName").value.trim())||f.name.replace(/\.[^.]+$/,"")).catch(err=>toast("Konnte nicht gelesen werden: "+err.message))};r.onerror=()=>toast("Datei konnte nicht gelesen werden");r.readAsText(f)});
+async function bootReal(){
+  try{const d=await IDB.get("m3u");if(!d||!d.text)throw 0;applyReal(parseM3U(d.text),d.name)}
+  catch(e){try{localStorage.setItem("onda.ios.src","test")}catch(_){}location.reload();return false}
+  return true;
+}
+function backToTest(){try{localStorage.setItem("onda.ios.src","test")}catch(e){}S.playlists=S.playlists.map(p=>({...p,active:!p.real&&p.name==="Mein Anbieter"}));LS.set("pl",S.playlists);toast("Zurück zu den Testdaten");setTimeout(()=>location.reload(),700)}
 
 /* ---------- Start ---------- */
 fit();clock();setInterval(clock,15000);
 applyLook(false);renderTabbar();
-const startTab=["home","live","epg","media","media"][sv("start")]||"home";if(sv("start")===4)S.mseg="fav";
-S.tab=null;showTab(startTab);
+function boot(){const startTab=["home","live","epg","media","media"][sv("start")]||"home";if(sv("start")===4)S.mseg="fav";
+  S.tab=null;showTab(startTab);
+  }
+if(REAL)bootReal().then(ok=>{if(ok)boot()});else boot();
 requestAnimationFrame(fit);trNode(APP);
 setTimeout(()=>{const sp=$("#splash");sp.classList.add("out");setTimeout(()=>sp.remove(),700)},1700);
 })();
