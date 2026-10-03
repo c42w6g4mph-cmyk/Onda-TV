@@ -663,6 +663,8 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .pcap b{font-size:12.5px;font-weight:600;line-height:1.24;letter-spacing:-.005em;color:var(--fg);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;text-wrap:balance}
 .pcap small{font-size:11px;margin-top:1px;line-height:1.25;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .shrow:not(.ch)>.sfill.poster{aspect-ratio:auto;height:1px}
+.epgbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 16px 10px;padding:10px 14px;border-radius:12px;background:var(--surface);font-size:13px;color:var(--dim);text-align:left;flex:none}
+.epgbar b{color:var(--accent);font-weight:700;white-space:nowrap}
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -805,17 +807,19 @@ const GEN={
 };
 const CH=[];let n=1;
 GROUPS.forEach(g=>g.names.forEach(name=>{CH.push({id:n,num:n,name,group:g.id,genre:g.genre,hue:hash(name)%360});n++}));
+const noEpg=c=>!!(c&&c.real&&!c.epg);
 let CHM=null;const chById=id=>{if(!CHM){CHM=new Map();CH.forEach(c=>CHM.set(c.id,c))}return CHM.get(+id)};
 const DAY0=(()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()})();
 function sched(c){
   if(c._s)return c._s;
+  if(c.real&&c.epg)return c._s=c.epg.map(e=>({ch:c.id,start:e[0],end:e[1],title:e[2],desc:e[3]||""}));
   if(c.real)return c._s=[{ch:c.id,start:DAY0-7*864e5,end:DAY0+3*864e5,title:"Keine Programmdaten",desc:"Für Sendungen eine EPG-Quelle (XMLTV) hinzufügen."}];
   const R=rng(c.id*7919),G=GEN[c.genre],arr=[];
   let t=DAY0-7*24*60*MIN;const end=DAY0+48*60*MIN;
   while(t<end){const d=G.d[R()*G.d.length|0];arr.push({ch:c.id,start:t,end:t+d*MIN,title:G.t[R()*G.t.length|0],desc:G.x[R()*G.x.length|0]});t+=d*MIN}
   return c._s=arr;
 }
-const nowP=(c,t=Date.now())=>sched(c).find(p=>p.start<=t&&p.end>t);
+const nowP=(c,t=Date.now())=>sched(c).find(p=>p.start<=t&&p.end>t)||(c.real?{ch:c.id,start:t-30*MIN,end:t+30*MIN,title:"Keine Sendungsdaten",desc:""}:undefined);
 const nextP=c=>{const s=sched(c),i=s.indexOf(nowP(c));return s[i+1]};
 const pct=p=>Math.min(100,Math.max(0,(Date.now()-p.start)/(p.end-p.start)*100));
 function abbr(name){const s=name.replace(/\s+/g,"");if(s.length<=5)return s.toUpperCase();const w=name.split(/\s+/).filter(x=>/[A-Za-zÄÖÜäöü0-9]/.test(x));return w.length>1?w.map(x=>x[0]).join("").slice(0,4).toUpperCase():name.slice(0,3).toUpperCase()}
@@ -1189,7 +1193,7 @@ const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+(t.g?" · "+esc(t.
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
 const gbar=(name,n,act)=>`<button class="gbar tap" data-act="${act}" id="${act==="lvgroups"?"gbar":"pgbar"}" aria-label="Gruppe wechseln, aktuell ${esc(name)}"><span class="gb-ic">${IC.list}</span><span class="gb-t"><small>Gruppe</small><b>${esc(name)}</b></span><span class="gcnt">${n} Sender</span><span class="gb-sw">${IC.updown}</span></button>`;
-const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${c.logo?"haslogo":""}" style="--h:${c.hue}">${c.logo?`<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${c.real?"":`<div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div><b>${esc(c.name)}</b><small>${esc(c.real?gName(c.group):p.title)}</small></div>`};
+const ltile=c=>{const p=nowP(c);return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${c.logo?"haslogo":""}" style="--h:${c.hue}">${c.logo?`<img src="${esc(c.logo)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('haslogo');this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${noEpg(c)?"":`<div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div><b>${esc(c.name)}</b><small>${esc(noEpg(c)?gName(c.group):p.title)}</small></div>`};
 const shelf=(title,items,actFn)=>shelfH(esc(title),items.map(o=>poster(o,actFn(o))).join(""));
 const chCard=c=>{const p=nowP(c);return `<div class="chcard tap" data-act="playf:${c.id}" role="button"><div class="cc-top">${logo(c,"sm")}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now">${esc(p.title)}</div></div></div><div class="bar"><i style="width:${pct(p)}%"></i></div></div>`};
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
@@ -1201,7 +1205,7 @@ const gName=g=>(liveGroups().find(x=>x.id===g)||{}).name||"";
 const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${f?IC.starF:IC.star}</button>`};
 function chRow(c,act="play",curId){
   const p=nowP(c);
-  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${c.real?(S.group==="fav"||S.group==="all"||S.tab!=="live"?`<div class="rs">${esc(gName(c.group))}</div>`:""):`<div class="rs">${esc(p.title)}</div><div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div></div>`;
+  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${noEpg(c)?(S.group==="fav"||S.group==="all"||S.tab!=="live"?`<div class="rs">${esc(gName(c.group))}</div>`:""):`<div class="rs">${esc(p.title)}</div><div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
 function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
@@ -1209,7 +1213,7 @@ function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend
 /* ---------- Start ---------- */
 function renderHome(){
   const favs=CH.filter(c=>S.favCh.has(c.id)&&chVisible(c)),VIS=chOf("all");
-  const hc=VIS.find(c=>c.genre==="sport"&&S.favCh.has(c.id))||VIS.find(c=>c.genre==="sport")||VIS[0]||CH[0],hp=nowP(hc);
+  const hc=(REAL?(S.recent.map(chById).find(c=>c&&chVisible(c))||VIS.find(c=>S.favCh.has(c.id))):null)||VIS.find(c=>c.genre==="sport"&&S.favCh.has(c.id))||VIS.find(c=>c.genre==="sport")||VIS[0]||CH[0],hp=nowP(hc);
   const mine=[...favs,...S.recent.map(chById).filter(c=>c&&chVisible(c)&&!S.favCh.has(c.id))],pool=mine.length?mine:VIS.slice(0,8);
   const tr=k=>trendList(k).map((ix,r)=>({t:TREND[k][ix],r:r+1})).filter(o=>o.t.avail).slice(0,30).map(o=>tposter(o.t,"trend:"+o.t.k+":"+o.t.i)).join("");
   const tsh=(title,k)=>{const h=tr(k);return h?`<section class="shelf"><h3>${title}<span class="tsrc">TMDB</span></h3><div class="shrow sx">${h}</div></section>`:""};
@@ -1218,7 +1222,7 @@ function renderHome(){
    <div class="nowcard tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
      <div class="pv-anim"></div>
      <div class="nc-top"><span class="livebadge">LIVE</span>${logo(hc,"sm")}</div>
-     <div class="nc-bot"><div class="nc-txt">${hc.real?`<span class="nc-m">${esc(gName(hc.group))}</span><h2>${esc(hc.name)}</h2>`:`<span class="nc-m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(hp.title)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div>`}</div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
+     <div class="nc-bot"><div class="nc-txt">${noEpg(hc)?`<span class="nc-m">${esc(gName(hc.group))}</span><h2>${esc(hc.name)}</h2>`:`<span class="nc-m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(hp.title)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div>`}</div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
    </div>
    ${pool.length?`<section class="shelf"><h3>Meine Sender</h3><div class="shrow sx">${pool.map(ltile).join("")}</div></section>`:""}
    ${shelf("Weiterschauen",MOVIES.filter(m=>m.prog),o=>"movie:"+o.i)}
@@ -1261,6 +1265,7 @@ function renderEPG(){
   const slots=[[null,"Jetzt"],[20.25,"20:15"]].map(([h,l])=>`<button class="chip ${(h==null?d===0&&S.epgSlot==null:h===S.epgSlot)?"sel":""}" data-act="eslot:${h}">${l}</button>`).join("");
   $("#v-epg").innerHTML=`<div class="epgv"><div class="lhdr"><h1>TV-Guide</h1>${hbtn()}</div>
    <div class="chips sx" id="epgChips"><button class="chip daychip" data-act="edayt">${esc(dayLabel(d))} <i class="dsw">⇄</i></button>${slots}<span class="csep"></span>${liveGroups().map(g=>`<button class="chip ${g.id===S.group?"sel":""}" data-act="egrp:${g.id}">${esc(g.name)}</button>`).join("")}</div>
+   ${REAL?`<button class="epgbar tap" data-act="epgopen">${EPGINFO?`<span>TV-Guide: ${EPGINFO.channels} Sender mit Sendungen</span><b>Aktualisieren</b>`:`<span>Noch keine Sendungsdaten</span><b>EPG laden</b>`}</button>`:""}
    <div class="eg" id="eg"></div></div>`;
   renderEpgGrid();
 }
@@ -1440,7 +1445,7 @@ function renderForm(){
    <div class="field"><label for="fUser">Benutzername</label><input id="fUser" class="finput" autocomplete="off" autocapitalize="off"></div><div class="field"><label for="fPass">Passwort</label><input id="fPass" type="password" class="finput" autocomplete="off"></div>`
    :`<div class="field"><label for="fUrl">Playlist-URL (.m3u / .m3u8)</label><input id="fUrl" class="finput" inputmode="url" autocapitalize="off" placeholder="https://…/playlist.m3u"></div><div class="field"><label for="fEpg">EPG-URL (XMLTV, optional)</label><input id="fEpg" class="finput" inputmode="url" placeholder="https://…/epg.xml.gz"></div>`}
    ${f?"":`<div class="field"><label for="fUa">User-Agent (optional)</label><input id="fUa" class="finput" autocomplete="off" placeholder="Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt"></div>`}
-   <div class="btns col">${f?"":`<button class="btn primary" data-act="loadpl">Laden</button>`}<button class="btn" data-act="sclose">Abbrechen</button>${realOn?'<button class="btn" data-act="totest">Zurück zu den Testdaten</button>':""}</div>`;
+   <div class="btns col">${f?"":`<button class="btn primary" data-act="loadpl">Laden</button>`}<button class="btn" data-act="sclose">Abbrechen</button>${realOn?'<button class="btn" data-act="epgopen">TV-Guide (EPG) laden</button><button class="btn" data-act="totest">Zurück zu den Testdaten</button>':""}</div>`;
 }
 
 
@@ -1593,7 +1598,7 @@ function belowHTML(){
   if(P.type==="live"){
     const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
-    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${c.real?`<span class="tm">${esc(gName(c.group))} · keine Programmdaten</span>`:`<span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
+    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${noEpg(c)?`<span class="tm">${esc(gName(c.group))} · keine Programmdaten</span>`:`<span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
      ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
@@ -1747,6 +1752,10 @@ function act(el){
       toast("Lade Playlist …");tryFetch(url).then(r=>{if(r.text){importText(r.text,nm||(x?"Xtream":"Meine Playlist")).catch(e=>importHelp(url,"status"))}else importHelp(url,r.err)});break}
     case"copylink":{const u=IMPURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>{prompt("Link kopieren:",u)});break}
     case"totest":backToTest();break;
+    case"epgopen":openEPGSheet();break;
+    case"epgcopy":{const u=EPGURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>prompt("Link kopieren:",u));break}
+    case"epgurl":{closeSheet();toast("Lade EPG …");const u=EPGURL;if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Der Anbieter liefert über http – bitte über die Datei laden");setTimeout(openEPGSheet,1500);break}
+      fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1500)});break}
     case"chmore":S.chLimit+=300;renderChList();break;
     case"seg":{const n=$("#fName").value;S.formType=x[0];openSheet(renderForm(),"","form");$("#fName").value=n;break}
     case"savepl":{const name=($("#fName").value||"").trim()||"Neue Playlist",ua=(($("#fUa")||{}).value||"").trim();S.playlists.push({name,type:S.formType==="xtream"?"Xtream Codes":"M3U-URL",info:ua?"User-Agent: "+ua:"nicht geladen",active:false,ua});persist();closeSheet();const pg=topPage();if(pg)pg._r();toast("Playlist „"+name+"“ angelegt");break}
@@ -1898,13 +1907,13 @@ const cleanT=x=>x.replace(/^\s*(\[[^\]]{1,8}\]|[A-Z]{2,5}(\s*[-|:]\s*|\s+-\s+))/
 const cleanG=g=>(g||"").replace(/^\s*(VOD|SERIEN|SERIES|SERIE|MOVIES?|FILME?|KINO)\s*[|:\-]\s*/i,"").trim()||g;
 function parseM3U(text){
   if(!/#EXTM3U|#EXTINF/i.test(text.slice(0,5000)))throw new Error("Keine M3U-Datei");
-  const L=[],V=[],E=[];let inf=null;
+  const L=[],V=[],E=[];let inf=null;const hm=text.slice(0,2000).match(/(?:url-tvg|x-tvg-url)="([^"]+)"/i);const epgUrl=hm?hm[1].split(",")[0].trim():"";
   for(const raw of text.split(/\r?\n/)){const line=raw.trim();if(!line)continue;
     if(line.startsWith("#EXTINF")){const at=k=>{const m=line.match(new RegExp(k+'="([^"]*)"',"i"));return m?m[1]:""};const ci=line.lastIndexOf('",');const name=(ci>-1?line.slice(ci+2):line.slice(line.indexOf(",")+1)).trim()||at("tvg-name");inf={name,group:at("group-title")||"Ohne Gruppe",logo:at("tvg-logo"),tid:at("tvg-id")};continue}
     if(line.startsWith("#"))continue;
     if(inf){const u=line;const it={...inf,url:u};if(/\/series\//i.test(u)||/S\d{1,2}\s*E\d{1,3}/i.test(inf.name)&&/\.(mkv|mp4|avi)$/i.test(u))E.push(it);else if(/\/movie\//i.test(u)||/\.(mkv|mp4|avi|m4v)$/i.test(u))V.push(it);else L.push(it);inf=null}
   }
-  return{L,V,E};
+  return{L,V,E,epgUrl};
 }
 const hsafe=u=>u&&/^https:\/\//i.test(u)?u:u&&/^http:\/\//i.test(u)?u.replace(/^http:/i,"https:"):"";
 function applyReal(P0,name){
@@ -1912,7 +1921,8 @@ function applyReal(P0,name){
   GROUPS.length=0;CH.length=0;CHM=null;const gmap=new Map(),used=new Set();
   L.forEach(x=>{let g=gmap.get(x.group);if(!g){g={id:"g"+(hash(x.group)%1e8).toString(36),name:x.group.trim(),genre:"general",names:[]};gmap.set(x.group,g);GROUPS.push(g)}
     let id=hash(x.name+"|"+x.group)%2e9;while(used.has(id))id++;used.add(id);
-    CH.push({id,num:CH.length+1,name:x.name,group:g.id,genre:"general",hue:hash(x.name)%360,logo:hsafe(x.logo),url:x.url,real:1})});
+    CH.push({id,num:CH.length+1,name:x.name,group:g.id,genre:"general",hue:hash(x.name)%360,logo:hsafe(x.logo),url:x.url,tid:x.tid,real:1})});
+  EPGURL=P0.epgUrl||"";
   MOVIES.length=0;V.forEach((x,i)=>{const t=cleanT(x.name)||x.name;MOVIES.push({i,key:"m"+hash(x.url).toString(36),t,y:yearOf(x.name)||null,g:cleanG(x.group),d:0,hue:hash(t)%360,ff:"ff"+(hash(t+"f")%3+1),prog:0,raw:x.name,cover:hsafe(x.logo),url:x.url})});
   SERIES.length=0;const sm=new Map();
   E.forEach(x=>{const m=x.name.match(/^(.*?)[\s._-]*S(\d{1,2})\s*E(\d{1,3})/i);const tt=cleanT(m?m[1]:x.name)||x.name,se=m?+m[2]:1,ep=m?+m[3]:1;
@@ -1950,8 +1960,61 @@ function importHelp(url,why){
 let IMPURL="";
 APP.addEventListener("change",e=>{const inp=e.target;if(!inp||!/^m3uFile/.test(inp.id)||!inp.files||!inp.files[0])return;const f=inp.files[0];
   toast("Lese „"+f.name+"“ …");const r=new FileReader();r.onload=()=>{importText(String(r.result),($("#fName")&&$("#fName").value.trim())||f.name.replace(/\.[^.]+$/,"")).catch(err=>toast("Konnte nicht gelesen werden: "+err.message))};r.onerror=()=>toast("Datei konnte nicht gelesen werden");r.readAsText(f)});
+{const _x=0}
+
+/* ---------- EPG (XMLTV) stückweise lesen, auch gezippt; Zuordnung über tvg-id, sonst Name ---------- */
+let EPGURL="",EPGINFO=null;
+const xdec=x=>x.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(+n)).trim();
+function xtime(t){const m=t.match(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)?\s*([+-]\d{4})?/);if(!m)return NaN;const tz=m[7]||"+0000",sg=tz[0]==="-"?-1:1,off=sg*(+tz.slice(1,3)*60+ +tz.slice(3,5));return Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+(m[6]||0))-off*60000}
+const chKey=n=>norm(cleanT(n||"")).replace(/\b(hd|fhd|uhd|4k|sd|hevc|raw|backup|\d{3,4}p)\b/g,"").replace(/\s+/g,"");
+async function parseEPGStream(stream,onProg){
+  const want=new Map(),byName=new Map();CH.forEach(c=>{if(c.tid)want.set(c.tid.toLowerCase(),c);const k=chKey(c.name);if(k&&!byName.has(k))byName.set(k,c)});
+  const idMap=new Map(),lo=DAY0-864e5,hi=DAY0+4*864e5,out=new Map();let buf="",n=0,kept=0;
+  const reader=stream.pipeThrough(new TextDecoderStream()).getReader();
+  const handle=()=>{
+    let i;
+    while((i=buf.indexOf("<channel "))>-1){const j=buf.indexOf("</channel>",i);if(j<0)break;const blk=buf.slice(i,j);const id=(blk.match(/id="([^"]*)"/)||[])[1]||"";
+      let c=want.get(id.toLowerCase());if(!c){for(const dm of blk.matchAll(/<display-name[^>]*>([\s\S]*?)<\/display-name>/g)){c=byName.get(chKey(xdec(dm[1])));if(c)break}}
+      if(c)idMap.set(id,c);buf=buf.slice(0,i)+buf.slice(j+10)}
+    let p=0;
+    while(true){const a=buf.indexOf("<programme",p);if(a<0){buf=buf.slice(p);break}const b=buf.indexOf("</programme>",a);if(b<0){buf=buf.slice(a);break}
+      const blk=buf.slice(a,b);p=b+12;n++;
+      const ch=(blk.match(/channel="([^"]*)"/)||[])[1];const c=idMap.get(ch)||want.get((ch||"").toLowerCase());if(!c)continue;
+      const st=xtime((blk.match(/start="([^"]*)"/)||[])[1]||""),en=xtime((blk.match(/stop="([^"]*)"/)||[])[1]||"");if(!(en>lo&&st<hi))continue;
+      const ti=xdec((blk.match(/<title[^>]*>([\s\S]*?)<\/title>/)||[])[1]||"");const de=xdec((blk.match(/<desc[^>]*>([\s\S]*?)<\/desc>/)||[])[1]||"").slice(0,280);
+      if(!out.has(c.id))out.set(c.id,[]);out.get(c.id).push([st,en,ti||"Sendung",de]);kept++}
+    if(buf.length>4e6&&buf.indexOf("<programme")<0&&buf.indexOf("<channel ")<0)buf=buf.slice(-2e5);
+  };
+  let last=0;
+  while(true){const{done,value}=await reader.read();if(done)break;buf+=value;handle();if(n-last>20000){last=n;onProg&&onProg(n,kept)}}
+  handle();
+  out.forEach(a=>a.sort((x,y)=>x[0]-y[0]));
+  return{map:out,total:n,kept,channels:out.size};
+}
+function epgStreamFrom(blob,name){let st=blob.stream();return blob.slice(0,2).arrayBuffer().then(ab=>{const u=new Uint8Array(ab);if((u[0]===0x1f&&u[1]===0x8b)||/\.gz$/i.test(name||"")){if(typeof DecompressionStream==="undefined")throw new Error("Gezippte Datei: bitte iOS 16.4 oder neuer");st=st.pipeThrough(new DecompressionStream("gzip"))}return st})}
+async function importEPGBlob(blob,name){
+  toast("Lese EPG …");const st=await epgStreamFrom(blob,name);
+  const r=await parseEPGStream(st,(n,k)=>toast(`EPG: ${n.toLocaleString("de-CH")} Sendungen gelesen …`));
+  if(!r.kept){toast("Keine passenden Sendungen gefunden – stimmt die EPG-Datei zur Playlist?");return}
+  const obj={};r.map.forEach((v,k)=>obj[k]=v);await IDB.set("epg",{ts:Date.now(),data:obj,channels:r.channels,kept:r.kept});
+  toast(`EPG geladen: ${r.channels} Sender · ${r.kept.toLocaleString("de-CH")} Sendungen`);setTimeout(()=>location.reload(),1200);
+}
+function attachEPG(d){if(!d||!d.data)return;let n=0;CH.forEach(c=>{const a=d.data[c.id];if(a&&a.length){c.epg=a;c._s=null;n++}});EPGINFO={channels:n,ts:d.ts,kept:d.kept}}
+function openEPGSheet(){
+  const ex=EPGINFO?`<p class="foot" style="margin-top:0">Geladen: ${EPGINFO.channels} Sender mit Sendungen · Stand ${new Date(EPGINFO.ts).toLocaleString("de-CH",{day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})}</p>`:"";
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TV-Guide (EPG) laden</h2>${ex}
+   <p class="foot" style="margin-top:0">Die Sendungen stehen in einer eigenen Datei deines Anbieters (XMLTV). Die <code>tvg-id</code> jedes Senders verbindet sie mit deiner Playlist.</p>
+   ${EPGURL?`<div class="btns col"><button class="btn primary" data-act="epgurl">Automatisch laden</button></div><p class="foot">Adresse aus deiner Playlist: ${esc(EPGURL.replace(/(password=)[^&]+/i,"$1•••"))}</p>`:""}
+   <div class="grp-h" style="padding-left:2px">Über eine Datei</div>
+   <ol class="foot" style="padding-left:18px;line-height:1.6;margin-top:4px"><li>Xtream: <code>http://SERVER/xmltv.php?username=…&password=…</code> in Safari laden und in «Dateien» sichern (Teilen › In Dateien sichern, oder Link lange drücken › Verknüpfte Datei laden).</li><li>Hier die Datei wählen. Auch .gz geht.</li></ol>
+   ${EPGURL?'<div class="btns col"><button class="btn" data-act="epgcopy">Link kopieren</button></div>':""}
+   <div class="btns col" style="margin-top:10px"><label class="btn ${EPGURL?"":"primary"}" style="cursor:pointer">EPG-Datei auswählen<input type="file" id="epgFile" accept=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*" hidden></label></div>
+   <p class="foot">Grosse Dateien (100 MB und mehr) brauchen etwas Zeit. Behalten werden nur deine Sender, von gestern bis in 3 Tagen.</p>`,"","epg");
+}
+APP.addEventListener("change",e=>{const inp=e.target;if(!inp||inp.id!=="epgFile"||!inp.files||!inp.files[0])return;const f=inp.files[0];closeSheet();importEPGBlob(f,f.name).catch(err=>toast("EPG konnte nicht gelesen werden: "+err.message))});
+
 async function bootReal(){
-  try{const d=await IDB.get("m3u");if(!d||!d.text)throw 0;applyReal(parseM3U(d.text),d.name)}
+  try{const d=await IDB.get("m3u");if(!d||!d.text)throw 0;applyReal(parseM3U(d.text),d.name);try{attachEPG(await IDB.get("epg"))}catch(e){}}
   catch(e){try{localStorage.setItem("onda.ios.src","test")}catch(_){}location.reload();return false}
   return true;
 }
