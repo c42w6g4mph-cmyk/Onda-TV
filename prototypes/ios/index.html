@@ -1773,6 +1773,7 @@ function act(el){
     case"copylink":{const u=IMPURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>{prompt("Link kopieren:",u)});break}
     case"totest":backToTest();break;
     case"epgopen":openEPGSheet();break;
+    case"pldiag":plDiag();break;
     case"epgcopy":{const u=EPGURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>prompt("Link kopieren:",u));break}
     case"epgurl":{closeSheet();toast("Lade EPG …");const u=EPGURL;if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Der Anbieter liefert über http – bitte über die Datei laden");setTimeout(openEPGSheet,1500);break}
       fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1500)});break}
@@ -1942,7 +1943,8 @@ function applyReal(P0,name){
   L.forEach(x=>{let g=gmap.get(x.group);if(!g){g={id:"g"+(hash(x.group)%1e8).toString(36),name:x.group.trim(),genre:"general",names:[]};gmap.set(x.group,g);GROUPS.push(g)}
     let id=hash(x.name+"|"+x.group)%2e9;while(used.has(id))id++;used.add(id);
     CH.push({id,num:CH.length+1,name:x.name,group:g.id,genre:"general",hue:hash(x.name)%360,logo:hsafe(x.logo),url:x.url,tid:x.tid,real:1})});
-  EPGURL=P0.epgUrl||"";
+  EPGURL=P0.epgUrl||"";EPGDERIVED=false;
+  if(!EPGURL){for(const x of L.slice(0,50)){const m=x.url.match(/^(https?:\/\/[^\/]+)\/(?:live\/)?([^\/]+)\/([^\/]+)\/\d+(\.\w+)?$/i);if(m){EPGURL=`${m[1]}/xmltv.php?username=${m[2]}&password=${m[3]}`;EPGDERIVED=true;break}}}
   MOVIES.length=0;V.forEach((x,i)=>{const t=cleanT(x.name)||x.name;MOVIES.push({i,key:"m"+hash(x.url).toString(36),t,y:yearOf(x.name)||null,g:cleanG(x.group),d:0,hue:hash(t)%360,ff:"ff"+(hash(t+"f")%3+1),prog:0,raw:x.name,cover:hsafe(x.logo),url:x.url})});
   SERIES.length=0;const sm=new Map();
   E.forEach(x=>{const m=x.name.match(/^(.*?)[\s._-]*S(\d{1,2})\s*E(\d{1,3})/i);const tt=cleanT(m?m[1]:x.name)||x.name,se=m?+m[2]:1,ep=m?+m[3]:1;
@@ -1983,7 +1985,7 @@ APP.addEventListener("change",e=>{const inp=e.target;if(!inp||!/^m3uFile/.test(i
 {const _x=0}
 
 /* ---------- EPG (XMLTV) stückweise lesen, auch gezippt; Zuordnung über tvg-id, sonst Name ---------- */
-let EPGURL="",EPGINFO=null;
+let EPGURL="",EPGINFO=null,EPGDERIVED=false;
 const xdec=x=>x.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(+n)).trim();
 function xtime(t){const m=t.match(/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)?\s*([+-]\d{4})?/);if(!m)return NaN;const tz=m[7]||"+0000",sg=tz[0]==="-"?-1:1,off=sg*(+tz.slice(1,3)*60+ +tz.slice(3,5));return Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5],+(m[6]||0))-off*60000}
 const chKey=n=>norm(cleanT(n||"")).replace(/\b(hd|fhd|uhd|4k|sd|hevc|raw|backup|\d{3,4}p)\b/g,"").replace(/\s+/g,"");
@@ -2020,16 +2022,39 @@ async function importEPGBlob(blob,name){
   toast(`EPG geladen: ${r.channels} Sender · ${r.kept.toLocaleString("de-CH")} Sendungen`);setTimeout(()=>location.reload(),1200);
 }
 function attachEPG(d){if(!d||!d.data)return;let n=0;CH.forEach(c=>{const a=d.data[c.id];if(a&&a.length){c.epg=a;c._s=null;n++}});EPGINFO={channels:n,ts:d.ts,kept:d.kept}}
+
+async function plDiag(){
+  const d=await IDB.get("m3u");if(!d||!d.text){toast("Keine Playlist geladen");return}
+  const t=d.text,lines=t.split(/\r?\n/),inf=lines.filter(l=>l.startsWith("#EXTINF"));
+  const attrs=new Map();let tid=0,sample=[];
+  inf.forEach(l=>{for(const m of l.matchAll(/([a-zA-Z0-9_-]+)="([^"]*)"/g)){attrs.set(m[1],(attrs.get(m[1])||0)+(m[2]?1:0))}const x=(l.match(/tvg-id="([^"]*)"/)||[])[1];if(x){tid++;if(sample.length<3)sample.push(x)}});
+  const head=lines[0].replace(/(password=)[^&"\s]+/ig,"$1•••").slice(0,300);
+  const other=lines.filter(l=>l.startsWith("#")&&!l.startsWith("#EXTINF")&&!l.startsWith("#EXTM3U")).slice(0,3).map(l=>l.slice(0,80));
+  const mask=u=>esc(u.replace(/(password=)[^&]+/i,"$1•••"));
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Playlist prüfen</h2>
+   <div class="pk-list">
+    <div class="srow"><span class="sl"><b>Einträge</b></span><span class="val">${inf.length.toLocaleString("de-CH")}</span></div>
+    <div class="srow"><span class="sl"><b>Mit tvg-id</b><small>Kennung für die Zuordnung, z. B. ${esc(sample.join(", ")||"–")}</small></span><span class="val">${tid.toLocaleString("de-CH")}</span></div>
+    <div class="srow"><span class="sl"><b>EPG-Adresse</b><small>${EPGURL?(EPGDERIVED?"aus den Xtream-Senderadressen abgeleitet: ":"aus dem Kopf (url-tvg): ")+mask(EPGURL):"nicht vorhanden"}</small></span><span class="val">${EPGURL?"ja":"nein"}</span></div>
+    <div class="srow"><span class="sl"><b>Sendungsdaten in der Playlist</b><small>Eine M3U enthält nur Sender und Adressen, keine Sendungen</small></span><span class="val">nein</span></div>
+   </div>
+   <div class="grp-h" style="padding-left:2px">Felder pro Eintrag</div>
+   <p class="foot" style="margin-top:2px">${[...attrs.entries()].map(([k,v])=>`${esc(k)} (${v.toLocaleString("de-CH")})`).join(" · ")||"–"}</p>
+   <div class="grp-h" style="padding-left:2px">Erste Zeile</div><p class="foot" style="margin-top:2px;word-break:break-all"><code>${esc(head)}</code></p>
+   ${other.length?`<div class="grp-h" style="padding-left:2px">Weitere Zeilen</div><p class="foot" style="margin-top:2px;word-break:break-all"><code>${other.map(esc).join("<br>")}</code></p>`:""}
+   <div class="btns col" style="margin-top:12px"><button class="btn primary" data-act="epgopen">EPG laden</button></div>`,"","diag");
+}
 function openEPGSheet(){
   const ex=EPGINFO?`<p class="foot" style="margin-top:0">Geladen: ${EPGINFO.channels} Sender mit Sendungen · Stand ${new Date(EPGINFO.ts).toLocaleString("de-CH",{day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})}</p>`:"";
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TV-Guide (EPG) laden</h2>${ex}
    <p class="foot" style="margin-top:0">Die Sendungen stehen in einer eigenen Datei deines Anbieters (XMLTV). Die <code>tvg-id</code> jedes Senders verbindet sie mit deiner Playlist.</p>
-   ${EPGURL?`<div class="btns col"><button class="btn primary" data-act="epgurl">Automatisch laden</button></div><p class="foot">Adresse aus deiner Playlist: ${esc(EPGURL.replace(/(password=)[^&]+/i,"$1•••"))}</p>`:""}
+   ${EPGURL?`<div class="btns col"><button class="btn primary" data-act="epgurl">Automatisch laden</button></div><p class="foot">${EPGDERIVED?"Aus deinen Xtream-Zugangsdaten erkannt":"Adresse aus deiner Playlist"}: ${esc(EPGURL.replace(/(password=)[^&]+/i,"$1•••"))}</p>`:""}
    <div class="grp-h" style="padding-left:2px">Über eine Datei</div>
    <ol class="foot" style="padding-left:18px;line-height:1.6;margin-top:4px"><li>Xtream: <code>http://SERVER/xmltv.php?username=…&password=…</code> in Safari laden und in «Dateien» sichern (Teilen › In Dateien sichern, oder Link lange drücken › Verknüpfte Datei laden).</li><li>Hier die Datei wählen. Auch .gz geht.</li></ol>
    ${EPGURL?'<div class="btns col"><button class="btn" data-act="epgcopy">Link kopieren</button></div>':""}
    <div class="btns col" style="margin-top:10px"><label class="btn ${EPGURL?"":"primary"}" style="cursor:pointer">EPG-Datei auswählen<input type="file" id="epgFile" accept=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*" hidden></label></div>
-   <p class="foot">Grosse Dateien (100 MB und mehr) brauchen etwas Zeit. Behalten werden nur deine Sender, von gestern bis in 3 Tagen.</p>`,"","epg");
+   <p class="foot">Grosse Dateien (100 MB und mehr) brauchen etwas Zeit. Behalten werden nur deine Sender, von gestern bis in 3 Tagen.</p>
+   <div class="btns col"><button class="btn" data-act="pldiag">Playlist prüfen</button></div>`,"","epg");
 }
 APP.addEventListener("change",e=>{const inp=e.target;if(!inp||inp.id!=="epgFile"||!inp.files||!inp.files[0])return;const f=inp.files[0];closeSheet();importEPGBlob(f,f.name).catch(err=>toast("EPG konnte nicht gelesen werden: "+err.message))});
 
