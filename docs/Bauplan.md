@@ -179,6 +179,17 @@ Geprüft im Browser: alle geänderten Bildschirme beider Apps, Deutsch und Engli
 - **EPG-Quelle pro Playlist:** Automatisch (Xtream xmltv.php) / Eigene URL / Datei, im Playlist-Editor.
 - **Schnellstart + Refresh-Intervall:** Die geparste Playlist liegt im Cache (IndexedDB), der Start lädt nicht neu. Einstellung «Playlist & EPG aktualisieren»: Bei jedem Start / Täglich / Alle 3 Tage (Standard) / Alle 7 Tage / Nur manuell. Ist ein Update fällig und der automatische Abruf nicht möglich, erscheint ein Hinweis auf Start.
 
+- **EPG-Zuordnung (Fix):** Mehrere Sender mit derselben tvg-id (HD/SD/Backup, Länder-Gruppen) bekommen alle die Sendungen; Gross-/Kleinschreibung und Leerzeichen egal; ohne oder mit falscher tvg-id greift der Name. Gespeichert wird pro EPG-Kanal einmal (Format v2). Die Playlist zeigt «x von y Sendern» und listet Sender ohne Daten.
+- **Einstellungen entflochten:** Alles zu Quelle und Aktualisierung liegt bei der Playlist (Status, TV-Guide-Quelle, laden, neu laden, Erweitert). Unter «TV-Guide» bleibt nur der Zeitversatz. «Automatisch aktualisieren» steht bei den Playlists.
+- **Einheitliche Anzeige:** Ohne Sendungsdaten steht überall «Keine Sendungsdaten» (nicht mehr Gruppe/Land). Start zeigt bevorzugt einen Sender mit EPG.
+
+## 4c. Metadaten-Strategie (Cover, Infos) für den Verkauf
+
+1. **Primär: Daten des Anbieters** über Xtream `get_vod_info` / `get_series_info` (Cover, Backdrop, Handlung, Besetzung, Bewertung, tmdb_id). Kostenlos, keine eigene Lizenz nötig, gängige Praxis.
+2. **Ergänzung: TheTVDB** (kommerziell gratis unter 50'000 USD Umsatz/Jahr, mit Attribution; darüber 1'000 USD/Jahr). Stärker bei Serien.
+3. **TMDB nur mit Vertrag** (kommerziell = Lizenz nötig; Preis nicht öffentlich, Sekundärquelle nennt ca. 149 USD/Monat – unbestätigt). Offerte anfragen, bevor gerechnet wird. Kein Modell «Nutzer bringt eigenen Key» als Standard (Grauzone).
+4. Ausgeschlossen: OMDb (nicht kommerziell), IMDb (zu teuer), Watchmode (zu teuer), Wikimedia-Poster (meist nicht frei).
+
 ## 5. End-to-End-Prüfung des Prototyps
 
 Getestet in einem Browser: alle Bildschirme, Deutsch und Englisch, dunkel und hell, dazu ein Zufallstest mit 2'800 Fernbedienungs-Eingaben. **Ergebnis: keine Skriptfehler, der Fokus geht nie verloren.**
