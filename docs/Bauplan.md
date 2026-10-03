@@ -188,6 +188,8 @@ Geprüft im Browser: alle geänderten Bildschirme beider Apps, Deutsch und Engli
 1. **Primär: Daten des Anbieters** über Xtream `get_vod_info` / `get_series_info` (Cover, Backdrop, Handlung, Besetzung, Bewertung, tmdb_id). Kostenlos, keine eigene Lizenz nötig, gängige Praxis.
 2. **Ergänzung: TheTVDB** (kommerziell gratis unter 50'000 USD Umsatz/Jahr, mit Attribution; darüber 1'000 USD/Jahr). Stärker bei Serien.
 3. **TMDB nur mit Vertrag** (kommerziell = Lizenz nötig; Preis nicht öffentlich, Sekundärquelle nennt ca. 149 USD/Monat – unbestätigt). Offerte anfragen, bevor gerechnet wird. Kein Modell «Nutzer bringt eigenen Key» als Standard (Grauzone).
+**Umgesetzt im Prototyp (03.10.2026, beide Apps):** Kette Anbieter → TheTVDB → TMDB, jede Quelle füllt nur, was fehlt. Anbieter: `get_vod_info` pro Film, `get_series` (einmal, gecacht nach Aktualisierungs-Intervall) + `get_series_info` mit Folgen. TheTVDB v4: Login mit Projekt-Schlüssel, Suche + `extended` (Übersetzung, Hintergrund, Besetzung, Trailer). Quellenangabe je Titel unten in der Detailseite. Einstellungen › «Cover & Infos» zeigt Status der drei Quellen. Im Browser-Prototyp blockiert ein http-Anbieter den Abruf – die native App nicht.
+
 4. Ausgeschlossen: OMDb (nicht kommerziell), IMDb (zu teuer), Watchmode (zu teuer), Wikimedia-Poster (meist nicht frei).
 
 ## 5. End-to-End-Prüfung des Prototyps

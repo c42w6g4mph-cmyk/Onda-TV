@@ -630,6 +630,14 @@ body[data-look="light"]{--bg:#cfd4dd}
 .grpchip .gl{font-size:17px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-right:6px}
 .d-bg.cv::after{content:"";position:absolute;inset:-10%;background:var(--cv) center/cover;filter:blur(60px) saturate(1.3) brightness(.55);opacity:.7}
 .d-bg.cv{overflow:hidden}
+.d-bg.bd::before{content:"";position:absolute;inset:0 0 0 30%;background:var(--bd) center/cover;opacity:.5;-webkit-mask-image:linear-gradient(90deg,transparent,#000 40%),linear-gradient(180deg,#000 40%,transparent);-webkit-mask-composite:source-in;mask-composite:intersect;z-index:1}
+.sheetbox .tin{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:28px;padding:18px 22px;border-radius:14px;border:0;background:var(--surface2);color:var(--fg);margin-top:8px}
+.sheetbox .tin.focused{background:var(--focus);color:var(--focusFg)}
+.detail>.d-body,.detail>.seasons,.detail>.eps,.detail>.shelf{position:relative;z-index:2}
+.d-cast{font-size:24px;line-height:1.4;color:var(--dim);margin:-8px 0 26px;max-width:1000px}
+.d-src{position:relative;font-size:17px;color:var(--faint);margin:40px 0 0;padding:0 120px 40px;max-width:1500px}
+.ep-thumb.img{background-size:cover;background-position:center;color:transparent}
+
 /* Minimal-Umbau */
 </style>
 
@@ -693,7 +701,7 @@ const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const REAL=(()=>{try{return localStorage.getItem("onda.src")==="real"}catch(e){return false}})();
-const LSH=new Set(["set","pl"]);const lsk=k=>(LSH.has(k)||!REAL?"onda.":"onda.r.")+k;
+const LSH=new Set(["set","pl","tmdb","tvdb","tvdbtok"]);const lsk=k=>(LSH.has(k)||!REAL?"onda.":"onda.r.")+k;
 const LS={get(k,d){try{const v=localStorage.getItem(lsk(k));return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(lsk(k),JSON.stringify(v))}catch(e){}}};
 const IC={close:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',chR:'<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 5l7 7-7 7"/></svg>',play:'<svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 4.5v15l12.5-7.5z" fill="currentColor"/></svg>'};
 function hash(s){let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
@@ -750,7 +758,7 @@ const MOVIES=[
  ["Ted",2012,"Komödie",106],["The Super Mario Bros. Movie",2023,"Animation",92],["Toy Story",1995,"Animation",81],["Toy Story 2",1999,"Animation",92],["Gladiator",2000,"Action",155],
  ["Mad Max: Fury Road",2015,"Action",120],["Knives Out",2019,"Thriller",130],["Avatar: The Way of Water",2022,"Sci-Fi",192],["Spider-Man: Across the Spider-Verse",2023,"Animation",140],["The Martian",2015,"Sci-Fi",144],["Blood Work",2002,"Thriller",110]
 ].map((m,i)=>({i,key:"m"+i,t:m[0],y:m[1],g:m[2],d:m[3],hue:hash(m[0])%360,ff:"ff"+(hash(m[0]+"f")%3+1),prog:i%4===1?Math.round(m[3]*0.38):0}));
-const DESC_NOTE="Handlung, Besetzung und Bewertung lädt die echte App automatisch aus einer Film-Datenbank (z. B. TMDB).";
+const DESC_NOTE="Handlung, Besetzung und Bewertung kommen zuerst von deinem Anbieter, ergänzt durch TheTVDB.";
 const SERIES=[
  ["Ted Lasso","Komödie",2020,[10,12,12]],["Slow Horses","Thriller",2022,[6,6,6,6,6]],["Silo","Sci-Fi",2023,[10,10]],["Loki","Sci-Fi",2021,[6,6]],["The Gentlemen","Krimi",2024,[8]],
  ["The Last of Us","Drama",2023,[9,7]],["Breaking Bad","Krimi",2008,[7,13,13,13,16]],["Game of Thrones","Fantasy",2011,[10,10,10,10,10,10,7,6]],["Succession","Drama",2018,[10,10,9,10]],["Chernobyl","Drama",2019,[5]]
@@ -1156,12 +1164,196 @@ const pSub=o=>{const p=S.prog[o.key];return p&&p.se?`S${p.se} · F${p.e}`:[o.y,o
 const poster=(o,act)=>`<div class="pwrap"><div class="poster f" style="--h:${o.hue}" data-mk="${o.key}" data-act="${act}">${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${(()=>{const p=S.prog[o.key];return p&&p.dur?`<div class="pprog"><i style="width:${Math.min(100,p.pos/p.dur*100)}%"></i></div>`:""})()}</div>${pcap(o,pSub(o))}</div>`;
 
 /* ---------- Cover: Anbieter-Cover, Cover des Playlist-Treffers, Beispiel-Cover ---------- */
+/* ---------- Metadaten: Cover, Hintergrund, Handlung, Besetzung, Folgen ----------
+   Reihenfolge (Bauplan 4c): 1. Anbieter (Xtream get_vod_info / get_series_info) – kostenlos, keine Lizenz
+   2. TheTVDB (kommerziell gratis bis 50'000 USD Umsatz, mit Quellenangabe) – ergänzt Fehlendes
+   3. TMDB – nur mit kommerzieller Lizenz; im Prototyp zum Testen mit privatem Schlüssel */
+{const q=new URLSearchParams(location.search).get("tmdb");if(q){LS.set("tmdb",q.trim());history.replaceState(null,"",location.pathname)}}
+const TMDB={api:"https://api.themoviedb.org/3",img:(sz,p)=>p?"https://image.tmdb.org/t/p/"+sz+p:""};
+const IMG=(sz,p)=>!p?"":/^https?:\/\//i.test(p)?p:TMDB.img(sz,p);
+const tmKey=()=>LS.get("tmdb","");
+const tvKey=()=>LS.get("tvdb","");
+let META=LS.get("meta1",{});const MLOAD={},SLOAD={};let metaSaveT=0;
+const saveMeta=()=>{clearTimeout(metaSaveT);metaSaveT=setTimeout(()=>LS.set("meta1",META),400)};
+const mType=o=>(o.k||o.key[0])==="m"?"movie":"tv";
+const mKey=o=>mType(o)+":"+norm(o.t)+":"+(o.y||"");
+const metaOf=o=>{const m=META[mKey(o)];return m&&!m.none?m:null};
+const emptyM=(type,o)=>({ts:Date.now(),type,title:o.t,orig:"",ov:"",tag:"",poster:"",back:"",logo:"",genres:[],rt:0,vote:0,year:o.y?String(o.y):"",date:"",nsea:0,trailer:"",cert:"",studio:"",dir:[],cast:[],sim:[],sea:{},src:[]});
+const isEmptyV=v=>v==null||v===""||v===0||(Array.isArray(v)&&!v.length)||(v&&typeof v==="object"&&!Array.isArray(v)&&!Object.keys(v).length);
+function mergeM(a,b){if(!b)return a;if(!a)return b;for(const k in b){if(k==="src"||k==="ts")continue;if(isEmptyV(a[k])&&!isEmptyV(b[k]))a[k]=b[k]}a.src=[...new Set([...(a.src||[]),...(b.src||[])])];return a}
+const needMore=m=>!m||!m.poster||!m.ov||!m.back;
+const ytKey=v=>{v=String(v||"").trim();const m=v.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/);return m?m[1]:/^[\w-]{11}$/.test(v)?v:""};
+const splitL=v=>String(v||"").split(/\s*[,\/;|]\s*/).map(x=>x.trim()).filter(Boolean);
+
+/* 1. Anbieter (Xtream Codes API) */
+let XTC=null;
+let XTN=-1;
+function xtCreds(){const n=CH.length+MOVIES.length;if(XTC!==null&&XTN===n)return XTC;XTN=n;XTC=false;if(!REAL)return XTC;
+  for(const x of [...CH.slice(0,40),...MOVIES.slice(0,40)]){const m=(x.url||"").match(/^(https?:\/\/[^\/]+)\/(?:live\/|movie\/|series\/)?([^\/]+)\/([^\/]+)\/\d+(\.\w+)?$/i);if(m){XTC={srv:m[1],u:decodeURIComponent(m[2]),p:decodeURIComponent(m[3])};break}}return XTC}
+const xtBlocked=()=>{const c=xtCreds();return !!c&&location.protocol==="https:"&&/^http:/i.test(c.srv)};
+const xtOK=()=>!!xtCreds()&&!xtBlocked();
+let XTFAIL=0;
+async function xtApi(action,params){const c=xtCreds();if(!c||xtBlocked())throw new Error("xt");
+  const u=new URL(c.srv+"/player_api.php");u.searchParams.set("username",c.u);u.searchParams.set("password",c.p);u.searchParams.set("action",action);Object.entries(params||{}).forEach(([a,b])=>u.searchParams.set(a,b));
+  const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error("xt "+r.status);return r.json()}
+const streamId=o=>{const m=(o.url||"").match(/\/movie\/[^\/]+\/[^\/]+\/(\d+)/i);return m?m[1]:""};
+let XTSER=null;
+async function xtSeriesList(){if(XTSER)return XTSER;
+  let d=null;try{d=await IDB.get("tv.xtser")}catch(e){}
+  if(!d||isDue(d.ts)){try{const l=await xtApi("get_series");if(Array.isArray(l)){d={ts:Date.now(),l:l.map(s=>[norm(cleanT(s.name||"")),s.series_id,s.cover||""])};IDB.set("tv.xtser",d).catch(()=>{})}}catch(e){if(!d)throw e}}
+  XTSER=new Map((d&&d.l||[]).map(x=>[x[0],x[1]]));return XTSER}
+function xtInfoToM(type,o,i){const m=emptyM(type,o);i=i||{};
+  m.orig=i.o_name||i.original_name||"";m.ov=(i.plot||i.description||"").trim();m.poster=i.cover_big||i.movie_image||i.cover||"";
+  m.back=(Array.isArray(i.backdrop_path)?i.backdrop_path[0]:i.backdrop_path)||"";m.genres=splitL(i.genre).slice(0,3);
+  m.rt=i.duration_secs?Math.round(+i.duration_secs/60):(+i.episode_run_time||0);m.vote=Math.round((parseFloat(i.rating)||0)*10)/10;
+  m.date=i.releasedate||i.release_date||i.releaseDate||"";m.year=(m.date.match(/(19|20)\d\d/)||[m.year])[0]||m.year;
+  m.trailer=ytKey(i.youtube_trailer);m.cert=String(i.age||i.mpaa_rating||"").replace(/\D/g,"");m.dir=splitL(i.director).slice(0,2);
+  m.cast=splitL(i.cast||i.actors).slice(0,12).map(n=>({n,r:"",p:""}));m.tmdb=i.tmdb_id||i.tmdb||"";m.src=["Anbieter"];return m}
+async function xtMeta(o){
+  const own=(o.url||o.eps)?o:(o.avail&&o.avail.o);if(!own||!xtOK())return null;
+  if(mType(o)==="movie"){const id=streamId(own);if(!id)return null;const r=await xtApi("get_vod_info",{vod_id:id});if(!r||!r.info||Array.isArray(r.info))return null;const m=xtInfoToM("movie",o,r.info);return(m.ov||m.poster||m.back)?m:null}
+  const map=await xtSeriesList();const sid=map.get(norm(own.t));if(!sid)return null;
+  const r=await xtApi("get_series_info",{series_id:sid});if(!r||!r.info)return null;
+  const m=xtInfoToM("tv",o,r.info);const eps=r.episodes||{};
+  Object.keys(eps).forEach(se=>{m.sea[se]=(eps[se]||[]).map(e=>({n:+e.episode_num||0,t:e.title||"",ov:(e.info&&e.info.plot)||"",still:(e.info&&e.info.movie_image)||"",rt:e.info&&e.info.duration_secs?Math.round(e.info.duration_secs/60):0}))});
+  m.nsea=Object.keys(eps).length;m.xsid=sid;return m}
+
+/* 2. TheTVDB (API v4) */
+const TVDB={api:"https://api4.thetvdb.com/v4"};
+async function tvToken(force){let t=LS.get("tvdbtok",null);if(!force&&t&&t.k===tvKey()&&Date.now()-t.ts<25*864e5)return t.t;
+  const r=await fetch(TVDB.api+"/login",{method:"POST",headers:{"content-type":"application/json",accept:"application/json"},body:JSON.stringify({apikey:tvKey()})});
+  if(!r.ok){const e=new Error("TVDB "+r.status);e.status=r.status;throw e}const j=await r.json();const tok=j&&j.data&&j.data.token;if(!tok)throw new Error("TVDB");LS.set("tvdbtok",{t:tok,k:tvKey(),ts:Date.now()});return tok}
+async function tvGet(path,params,again){const tok=await tvToken(again);const u=new URL(TVDB.api+path);Object.entries(params||{}).forEach(([a,b])=>{if(b!=null&&b!=="")u.searchParams.set(a,b)});
+  const r=await fetch(u,{headers:{accept:"application/json",Authorization:"Bearer "+tok}});if(r.status===401&&!again)return tvGet(path,params,true);if(!r.ok){const e=new Error("TVDB "+r.status);e.status=r.status;throw e}return (await r.json()).data}
+const tvL=()=>isEN()?"eng":"deu";
+async function tvdbMeta(o){
+  const type=mType(o),tt=type==="movie"?"movie":"series";
+  let l=await tvGet("/search",{query:o.t,type:tt,year:o.y||"",limit:5});if((!l||!l.length)&&o.y)l=await tvGet("/search",{query:o.t,type:tt,limit:5});
+  const hit=(l||[])[0];if(!hit)return null;const id=hit.tvdb_id||hit.id;
+  const m=emptyM(type,o);m.src=["TheTVDB"];m.tvdb=id;
+  m.ov=(hit.overviews&&(hit.overviews[tvL()]||hit.overviews.eng))||hit.overview||"";m.poster=hit.image_url||hit.thumbnail||"";m.year=hit.year||m.year;m.genres=(hit.genres||[]).slice(0,3);
+  try{const d=await tvGet(`/${type==="movie"?"movies":"series"}/${String(id).replace(/\D/g,"")}/extended`,{meta:"translations",short:"false"});
+    if(d){const ot=((d.translations&&d.translations.overviewTranslations)||[]).find(x=>x.language===tvL());if(ot&&ot.overview)m.ov=ot.overview;
+      const nt=((d.translations&&d.translations.nameTranslations)||[]).find(x=>x.language===tvL());if(nt&&nt.name)m.title=nt.name;
+      m.orig=d.name||"";m.poster=m.poster||d.image||"";
+      const aw=(d.artworks||[]).filter(a=>a.image&&a.width>a.height*1.4&&!/clearlogo|banner/i.test(a.image)).sort((a,b)=>(b.score||0)-(a.score||0));if(aw[0])m.back=aw[0].image;
+      const lg=(d.artworks||[]).find(a=>a.type===25||a.type===23);if(lg&&lg.image)m.logo=lg.image;
+      m.genres=m.genres.length?m.genres:(d.genres||[]).map(g=>g.name).slice(0,3);m.rt=d.runtime||d.averageRuntime||0;
+      m.date=d.first_release&&d.first_release.date||d.firstAired||"";m.year=String(d.year||m.year||"");
+      m.cast=(d.characters||[]).filter(c=>c.peopleType==="Actor"||c.type===3).sort((a,b)=>(a.sort||99)-(b.sort||99)).slice(0,12).map(c=>({n:c.personName||"",r:c.name||"",p:c.personImgURL||""})).filter(c=>c.n);
+      m.dir=(d.characters||[]).filter(c=>c.peopleType==="Director").map(c=>c.personName).slice(0,2);
+      const tr=(d.trailers||[]).map(t=>ytKey(t.url)).find(Boolean);if(tr)m.trailer=tr;
+      const cr=(d.contentRatings||[]).find(c=>/deu|ger|che/i.test(c.country||""));if(cr)m.cert=String(cr.name||"").replace(/\D/g,"");
+      m.nsea=(d.seasons||[]).filter(s=>s.type&&s.type.type==="official"&&s.number>0).length||0}}catch(e){}
+  return m}
+
+/* 3. TMDB (nur mit Lizenz) */
+async function tmGet(path,params){
+  const k=tmKey(),u=new URL(TMDB.api+path),h={accept:"application/json"};
+  Object.entries(params||{}).forEach(([a,b])=>{if(b!=null&&b!=="")u.searchParams.set(a,b)});
+  if(k.startsWith("eyJ"))h.Authorization="Bearer "+k;else u.searchParams.set("api_key",k);
+  const r=await fetch(u,{headers:h});if(!r.ok){const e=new Error("TMDB "+r.status);e.status=r.status;throw e}return r.json();
+}
+const tmLang=()=>isEN()?"en-US":"de-DE";
+function pickVideo(v){const l=(v&&v.results||[]).filter(x=>x.site==="YouTube");const sc=x=>(x.type==="Trailer"?4:x.type==="Teaser"?2:0)+(x.official?1:0)+(x.iso_639_1===(isEN()?"en":"de")?3:x.iso_639_1==="en"?1:0);return (l.sort((a,b)=>sc(b)-sc(a))[0]||{}).key||""}
+function pickLogo(im){const l=(im&&im.logos||[]);const p=x=>x.iso_639_1===(isEN()?"en":"de")?3:x.iso_639_1==="en"?2:x.iso_639_1==null?1:0;const b=l.filter(x=>!/\.svg$/.test(x.file_path)).sort((a,b)=>p(b)-p(a)||b.vote_average-a.vote_average)[0];return b?b.file_path:""}
+function certOf(d,type){try{if(type==="movie"){const r=(d.release_dates.results||[]).find(x=>x.iso_3166_1==="DE")||(d.release_dates.results||[]).find(x=>x.iso_3166_1==="CH");return r?((r.release_dates.find(x=>x.certification)||{}).certification||""):""}const r=(d.content_ratings.results||[]).find(x=>x.iso_3166_1==="DE");return r?r.rating:""}catch(e){return""}}
+async function tmdbMeta(o,tmid){
+  const type=mType(o);let id=tmid;
+  if(!id){const yk=type==="movie"?"primary_release_year":"first_air_date_year";
+    let r=await tmGet("/search/"+type,{query:o.t,language:tmLang(),[yk]:o.y||""});
+    if(!r.results.length&&o.y)r=await tmGet("/search/"+type,{query:o.t,language:tmLang()});
+    const hit=r.results[0];if(!hit)return null;id=hit.id}
+  const d=await tmGet("/"+type+"/"+id,{language:tmLang(),append_to_response:"videos,credits,images,"+(type==="movie"?"release_dates":"content_ratings")+",similar",include_image_language:(isEN()?"en":"de")+",en,null",include_video_language:(isEN()?"en":"de")+",en,null"});
+  let ov=d.overview;if(!ov&&!isEN()){try{ov=(await tmGet("/"+type+"/"+id,{language:"en-US"})).overview}catch(e){}}
+  const crew=(d.credits&&d.credits.crew)||[];
+  return{ts:Date.now(),id,tmid:id,type,title:d.title||d.name,orig:d.original_title||d.original_name,ov:ov||"",tag:d.tagline||"",poster:d.poster_path||"",back:d.backdrop_path||"",logo:pickLogo(d.images),
+    genres:(d.genres||[]).map(g=>g.name).slice(0,3),rt:d.runtime||((d.episode_run_time||[])[0])||0,vote:d.vote_average?Math.round(d.vote_average*10)/10:0,year:(d.release_date||d.first_air_date||"").slice(0,4),
+    date:d.release_date||d.first_air_date||"",nsea:d.number_of_seasons||0,trailer:pickVideo(d.videos),cert:certOf(d,type),
+    studio:((type==="tv"?(d.networks||[])[0]:(d.production_companies||[])[0])||{}).name||"",
+    dir:type==="movie"?crew.filter(c=>c.job==="Director").map(c=>c.name).slice(0,2):(d.created_by||[]).map(c=>c.name).slice(0,2),
+    cast:((d.credits&&d.credits.cast)||[]).slice(0,12).map(c=>({n:c.name,r:c.character,p:c.profile_path||""})),
+    sim:((d.similar&&d.similar.results)||[]).slice(0,20).map(x=>norm(x.title||x.name)),sea:{},src:["TMDB"]}}
+
+const metaOn=()=>xtOK()||!!tvKey()||!!tmKey();
+const SRCERR={};
+function loadMeta(o){
+  const key=mKey(o);if(META[key]&&Date.now()-META[key].ts<7*864e5)return Promise.resolve(META[key].none?null:META[key]);
+  if(!metaOn())return Promise.resolve(null);if(MLOAD[key])return MLOAD[key];
+  return MLOAD[key]=(async()=>{
+    let m=null;
+    try{m=await xtMeta(o)}catch(e){SRCERR.xt=1}
+    if(tvKey()&&needMore(m)){try{m=mergeM(m,await tvdbMeta(o))}catch(e){SRCERR.tv=e.status||1;if(e.status===401){toast("TheTVDB-Schlüssel ungültig")}}}
+    if(tmKey()&&needMore(m)){try{m=mergeM(m,await tmdbMeta(o,m&&m.tmdb))}catch(e){SRCERR.tm=e.status||1;if(e.status===401){toast("TMDB-Schlüssel ungültig");LS.set("tmdb","")}}}
+    if(!m){META[key]={none:1,ts:Date.now()};saveMeta();return null}
+    if(o.t&&m.title&&norm(m.title)!==norm(o.t)&&m.src[0]==="Anbieter")m.title=o.t;
+    m.ts=Date.now();META[key]=m;saveMeta();return m;
+  })().finally(()=>{delete MLOAD[key]});
+}
+function loadSeason(o,n){
+  const m=metaOf(o);if(!m||m.type!=="tv")return Promise.resolve(null);if(m.sea[n])return Promise.resolve(m.sea[n]);
+  if(!tmKey()||!m.tmid)return Promise.resolve(null);
+  const k=m.tmid+":"+n;if(SLOAD[k])return SLOAD[k];
+  return SLOAD[k]=tmGet("/tv/"+m.tmid+"/season/"+n,{language:tmLang()}).then(r=>{m.sea[n]=(r.episodes||[]).map(e=>({n:e.episode_number,t:e.name,ov:e.overview||"",still:e.still_path||"",rt:e.runtime||0}));saveMeta();return m.sea[n]}).catch(()=>null).finally(()=>delete SLOAD[k]);
+}
+function srcLine(m){if(!m||!m.src||!m.src.length)return"";const s=m.src;
+  return `<p class="asrc">Infos: ${s.map(esc).join(" · ")}.${s.includes("TheTVDB")?" Daten teilweise von TheTVDB.com – bitte unterstütze sie.":""}${s.includes("TMDB")?" Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.":""}</p>`}
+function xtStatus(){if(!REAL)return["Testdaten","Mit eigener Xtream-Playlist aktiv"];const c=xtCreds();if(!c)return["Nicht verfügbar","Keine Xtream-Zugangsdaten in der Playlist"];if(xtBlocked())return["Im Browser gesperrt","Dein Anbieter liefert über http – die fertige App lädt direkt"];return[SRCERR.xt?"Keine Antwort":"Aktiv","Cover, Handlung, Besetzung und Folgen aus deinem Abo"]}
+function metaRowsIOS(){const x=xtStatus();return `<div class="srow tap" data-act="metaset" role="button"><span class="sl"><b>1 · Anbieter</b><small>${esc(x[1])}</small></span><span class="val">${esc(x[0])}</span><i class="chev">›</i></div>
+   <div class="srow tap" data-act="tvdbkey" role="button"><span class="sl"><b>2 · TheTVDB</b><small>Ergänzt fehlende Cover und Infos</small></span><span class="val">${tvKey()?(SRCERR.tv?"Fehler":"Aktiv"):"Aus"}</span><i class="chev">›</i></div>
+   <div class="srow tap" data-act="tmdbkey" role="button"><span class="sl"><b>3 · TMDB</b><small>Nur mit kommerzieller Lizenz</small></span><span class="val">${tmKey()?"Test":"Aus"}</span><i class="chev">›</i></div>`}
+function openMetaSheet(){const x=xtStatus();
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Cover &amp; Infos</h2>
+   <p class="foot" style="margin-top:0">Onda fragt die Quellen der Reihe nach und füllt nur, was noch fehlt.</p>
+   <div class="glist">
+    <div class="srow"><span class="sl"><b>1 · Anbieter</b><small>Kostenlos, ohne Lizenz. Xtream liefert Cover, Hintergrund, Handlung, Besetzung, Bewertung, Trailer und Folgen. ${esc(x[1])}.</small></span><span class="val">${esc(x[0])}</span></div>
+    <div class="srow tap" data-act="tvdbkey" role="button"><span class="sl"><b>2 · TheTVDB</b><small>Für Titel ohne Anbieter-Infos. Kommerziell gratis bis 50'000 USD Jahresumsatz, mit Quellenangabe.</small></span><span class="val">${tvKey()?"Aktiv":"Einrichten"}</span><i class="chev">›</i></div>
+    <div class="srow tap" data-act="tmdbkey" role="button"><span class="sl"><b>3 · TMDB</b><small>Nur mit kommerzieller Lizenz. Im Prototyp zum Testen.</small></span><span class="val">${tmKey()?"Test":"Aus"}</span><i class="chev">›</i></div>
+   </div>
+   <div class="btns col" style="margin-top:12px"><button class="btn" data-act="metaclear">Gespeicherte Infos neu laden</button></div>`,"","meta")}
+function openTvdbSheet(){
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TheTVDB</h2>
+   <p class="foot" style="margin-top:0">Ergänzt Cover, Hintergrund, Handlung und Besetzung, wo dein Anbieter nichts liefert. Die fertige App bringt den Projekt-Schlüssel mit – hier nur für den Test.</p>
+   <ol class="foot" style="padding-left:18px;line-height:1.6"><li>Konto auf thetvdb.com anlegen</li><li>Unter «API Information» einen Projekt-Schlüssel beantragen</li><li>Schlüssel hier einfügen</li></ol>
+   <input id="tvdbIn" class="tin" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="TheTVDB-API-Schlüssel" value="${esc(tvKey())}">
+   <div class="btns col" style="margin-top:12px"><button class="btn primary" data-act="tvdbsave">Speichern und testen</button>${tvKey()?'<button class="btn" data-act="tvdbdel">Schlüssel entfernen</button>':""}</div>
+   <p class="foot">Der Schlüssel bleibt nur auf diesem Gerät.${SRCERR.tv?" Letzter Abruf fehlgeschlagen ("+esc(String(SRCERR.tv))+").":""}</p>`,"","tvdb")}
+function resetMeta(){META={};LS.set("meta1",{});for(const k in SRCERR)delete SRCERR[k];$$("[data-mk]").forEach(el=>{el.classList.remove("img","nimg");el.style.removeProperty("--img")})}
+function openKeySheet(){
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TMDB</h2>
+   <p class="foot" style="margin-top:0">Dritte Quelle, nur wenn Anbieter und TheTVDB nichts liefern. Für den Verkauf braucht es eine kommerzielle TMDB-Lizenz – der private Schlüssel ist nur zum Testen im Prototyp.</p>
+   <ol class="foot" style="padding-left:18px;line-height:1.6"><li>Kostenloses Konto auf themoviedb.org anlegen</li><li>Einstellungen › API › Schlüssel anfordern (privat, kostenlos)</li><li>«API-Lesezugriffstoken» oder «API-Schlüssel» kopieren und hier einfügen</li></ol>
+   <input id="tmdbIn" class="tin" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Schlüssel oder Token einfügen" value="${esc(tmKey())}">
+   <div class="btns col" style="margin-top:12px"><button class="btn primary" data-act="tmdbsave">Speichern und Cover laden</button>${tmKey()?'<button class="btn" data-act="tmdbdel">Schlüssel entfernen</button>':""}</div>
+   <p class="foot">Der Schlüssel bleibt nur auf diesem Gerät gespeichert.</p>`,"","tmdb");
+}
+
+function metaRowsTV(){const x=xtStatus();return `<div class="srow f" data-act="metaset"><span>1 · Anbieter<span class="hint">${esc(x[1])}</span></span><span class="val">${esc(x[0])}<i class="chev">›</i></span></div>
+   <div class="srow f" data-act="tvdbkey"><span>2 · TheTVDB<span class="hint">Ergänzt fehlende Cover und Infos</span></span><span class="val">${tvKey()?(SRCERR.tv?"Fehler":"Aktiv"):"Aus"}<i class="chev">›</i></span></div>
+   <div class="srow f" data-act="tmdbkey"><span>3 · TMDB<span class="hint">Nur mit kommerzieller Lizenz</span></span><span class="val">${tmKey()?"Test":"Aus"}<i class="chev">›</i></span></div>`}
+const durT=min=>min>=60?Math.floor(min/60)+" Std."+(min%60?" "+(min%60)+" Min.":""):min+" Min.";
+function detObj(){const d=S.detail;return d.type==="t"?TREND[d.k][d.ix]:d.type==="m"?MOVIES[d.i]:SERIES[d.i]}
+function detMeta(){const d=S.detail;if(!d)return;const o=detObj();if(!o)return;
+  const m=metaOf(o)||(d.type==="t"&&o.avail&&o.avail.o&&metaOf(o.avail.o));
+  if(m){fillDet(m);return}
+  if(metaOn()&&!META[mKey(o)]){loadMeta(o).then(x=>{if(x&&S.detail===d&&OV.includes("ov-detail"))fillDet(x)})}}
+function fillDet(m){const el=$("#ov-detail");if(!el)return;
+  const ds=el.querySelector(".d-desc");if(ds&&m.ov)ds.textContent=m.ov;
+  const dm=el.querySelector(".d-meta");if(dm){const parts=[m.year,...m.genres.slice(0,2),m.rt&&S.detail.type!=="s"?durT(m.rt):"",m.nsea?m.nsea+(m.nsea>1?" Staffeln":" Staffel"):"",m.vote?"★ "+m.vote.toLocaleString(loc()):"",m.cert?"FSK "+m.cert:""].filter(Boolean);const chip=dm.querySelector(".hchip");dm.innerHTML=parts.map(x=>`<span>${esc(String(x))}</span>`).join("")+(chip?chip.outerHTML:"")}
+  if(ds&&(m.cast.length||m.dir.length)&&!el.querySelector(".d-cast"))ds.insertAdjacentHTML("afterend",`<p class="d-cast">${m.cast.length?"Mit "+esc(m.cast.slice(0,4).map(c=>c.n).join(", ")):""}${m.dir.length?(m.cast.length?" · ":"")+"Regie: "+esc(m.dir.join(", ")):""}</p>`);
+  const bg=el.querySelector(".d-bg"),bu=IMG("w1280",m.back);if(bg&&bu){const im=new Image();im.onload=()=>{bg.style.setProperty("--bd",`url("${bu}")`);bg.classList.add("bd")};im.src=bu}
+  if(m.poster){const pu=IMG("w500",m.poster),pe=el.querySelector(".d-body .poster");if(pe){const im=new Image();im.onload=()=>{pe.style.setProperty("--img",`url("${pu}")`);pe.classList.add("img");pe.classList.remove("nimg")};im.src=pu}}
+  const box=el.querySelector(".detail");if(box&&!el.querySelector(".d-src")){const h=srcLine(m).replace('class="asrc"','class="d-src"');if(h)box.insertAdjacentHTML("beforeend",h)}
+  if(S.detail.type==="s"){const sm=m.sea[S.detail.season];if(sm)el.querySelectorAll("#eps .ep").forEach((ep,k)=>{const em=sm.find(x=>x.n===k+1);if(!em)return;if(em.t)ep.querySelector(".ep-t").textContent=em.t;if(em.rt)ep.querySelector(".ep-m").textContent=em.rt+" Min.";if(em.still){const th=ep.querySelector(".ep-thumb");th.style.backgroundImage=`linear-gradient(transparent 55%,rgba(0,0,0,.6)),url("${IMG("w300",em.still)}")`;th.classList.add("img")}})}
+}
+const MQ=[];let mRun=0;
+function mPump(){while(mRun<3&&MQ.length){const o=MQ.shift();mRun++;loadMeta(o).then(m=>{if(m&&m.poster)$$("[data-mk]").forEach(el=>{if(el.dataset.mk===o.key){el.classList.remove("img","nimg");paintSample(el,o)}})}).finally(()=>{mRun--;mPump()})}}
 const ALLV=()=>[...MOVIES,...SERIES,...TREND.m,...TREND.s];
 const byKey=k=>ALLV().find(o=>o.key===k);
 const SIMG={};
-function coverList(o){const a=[o.cover,o.avail&&o.avail.o&&o.avail.o.cover,SAMPLE[o.t],o.avail&&o.avail.o&&SAMPLE[o.avail.o.t]].filter(Boolean);return[...new Set(a)]}
+function coverList(o){const mm=metaOf(o)||(o.avail&&o.avail.o&&metaOf(o.avail.o));const a=[mm&&mm.poster?IMG("w342",mm.poster):"",o.cover,o.avail&&o.avail.o&&o.avail.o.cover,SAMPLE[o.t],o.avail&&o.avail.o&&SAMPLE[o.avail.o.t]].filter(Boolean);return[...new Set(a)]}
 function paintSample(el,o){const L=coverList(o).filter(u=>SIMG[u]!=="bad");if(!L.length){el.classList.add("nimg");return}const u=L[0];const set=()=>{el.style.setProperty("--img",`url("${u}")`);el.classList.add("img");el.classList.remove("nimg")};if(SIMG[u]==="ok")return set();if(SIMG[u]==="wait"){el.classList.add("nimg");return}SIMG[u]="wait";el.classList.add("nimg");const im=new Image();im.onload=()=>{SIMG[u]="ok";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&coverList(ob).filter(v=>SIMG[v]!=="bad")[0]===u){x.classList.remove("nimg");x.style.setProperty("--img",`url("${u}")`);x.classList.add("img")}})};im.onerror=()=>{SIMG[u]="bad";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&coverList(ob).includes(u)){x.classList.remove("nimg");paintSample(x,ob)}})};im.src=u}
-function hydrate(){$$("[data-mk]:not(.img):not(.nimg)").forEach(el=>{const o=byKey(el.dataset.mk);if(o)paintSample(el,o)})}
+function hydrate(){const ext=!!(tvKey()||tmKey());$$("[data-mk]:not(.img):not(.nimg)").forEach(el=>{const o=byKey(el.dataset.mk);if(!o)return;paintSample(el,o);if(ext&&!META[mKey(o)]&&!MQ.includes(o))MQ.push(o)});if(MQ.length)mPump()}
 {let hT=0;new MutationObserver(()=>{cancelAnimationFrame(hT);hT=requestAnimationFrame(hydrate)}).observe(document.getElementById("app"),{childList:true,subtree:true})}
 
 /* ---------- Weiterschauen: Fortschritt pro Film bzw. Serie ---------- */
@@ -1287,8 +1479,8 @@ function renderTrendDetail(){
 }
 function renderDetail(){
   const d=S.detail,el=$("#ov-detail");
-  if(d.type==="t"){renderTrendDetail();detailBg();return}
-  setTimeout(detailBg,0);
+  if(d.type==="t"){renderTrendDetail();detailBg();setTimeout(detMeta,0);return}
+  setTimeout(()=>{detailBg();detMeta()},0);
   const favB=k=>`<button tabindex="-1" class="btn icon f" data-act="vfav:${k}" aria-label="Favorit">${S.favVod.has(k)?"★":"☆"}</button>`;
   if(d.type==="m"){
     const m=MOVIES[d.i];
@@ -1335,6 +1527,7 @@ function renderSettings(){
   $("#v-settings").innerHTML=`<div class="settings">
    <div class="sy" data-sec="setL"><div class="sec"><h4>Playlists</h4>${S.playlists.map((p,i)=>`<div class="srow plrow f" data-act="pl:${i}"><span><span class="pl-name">${esc(p.name)}</span><span class="pl-info">${esc(p.type)} · ${esc(p.info)}</span></span><span class="dot ${p.active?"":"off"}"></span></div>`).join("")}
     <div class="srow f" data-act="addpl"><span>＋ Playlist hinzufügen</span><span class="val">QR · M3U · Xtream</span></div>${REAL?`<div class="srow f" data-act="set:refresh"><span>Automatisch aktualisieren<span class="hint">Playlist und TV-Guide · zuletzt ${ageTxt(PLTS)}</span></span><span class="val">${esc(itOf("refresh").o[sv("refresh")])}<i class="chev">›</i></span></div>`:""}</div>
+    <div class="sec"><h4>Cover &amp; Infos</h4>${metaRowsTV()}</div>
     <div class="sec"><h4>Senderliste</h4><div class="srow f" data-act="editlist"><span>Senderliste bearbeiten<span class="hint">Gruppen und Sender ausblenden oder sortieren</span></span><span class="val">${CH.filter(chVisible).length} von ${CH.length}<i class="chev">›</i></span></div></div>
     <div class="sec"><h4>Über Onda</h4><div class="about"><div class="appicon"><div class="ai-in"><svg class="" width="96" height="96" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="og96" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og96)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og96)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda</span></div></div><div class="about-txt"><b>Onda – IPTV Player</b>App-Symbol-Entwurf für den Apple-TV-Homescreen</div></div><div class="srow"><span>Version</span><span class="val">Prototyp 1.2 · Testdaten</span></div></div></div>
    <div class="sy">${SETTINGS.filter(sec=>!sec.hide).map(sec=>`<div class="sec"><h4>${sec.sec}</h4>${sec.items.map(it=>`<div class="srow f" data-act="set:${it.k}"><span>${esc(it.l)}${it.h?`<span class="hint">${esc(hv(it))}</span>`:""}</span><span class="val">${esc(it.o[sv(it.k)])}<i class="chev">›</i></span></div>`).join("")}</div>`).join("")}</div></div>`;
@@ -1685,6 +1878,14 @@ function activate(el){
     case"series":openSeries(+x[0]);break;
     case"mplay":{const m=MOVIES[+x[0]],pr=S.prog[m.key];openVod({key:m.key,title:m.t,sub:"Film · "+(m.y?m.y+" · ":"")+m.g,dur:pr&&pr.dur?pr.dur:(m.d||120)*60,pos:x[1]&&pr?pr.pos:0,hue:m.hue,raw:m.raw,mi:m.i});break}
     case"eplay":{const s=SERIES[+x[0]],se=+x[1],e=+x[2],pr=S.prog[s.key],rs=pr&&pr.se===se&&pr.e===e&&pr.pos>0&&(x[3]==="r"||sv("resume")===1);openVod({key:s.key,pos:rs?pr.pos:0,title:epTitle(s,se,e),sub:s.t+" · Staffel "+se+", Folge "+e,dur:epDur(s,se,e)*60,hue:(s.hue+e*9)%360,raw:s.raw+(s.i%3?" FHD":""),ep:true,si:s.i,se,e});break}
+    case"metaset":openMetaSheet();break;
+    case"metaclear":resetMeta();closeSheet();toast("Infos werden neu geladen");rerenderTab();break;
+    case"tvdbkey":openTvdbSheet();break;
+    case"tvdbsave":{const v=($("#tvdbIn").value||"").trim();if(!v){toast("Bitte Schlüssel einfügen");break}LS.set("tvdb",v);LS.set("tvdbtok",null);resetMeta();toast("Prüfe Schlüssel …");tvToken(true).then(()=>{closeSheet();toast("TheTVDB aktiv · Infos werden geladen");rerenderTab();}).catch(e=>{SRCERR.tv=e.status||"Netz";toast(e.status===401?"Schlüssel ungültig":"TheTVDB nicht erreichbar"+(e.status?" ("+e.status+")":" – evtl. im Browser gesperrt"));openTvdbSheet()});break}
+    case"tvdbdel":LS.set("tvdb","");LS.set("tvdbtok",null);resetMeta();closeSheet();toast("Schlüssel entfernt");rerenderTab();break;
+    case"tmdbsave":{const v=($("#tmdbIn").value||"").trim();if(!v){toast("Bitte Schlüssel einfügen");break}LS.set("tmdb",v);resetMeta();closeSheet();toast("Gespeichert · Cover werden geladen");$$("[data-mk].img").forEach(e=>e.classList.remove("img"));hydrate();;break}
+    case"tmdbdel":LS.set("tmdb","");resetMeta();closeSheet();toast("Schlüssel entfernt");rerenderTab();break;
+    case"tmdbkey":openKeySheet();break;
     case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu Favoriten hinzugefügt":"Aus Favoriten entfernt");renderDetail();refocus(`#ov-detail [data-act="vfav:${k}"]`);
       const act=(k[0]==="m"?"movie:":"series:")+k.slice(1);$$(`#views .poster[data-act="${act}"]`).forEach(po=>{const st=po.querySelector(".pstar");if(S.favVod.has(k)&&!st)po.insertAdjacentHTML("beforeend",'<span class="pstar">★</span>');if(!S.favVod.has(k)&&st)st.remove()});break}
     case"season":{const f=$("#eps .ep");if(f)setFocus(f);break}
