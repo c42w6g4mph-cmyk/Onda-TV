@@ -305,6 +305,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .page{position:absolute;inset:0;background:var(--bg);overflow-y:auto;overflow-x:hidden;scrollbar-width:none;pointer-events:auto;transform:translateX(100%);transition:transform .34s cubic-bezier(.2,.8,.2,1);padding-bottom:calc(var(--sab) + 30px);box-shadow:-10px 0 40px rgba(0,0,0,.4)}
 .page::-webkit-scrollbar{display:none}
 .page.in{transform:none}
+.page:not(.in){pointer-events:none}
 @media (prefers-reduced-motion:reduce){.page{transition:none}.pv-anim,.wave-anim path,.livebadge::before{animation:none}.wave-anim path{stroke-dashoffset:0}}
 .pnav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:calc(var(--sat) + 4px) 16px 8px;pointer-events:none}
 .pnav>*{pointer-events:auto}
@@ -1247,7 +1248,7 @@ function renderHome(){
   const hc=(REAL?(S.recent.map(chById).find(c=>c&&chVisible(c))||VIS.find(c=>S.favCh.has(c.id))):null)||VIS.find(c=>c.genre==="sport"&&S.favCh.has(c.id))||VIS.find(c=>c.genre==="sport")||VIS[0]||CH[0],hp=nowP(hc);
   const mine=[...favs,...S.recent.map(chById).filter(c=>c&&chVisible(c)&&!S.favCh.has(c.id))],pool=mine.length?mine:VIS.slice(0,8);
   const tr=k=>trendList(k).map((ix,r)=>({t:TREND[k][ix],r:r+1})).filter(o=>o.t.avail).slice(0,30).map(o=>tposter(o.t,"trend:"+o.t.k+":"+o.t.i)).join("");
-  const tsh=(title,k)=>{const h=tr(k);return h?`<section class="shelf"><h3>${title}<span class="tsrc">TMDB</span></h3><div class="shrow sx">${h}</div></section>`:""};
+  const tsh=(title,k)=>{const h=tr(k);return h?`<section class="shelf"><h3>${title}${tmKey()?'<span class="tsrc">TMDB</span>':""}</h3><div class="shrow sx">${h}</div></section>`:""};
   $("#v-home").innerHTML=`<div class="scroller">
    <div class="lhdr"><div class="brand">${WAVE(30,"ogh")}<span class="wordmark">onda</span><span class="proto">Prototyp</span></div>${hbtn()}</div>
    <div class="nowcard tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
@@ -1383,6 +1384,7 @@ function pushPage(render){
 function rerenderTab(){const sc=$("#v-"+S.tab+" .scroller"),st=sc?sc.scrollTop:0;R[S.tab]();const s2=$("#v-"+S.tab+" .scroller");if(s2)s2.scrollTop=st}
 function popPage(){const el=PG.pop();if(!el)return;el.classList.remove("in");setTimeout(()=>el.remove(),360);const top=PG[PG.length-1];if(top&&top._r)top._r();else if(S.tab!=="epg")rerenderTab()}
 const topPage=()=>PG[PG.length-1];
+const refreshTop=()=>{const t=topPage();if(t&&t._r)t._r();else if(S.tab!=="epg")rerenderTab()};
 
 /* ---------- Detailseiten ---------- */
 function openTrend(k,ix){const r=TREND[k][ix].avail;pushPage(el=>detailHTML(el._d||(el._d={type:"t",k,ix,match:r})))}
@@ -1758,8 +1760,8 @@ function act(el){
     case"trend":openTrend(x[0],+x[1]);break;
     case"movie":openMovie(+x[0]);break;
     case"series":openSeries(+x[0]);break;
-    case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();topPage()._r();toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Von der Merkliste entfernt");break}
-    case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu Favoriten hinzugefügt":"Aus Favoriten entfernt");topPage()._r();break}
+    case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();refreshTop();toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Von der Merkliste entfernt");break}
+    case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu Favoriten hinzugefügt":"Aus Favoriten entfernt");refreshTop();break}
     case"season":{const pg=topPage();pg._d.season=+x[0];pg._r();break}
     case"trailer":openTrailer(x[0]);break;
     case"trlclose":{const t=$(".trl");if(t){t.classList.remove("in");setTimeout(()=>t.remove(),300)}break}
@@ -1777,7 +1779,7 @@ function act(el){
     case"pl":openPlEdit(+x[0]);break;
     case"plact":{closeSheet();const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
       if(!pp.real&&REAL){backToTest();break}
-      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();topPage()._r();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
+      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();refreshTop();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
     case"addpl":S.formType="xtream";openSheet(renderForm(),"","form");break;
     case"loadpl":{const x=S.formType==="xtream",nm=($("#fName").value||"").trim();let url;
       if(x){const sv=$("#fServer").value,u=$("#fUser").value,p=$("#fPass").value;if(!sv.trim()||!u.trim()||!p.trim()){toast("Bitte Server, Benutzername und Passwort eingeben");break}url=xtreamUrl(sv,u,p)}
@@ -1811,12 +1813,12 @@ function act(el){
       break}
     case"editlist":pushPage(()=>editorHTML());break;
     case"edopen":{const id=x[0];pushPage(()=>editGroupHTML(id));break}
-    case"edg":{const id=x[0];S.hidG.has(id)?S.hidG.delete(id):S.hidG.add(id);persist();topPage()._r();break}
-    case"edc":{const id=+x[0];S.hidC.has(id)?S.hidC.delete(id):S.hidC.add(id);persist();topPage()._r();break}
+    case"edg":{const id=x[0];S.hidG.has(id)?S.hidG.delete(id):S.hidG.add(id);persist();refreshTop();break}
+    case"edc":{const id=+x[0];S.hidC.has(id)?S.hidC.delete(id):S.hidC.add(id);persist();refreshTop();break}
     case"edmv":{const[tp,id,d]=x;if(tp==="g"){const ids=orderedGroups().map(g=>g.id),i=ids.indexOf(id),j=i+ +d;if(j<0||j>=ids.length)break;[ids[i],ids[j]]=[ids[j],ids[i]];S.gOrder=ids}
       else{const c=chById(id),ids=chOrdered(c.group).map(v=>v.id),i=ids.indexOf(+id),j=i+ +d;if(j<0||j>=ids.length)break;[ids[i],ids[j]]=[ids[j],ids[i]];S.cOrder[c.group]=ids}
-      persist();topPage()._r();break}
-    case"edreset":S.hidG.clear();S.hidC.clear();S.gOrder=[];S.cOrder={};persist();topPage()._r();toast("Senderliste zurückgesetzt");break;
+      persist();refreshTop();break}
+    case"edreset":S.hidG.clear();S.hidC.clear();S.gOrder=[];S.cOrder={};persist();refreshTop();toast("Senderliste zurückgesetzt");break;
     case"tvsend":S.sendPl=Math.min(S.sendPl,S.playlists.length-1);openTvSend();break;
     case"tvpl":S.sendPl=+x[0];openTvSend();break;
     case"tvgo":{const pl=S.playlists[S.sendPl],l=$("#tvList");if(l)l.innerHTML=`<div class="ap"><span class="spin"></span><b>Wohnzimmer<small>Wird gesendet …</small></b></div>`;
