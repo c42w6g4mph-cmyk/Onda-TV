@@ -685,6 +685,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .logo.haslogo{position:relative;overflow:hidden;isolation:isolate}
 .logo .lg-glow{position:absolute;z-index:-1;inset:-40%;width:180%!important;height:180%!important;object-fit:cover!important;filter:blur(14px) saturate(1.5) brightness(.75);opacity:.45}
 
+.btn.danger{color:var(--live)}
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -1760,9 +1761,11 @@ function act(el){
     case"eplay":{const s=SERIES[+x[0]],se=+x[1],e=+x[2];openVod({title:epTitle(s,se,e),sub:s.t+" · Staffel "+se+", Folge "+e,dur:epDur(s,se,e)*60,hue:(s.hue+e*9)%360,raw:s.raw+(s.i%3?" FHD":""),ep:true,si:s.i,se,e});break}
     case"q":S.query=x[0];$("#q").value=x[0];renderSResults();break;
     case"set":openPicker(x[0]);break;
+    case"pick":if(x[0]==="epgsrc"){S.set.epgsrc=+x[1];persist();const ai=Math.max(0,S.playlists.findIndex(p=>p.active));S.playlists[ai].epgMode=+x[1]===1?1:0;LS.set("pl",S.playlists);closeSheet();setTimeout(()=>openPlEdit(ai),250);break}
     case"pick":{const it=itOf(x[0]);S.set[it.k]=+x[1];persist();closeSheet();const pg=topPage();if(pg)pg._r();
       if(it.k==="lang"||it.k==="theme")applyLook(true);toast(it.l+": "+it.o[sv(it.k)]);break}
-    case"pl":{const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
+    case"pl":openPlEdit(+x[0]);break;
+    case"plact":{closeSheet();const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
       if(!pp.real&&REAL){backToTest();break}
       S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();topPage()._r();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
     case"addpl":S.formType="xtream";openSheet(renderForm(),"","form");break;
@@ -1774,8 +1777,17 @@ function act(el){
     case"totest":backToTest();break;
     case"epgopen":openEPGSheet();break;
     case"pldiag":plDiag();break;
-    case"epgcopy":{const u=EPGURL;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>prompt("Link kopieren:",u));break}
-    case"epgurl":{closeSheet();toast("Lade EPG …");const u=EPGURL;if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Der Anbieter liefert über http – bitte über die Datei laden");setTimeout(openEPGSheet,1500);break}
+    case"pem":{peCollect();S.playlists[PLE].epgMode=+x[0];LS.set("pl",S.playlists);if(+x[0]===1)S.set.epgsrc=1;else if(+x[0]===0)S.set.epgsrc=0;persist();openPlEdit(PLE);break}
+    case"pesave":{peCollect();closeSheet();toast("Gespeichert");const pg=topPage();if(pg)pg._r();if(S.tab!=="epg")rerenderTab();break}
+    case"pesaveepg":{const p=peCollect();closeSheet();const u=p.epgMode===1?p.epgUrl:EPGURL;if(!u){toast("Keine EPG-Adresse bekannt – bitte «Eigene URL» oder «Datei» wählen");break}
+      if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Die Adresse nutzt http – im Browser nur über die Datei möglich");setTimeout(openEPGSheet,1400);break}
+      toast("Lade EPG …");fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1400)});break}
+    case"pedel":{const p=S.playlists[PLE];if(!confirm("„"+p.name+"“ entfernen?"))break;closeSheet();
+      if(p.real){IDB.set("m3u",null).catch(()=>{});IDB.set("epg",null).catch(()=>{});S.playlists.splice(PLE,1);if(!S.playlists.some(q=>q.active)&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);if(REAL){backToTest()}else{const pg=topPage();if(pg)pg._r()}}
+      else{const wasA=p.active;S.playlists.splice(PLE,1);if(wasA&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);const pg=topPage();if(pg)pg._r()}
+      toast("Entfernt");break}
+    case"epgcopy":{const u=epgUrlEff();(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(()=>toast("Link kopiert · jetzt in Safari einfügen")).catch(()=>prompt("Link kopieren:",u));break}
+    case"epgurl":{closeSheet();toast("Lade EPG …");const u=epgUrlEff();if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Der Anbieter liefert über http – bitte über die Datei laden");setTimeout(openEPGSheet,1500);break}
       fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1500)});break}
     case"chmore":S.chLimit+=300;renderChList();break;
     case"seg":{const n=$("#fName").value;S.formType=x[0];openSheet(renderForm(),"","form");$("#fName").value=n;break}
@@ -1954,7 +1966,7 @@ function applyReal(P0,name){
   ["m","s"].forEach(k=>TREND[k].forEach(t=>{const r=findInPlaylist(t);t.avail=r;AVAIL[t.key]=!!r}));
   if(!GROUPS.some(g=>g.id===S.group))S.group=GROUPS[0]?GROUPS[0].id:"all";
   const info=CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien";
-  S.playlists=S.playlists.filter(p=>!p.real);S.playlists.forEach(p=>p.active=false);S.playlists.unshift({name:name||"Meine Playlist",type:"Eigene Playlist",info,active:true,real:true});LS.set("pl",S.playlists);
+  const prev=S.playlists.find(p=>p.real)||{};S.playlists=S.playlists.filter(p=>!p.real);S.playlists.forEach(p=>p.active=false);S.playlists.unshift({...prev,name:name||prev.name||"Meine Playlist",type:"Eigene Playlist",info,active:true,real:true});LS.set("pl",S.playlists);
   return info;
 }
 async function importText(text,name){
@@ -1981,7 +1993,7 @@ function importHelp(url,why){
 }
 let IMPURL="";
 APP.addEventListener("change",e=>{const inp=e.target;if(!inp||!/^m3uFile/.test(inp.id)||!inp.files||!inp.files[0])return;const f=inp.files[0];
-  toast("Lese „"+f.name+"“ …");const r=new FileReader();r.onload=()=>{importText(String(r.result),($("#fName")&&$("#fName").value.trim())||f.name.replace(/\.[^.]+$/,"")).catch(err=>toast("Konnte nicht gelesen werden: "+err.message))};r.onerror=()=>toast("Datei konnte nicht gelesen werden");r.readAsText(f)});
+  toast("Lese „"+f.name+"“ …");const r=new FileReader();r.onload=()=>{importText(String(r.result),($("#fName")&&$("#fName").value.trim())||($("#peName")&&$("#peName").value.trim())||f.name.replace(/\.[^.]+$/,"")).catch(err=>toast("Konnte nicht gelesen werden: "+err.message))};r.onerror=()=>toast("Datei konnte nicht gelesen werden");r.readAsText(f)});
 {const _x=0}
 
 /* ---------- EPG (XMLTV) stückweise lesen, auch gezippt; Zuordnung über tvg-id, sonst Name ---------- */
@@ -2048,16 +2060,42 @@ function openEPGSheet(){
   const ex=EPGINFO?`<p class="foot" style="margin-top:0">Geladen: ${EPGINFO.channels} Sender mit Sendungen · Stand ${new Date(EPGINFO.ts).toLocaleString("de-CH",{day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})}</p>`:"";
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TV-Guide (EPG) laden</h2>${ex}
    <p class="foot" style="margin-top:0">Die Sendungen stehen in einer eigenen Datei deines Anbieters (XMLTV). Die <code>tvg-id</code> jedes Senders verbindet sie mit deiner Playlist.</p>
-   ${EPGURL?`<div class="btns col"><button class="btn primary" data-act="epgurl">Automatisch laden</button></div><p class="foot">${EPGDERIVED?"Aus deinen Xtream-Zugangsdaten erkannt":"Adresse aus deiner Playlist"}: ${esc(EPGURL.replace(/(password=)[^&]+/i,"$1•••"))}</p>`:""}
+   ${epgUrlEff()?`<div class="btns col"><button class="btn primary" data-act="epgurl">Automatisch laden</button></div><p class="foot">${epgUrlEff()!==EPGURL?"Eigene EPG-Adresse":EPGDERIVED?"Aus deinen Xtream-Zugangsdaten erkannt":"Adresse aus deiner Playlist"}: ${esc(epgUrlEff().replace(/(password=)[^&]+/i,"$1•••"))}</p>`:""}
    <div class="grp-h" style="padding-left:2px">Über eine Datei</div>
    <ol class="foot" style="padding-left:18px;line-height:1.6;margin-top:4px"><li>Xtream: <code>http://SERVER/xmltv.php?username=…&password=…</code> in Safari laden und in «Dateien» sichern (Teilen › In Dateien sichern, oder Link lange drücken › Verknüpfte Datei laden).</li><li>Hier die Datei wählen. Auch .gz geht.</li></ol>
-   ${EPGURL?'<div class="btns col"><button class="btn" data-act="epgcopy">Link kopieren</button></div>':""}
+   ${epgUrlEff()?'<div class="btns col"><button class="btn" data-act="epgcopy">Link kopieren</button></div>':""}
    <div class="btns col" style="margin-top:10px"><label class="btn ${EPGURL?"":"primary"}" style="cursor:pointer">EPG-Datei auswählen<input type="file" id="epgFile" accept=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*" hidden></label></div>
    <p class="foot">Grosse Dateien (100 MB und mehr) brauchen etwas Zeit. Behalten werden nur deine Sender, von gestern bis in 3 Tagen.</p>
    <div class="btns col"><button class="btn" data-act="pldiag">Playlist prüfen</button></div>`,"","epg");
 }
 APP.addEventListener("change",e=>{const inp=e.target;if(!inp||inp.id!=="epgFile"||!inp.files||!inp.files[0])return;const f=inp.files[0];closeSheet();importEPGBlob(f,f.name).catch(err=>toast("EPG konnte nicht gelesen werden: "+err.message))});
 
+
+/* ---------- Playlist bearbeiten (Name, EPG-Quelle, User-Agent, neu laden, löschen) ---------- */
+const epgUrlEff=()=>{const p=S.playlists.find(p=>p.active);return(p&&p.epgMode===1&&p.epgUrl)?p.epgUrl:EPGURL};
+let PLE=0;
+function openPlEdit(i){
+  PLE=i;const p=S.playlists[i],m=p.epgMode||0,cur=p.real?REAL:!REAL&&p.active,mask=u=>esc((u||"").replace(/(password=)[^&]+/i,"$1•••"));
+  const epgState=p.real&&REAL?(EPGINFO?`${EPGINFO.channels} Sender mit Sendungen · Stand ${new Date(EPGINFO.ts).toLocaleString("de-CH",{day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"})}`:"Noch keine Sendungsdaten geladen"):"Testdaten (simuliert)";
+  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Playlist bearbeiten</h2>
+   <p class="foot" style="margin:0 0 14px">${esc(p.type)} · ${esc(p.info)}${p.active?" · <b style='color:var(--ok)'>aktiv</b>":""}</p>
+   <div class="field"><label for="peName">Name</label><input id="peName" class="finput" value="${esc(p.name)}"></div>
+   <div class="grp-h" style="padding-left:2px">EPG-Quelle</div>
+   <div class="segw form"><button class="${m===0?"on":""}" data-act="pem:0">Automatisch</button><button class="${m===1?"on":""}" data-act="pem:1">Eigene URL</button><button class="${m===2?"on":""}" data-act="pem:2">Datei</button></div>
+   ${m===0?`<p class="foot">${p.real&&REAL&&EPGURL?(EPGDERIVED?"Aus deinen Xtream-Zugangsdaten: ":"Aus der Playlist: ")+mask(EPGURL):"Onda nimmt die EPG-Adresse aus der Playlist bzw. aus den Xtream-Zugangsdaten."}</p>`
+    :m===1?`<div class="field"><label for="peEpg">XMLTV-URL (.xml oder .xml.gz)</label><input id="peEpg" class="finput" inputmode="url" autocapitalize="off" placeholder="https://…/epg.xml.gz" value="${esc(p.epgUrl||"")}"></div>`
+    :`<p class="foot">EPG-Datei aus «Dateien» wählen (XMLTV, auch .gz).</p>`}
+   <p class="foot" style="margin-top:2px">Status: ${esc(epgState)}</p>
+   ${p.real&&REAL?`<div class="btns col">${m===2?`<label class="btn primary" style="cursor:pointer">EPG-Datei auswählen<input type="file" id="epgFile" accept=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*" hidden></label>`:`<button class="btn primary" data-act="pesaveepg">Speichern und EPG laden</button>`}</div>`:""}
+   <div class="field" style="margin-top:14px"><label for="peUa">User-Agent (optional)</label><input id="peUa" class="finput" autocomplete="off" value="${esc(p.ua||"")}" placeholder="Standard: Onda/1.0"></div>
+   <div class="btns col">
+    <button class="btn ${p.real&&REAL?"":"primary"}" data-act="pesave">Speichern</button>
+    ${cur?"":`<button class="btn" data-act="plact:${i}">Diese Playlist verwenden</button>`}
+    ${p.real?`<label class="btn" style="cursor:pointer">Playlist neu laden (Datei)<input type="file" id="m3uFile3" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,*/*" hidden></label>${REAL?'<button class="btn" data-act="pldiag">Playlist prüfen</button>':""}`:""}
+    ${S.playlists.length>1?`<button class="btn danger" data-act="pedel">Playlist entfernen</button>`:""}
+   </div>`,"","pledit");
+}
+function peCollect(){const p=S.playlists[PLE];const n=$("#peName");if(n&&n.value.trim())p.name=n.value.trim();const u=$("#peUa");if(u)p.ua=u.value.trim();const e=$("#peEpg");if(e)p.epgUrl=e.value.trim();LS.set("pl",S.playlists);return p}
 async function bootReal(){
   try{const d=await IDB.get("m3u");if(!d||!d.text)throw 0;applyReal(parseM3U(d.text),d.name);try{attachEPG(await IDB.get("epg"))}catch(e){}}
   catch(e){try{localStorage.setItem("onda.ios.src","test")}catch(_){}location.reload();return false}
