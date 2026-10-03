@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024"><defs>
-<radialGradient id="bg" cx=".3" cy=".2" r="1.1"><stop offset="0" stop-color="#1a2438"/><stop offset=".55" stop-color="#0d1320"/><stop offset="1" stop-color="#05080e"/></radialGradient>
-<linearGradient id="w" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs>
+<radialGradient id="bg" cx="0" cy="0" r="1.45"><stop offset="0" stop-color="#1b3d8f"/><stop offset=".55" stop-color="#0b1430"/><stop offset="1" stop-color="#060a18"/></radialGradient></defs>
 <rect width="1024" height="1024" fill="url(#bg)"/>
-<g transform="translate(512 512) scale(13.5) translate(-24 -26)">
-<path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#w)" stroke-width="5.5" stroke-linecap="round"/>
-<path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#w)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></g></svg>
+<g transform="translate(512 512) scale(13.2) translate(-32 -27.2)">
+<path d="M32 15L22 5M32 15L42 5" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="22" cy="5" r="2.4" fill="#fff"/><circle cx="42" cy="5" r="2.4" fill="#fff"/>
+<rect x="7" y="16" width="50" height="34" rx="9" fill="none" stroke="#fff" stroke-width="3.6"/>
+<g transform="translate(16.4,16.2) scale(.65)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="#ffd6c2" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="#86aaff" stroke-width="5.5" stroke-linecap="round"/></g>
+</g></svg>

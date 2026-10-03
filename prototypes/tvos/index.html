@@ -61,9 +61,17 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .splash-in{display:flex;flex-direction:column;align-items:center;gap:26px}
 .splash .wordmark{font-size:120px;color:#fff}
 .splash .tag2{font-size:26px;letter-spacing:.32em;text-transform:uppercase;color:#8fb4ff;font-weight:600}
-.wave-anim path{stroke-dasharray:120;stroke-dashoffset:120;animation:draw 1.1s ease forwards}
-.wave-anim path:nth-child(2){animation-delay:.18s}
 @keyframes draw{to{stroke-dashoffset:0}}
+/* Onda-Logo: TV mit Antenne, Wellen Pfirsich + Blau */
+.onda-logo{flex:none;overflow:visible}
+#app[data-look="light"] .onda-logo{--lgF:#13224f;--lgA:#e0835c;--lgB:#4d7ae6}
+#app[data-look="light"] .iosicon .onda-logo,#app[data-look="light"] .appicon .onda-logo,#app[data-look="light"] .splash .onda-logo{--lgF:#fff;--lgA:#ffd6c2;--lgB:#86aaff}
+.wave-anim path,.wave-anim rect{stroke-dasharray:100;stroke-dashoffset:100;animation:draw 1.1s ease forwards}
+.wave-anim rect{animation-delay:.1s}.wave-anim g path{animation-delay:.35s}.wave-anim g path:nth-child(2){animation-delay:.5s}
+.wave-anim .lg-dot{opacity:0;animation:lgdot .3s .7s ease forwards}
+@keyframes lgdot{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.wave-anim path,.wave-anim rect{animation:none;stroke-dashoffset:0}.wave-anim .lg-dot{animation:none;opacity:1}}
+
 @media (prefers-reduced-motion:reduce){.wave-anim path{animation:none;stroke-dashoffset:0}.splash{transition:none}}
 .tabs{flex:none;display:flex;gap:4px;padding:8px;border-radius:50px;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.04));backdrop-filter:blur(30px) saturate(1.6);-webkit-backdrop-filter:blur(30px) saturate(1.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.05),0 0 0 1px rgba(255,255,255,.08),0 14px 40px rgba(0,0,0,.35)}
 .tab{padding:12px 28px;border-radius:40px;font-size:29px;font-weight:600;color:var(--dim);white-space:nowrap}
@@ -646,7 +654,7 @@ body[data-look="light"]{--bg:#cfd4dd}
     <div id="stage">
       <div class="bgglow"></div>
       <header class="topbar">
-        <div class="brand"><svg class="" width="44" height="44" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="og44" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og44)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og44)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda</span></div>
+        <div class="brand"><svg class="onda-logo" width="54" height="54" viewBox="4.5 -0.3 55 55" aria-hidden="true"><path d="M32 15L22 5M32 15L42 5" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.2" stroke-linecap="round"/><circle class="lg-dot" cx="22" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><circle class="lg-dot" cx="42" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><rect x="7" y="16" width="50" height="34" rx="9" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.6"/><g transform="translate(16.4,16.2) scale(.65)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgA,#ffd6c2)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgB,#86aaff)" stroke-width="5.5" stroke-linecap="round"/></g></svg><span class="wordmark">onda</span></div>
         <nav class="tabs" id="tabs"></nav>
         <div class="tb-right"><span class="proto">Prototyp</span><span class="clock" id="clock"></span></div>
       </header>
@@ -676,7 +684,7 @@ body[data-look="light"]{--bg:#cfd4dd}
         <div class="p-menu" id="p-menu" hidden></div>
       </div>
       <div class="toast" id="toast" hidden></div>
-      <div class="splash" id="splash"><div class="splash-in"><svg class="wave-anim" width="150" height="150" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="og150" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og150)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og150)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda</span><span class="tag2">IPTV Player</span></div></div>
+      <div class="splash" id="splash"><div class="splash-in"><svg class="onda-logo wave-anim" width="150" height="150" viewBox="4.5 -0.3 55 55" aria-hidden="true"><path d="M32 15L22 5M32 15L42 5" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.2" stroke-linecap="round" pathLength="100"/><circle class="lg-dot" cx="22" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><circle class="lg-dot" cx="42" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><rect x="7" y="16" width="50" height="34" rx="9" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.6" pathLength="100"/><g transform="translate(16.4,16.2) scale(.65)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgA,#ffd6c2)" stroke-width="5.5" stroke-linecap="round" pathLength="100"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgB,#86aaff)" stroke-width="5.5" stroke-linecap="round" pathLength="100"/></g></svg><span class="wordmark">onda</span><span class="tag2">IPTV Player</span></div></div>
     </div>
   </div>
   <div id="remote" aria-label="Fernbedienung">
@@ -1529,7 +1537,7 @@ function renderSettings(){
     <div class="srow f" data-act="addpl"><span>＋ Playlist hinzufügen</span><span class="val">QR · M3U · Xtream</span></div>${REAL?`<div class="srow f" data-act="set:refresh"><span>Automatisch aktualisieren<span class="hint">Playlist und TV-Guide · zuletzt ${ageTxt(PLTS)}</span></span><span class="val">${esc(itOf("refresh").o[sv("refresh")])}<i class="chev">›</i></span></div>`:""}</div>
     <div class="sec"><h4>Cover &amp; Infos</h4>${metaRowsTV()}</div>
     <div class="sec"><h4>Senderliste</h4><div class="srow f" data-act="editlist"><span>Senderliste bearbeiten<span class="hint">Gruppen und Sender ausblenden oder sortieren</span></span><span class="val">${CH.filter(chVisible).length} von ${CH.length}<i class="chev">›</i></span></div></div>
-    <div class="sec"><h4>Über Onda</h4><div class="about"><div class="appicon"><div class="ai-in"><svg class="" width="96" height="96" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="og96" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og96)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#og96)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda</span></div></div><div class="about-txt"><b>Onda – IPTV Player</b>App-Symbol-Entwurf für den Apple-TV-Homescreen</div></div><div class="srow"><span>Version</span><span class="val">Prototyp 1.2 · Testdaten</span></div></div></div>
+    <div class="sec"><h4>Über Onda</h4><div class="about"><div class="appicon"><div class="ai-in"><svg class="onda-logo" width="96" height="96" viewBox="4.5 -0.3 55 55" aria-hidden="true"><path d="M32 15L22 5M32 15L42 5" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.2" stroke-linecap="round"/><circle class="lg-dot" cx="22" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><circle class="lg-dot" cx="42" cy="5" r="2.4" style="fill:var(--lgF,#fff)"/><rect x="7" y="16" width="50" height="34" rx="9" fill="none" style="stroke:var(--lgF,#fff)" stroke-width="3.6"/><g transform="translate(16.4,16.2) scale(.65)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgA,#ffd6c2)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" style="stroke:var(--lgB,#86aaff)" stroke-width="5.5" stroke-linecap="round"/></g></svg><span class="wordmark">onda</span></div></div><div class="about-txt"><b>Onda – IPTV Player</b>App-Symbol-Entwurf für den Apple-TV-Homescreen</div></div><div class="srow"><span>Version</span><span class="val">Prototyp 1.2 · Testdaten</span></div></div></div>
    <div class="sy">${SETTINGS.filter(sec=>!sec.hide).map(sec=>`<div class="sec"><h4>${sec.sec}</h4>${sec.items.map(it=>`<div class="srow f" data-act="set:${it.k}"><span>${esc(it.l)}${it.h?`<span class="hint">${esc(hv(it))}</span>`:""}</span><span class="val">${esc(it.o[sv(it.k)])}<i class="chev">›</i></span></div>`).join("")}</div>`).join("")}</div></div>`;
 }
 function renderForm(){
