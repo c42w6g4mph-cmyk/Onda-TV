@@ -1,6 +1,6 @@
 # Onda – Bauplan für tvOS und iOS
 
-Stand: 02.10.2026 · Grundlage: Prototyp 1.2 nach Minimal-Umbau (Artifacts „Onda“ für Apple TV und „Onda iPhone“) · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
+Stand: 03.10.2026 · Grundlage: Prototyp 1.2 nach Minimal-Umbau, iOS nach MyTVOnline+-Abläufen (Artifacts „Onda“ für Apple TV und „Onda iPhone“) · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
 
 ---
 
@@ -15,32 +15,56 @@ Stand: 02.10.2026 · Grundlage: Prototyp 1.2 nach Minimal-Umbau (Artifacts „On
 
 | Thema | Entscheidung | Begründung |
 |---|---|---|
-| Engine für .ts und Dateien | **VLCKit 3 (LGPL 2.1)**, später **VLCKit 4** sobald stabil | ausgereift, kostenlos, spielt MPEG-TS zuverlässig, Deinterlacing eingebaut, auf tvOS und iOS verfügbar. VLCKit 4 bringt voraussichtlich Bild-in-Bild auf iOS (VLC 4 für iOS seit 25.06.2026 als Beta mit Bild-in-Bild), ist aber noch Alpha (4.0.0a18, stabil: 3.7.3) |
+| Engine für .ts und Dateien | **Testsieger aus Meilenstein 2**, Favorit **MPVKit (LGPL)**, Alternativen **VLCKit 4** und **KSPlayer (LGPL-Lizenz)** | aktuelle FFmpeg-Engines, die verbreitete Apps nutzen (Abschnitt 2a/2b). VLCKit 3 ist veraltet und nur noch Rückfall |
 | Engine für HLS | **AVPlayer** | Systemplayer, beste Integration (HDR, Dolby Vision, Bild-in-Bild und AirPlay auf iOS) |
-| Auswahl in der App | Automatisch · AVPlayer · VLC (unverändert) | „Automatisch“: HLS → AVPlayer, alles andere → VLC. **Keine weiteren Engines in der Auswahl**: Der Nutzer soll nie eine Engine wählen müssen |
+| Auswahl in der App | Automatisch · AVPlayer · zweite Engine (Einstellung unverändert, nur die Bezeichnung folgt dem Testsieger) | „Automatisch“: HLS → AVPlayer, alles andere → zweite Engine. **Keine weiteren Engines in der Auswahl**: Der Nutzer soll nie eine Engine wählen müssen |
 | Weitere Engines | nur im Player-Test vergleichen, nicht im Produkt | siehe Abschnitt 2a |
 | Deinterlacing | Automatisch (= Yadif 2x), Aus, Verwerfen, Überblenden, Bob, Yadif, Yadif 2x | entspricht den VLC-Modi; BWDIF gibt es in VLC 3 nicht |
 | Einstellungen | **bleiben vollständig wie bisher** (Entscheid Sinan, 02.10.2026) | Der Minimal-Umbau betrifft nur die Bildschirme, nicht die Einstellungen |
 | Sprache | String Catalog (Localizable.xcstrings), Deutsch und Englisch, plus Umschalter in der App | |
 | Erscheinungsbild | Dunkel · Hell · Wie Apple TV bzw. Wie iPhone | über `preferredColorScheme`; Video-Bereiche bleiben immer dunkel |
 
-## 2a. Player-Engines im Vergleich (Stand 02.10.2026)
+## 2a. Player-Engines im Vergleich (Stand 03.10.2026)
 
 | Engine | Lizenz | Live-.ts | Bild-in-Bild / AirPlay | Stand |
 |---|---|---|---|---|
 | AVPlayer | gratis (System) | nur über HLS | voll | stabil |
 | VLCKit 3.7.3 | LGPL, gratis | ja, mit Yadif | Bild-in-Bild nein, AirPlay unklar | stabil |
-| VLCKit 4 | LGPL, gratis | ja | Bild-in-Bild ja (laut VLC-4-Beta für iOS) | Alpha (4.0.0a18) |
-| KSPlayer | GPL gratis, LGPL kostenpflichtig | ja | ja, inkl. HDR und Dolby Vision | aktiv |
+| VLCKit 4 | LGPL 2.1, gratis | ja | Bild-in-Bild ja (iOS, macOS) | Alpha: 4.0.0-alpha.21 (Juli 2026), offizielles Swift-Paket ab alpha.22 |
+| KSPlayer | GPL gratis, LGPL kostenpflichtig (Preis auf Anfrage) | ja | ja, inkl. HDR und Dolby Vision | aktiv; genutzt von IPTV-Apps wie APTV und Smart IPTV |
 | MPVKit (libmpv) | LGPL (GPL optional) | ja | eingeschränkt | Metal nur inoffiziell, laut Projekt „nur zum Lernen“; trotzdem in Streamyfin und Moonfin (Jellyfin-Clients) im Einsatz |
 | AVPlayer mit lokalem Umpacken | gratis | ja, wenn Codecs Apple-kompatibel | voll | Eigenbau: .ts auf dem Gerät ohne Neukodierung in HLS umpacken (so macht es LiquidFin). Kein MPEG-2-Video, kein MP2-Ton, Deinterlacing nur durch das System |
 | Infuse-Engine | proprietär | – | – | nicht verfügbar |
 
-In Apple-Apps verbreitet sind vor allem AVPlayer und VLCKit, zunehmend MPVKit. KSPlayer ist nicht verbreiteter.
+Verbreitung: Infuse nutzt einen eigenen Player auf FFmpeg-Basis (seit 2010). Streamyfin und Moonfin nutzen MPVKit, Swiftfin VLCKit und AVPlayer, APTV und Smart IPTV KSPlayer.
 
-**Entscheid:** VLCKit 3 jetzt, VLCKit 4 sobald stabil. Im Player-Test (Meilenstein 2) werden **fünf Kandidaten** mit denselben Sendern verglichen: VLCKit 3, VLCKit 4 Alpha, MPVKit, KSPlayer (GPL, nur intern) und AVPlayer mit Umpacken. Gegenszenario: Ist MPV klar besser, lohnt der Wechsel trotz Wartungsrisiko. Ist KSPlayer klar besser, kostet das Lizenzgebühren (aktueller Preis unklar, beim Anbieter anfragen).
+**Entscheid (03.10.2026):** zwei Engines, die Onda automatisch wählt. **AVPlayer** für HLS (Bild-in-Bild, AirPlay, HDR, Dolby Vision, geringster Akkuverbrauch) und **eine FFmpeg-Engine** für alles andere (MPEG-TS, MKV, AC3/DTS, Untertitel). Welche, entscheidet der Player-Test (Meilenstein 2) mit **fünf Kandidaten**: AVPlayer (Referenz für HLS), **MPVKit** (Favorit), **VLCKit 4** (aktuelle Alpha), **KSPlayer** (GPL nur intern testen, im Produkt nur mit LGPL-Lizenz) und AVPlayer mit Umpacken. VLCKit 3 fällt aus dem Test, weil veraltet. Gegenszenario: Gewinnt KSPlayer klar, kostet das Lizenzgebühren (Preis beim Anbieter anfragen). Ist VLCKit 4 bis zum Start nicht stabil, scheidet es aus.
 
-Quellen: [VLC 4.0 Beta für iOS](https://www.igen.fr/app-store/2026/06/vlc-40-passe-en-beta-sous-ios-avec-de-nombreuses-nouveautes-156783) · [VLCKit-Versionen](https://code.videolan.org/videolan/VLCKit/-/tags) · [KSPlayer](https://swiftpackageregistry.com/kingslay/KSPlayer) · [MPVKit](https://github.com/mpvkit/MPVKit) · [Engines der Jellyfin-Clients für tvOS](https://perfectmediaserver.com/jellyfinjune/clients/tvos/) · [Infuse-Engine](https://community.firecore.com/t/what-player-does-infuse-use/38003/3)
+Quellen: [VLCKit-4-Paket](https://github.com/virtualox/vlckit-spm) · [VLC 4.0 Beta für iOS](https://www.igen.fr/app-store/2026/06/vlc-40-passe-en-beta-sous-ios-avec-de-nombreuses-nouveautes-156783) · [VLCKit-Versionen](https://code.videolan.org/videolan/VLCKit/-/tags) · [KSPlayer](https://swiftpackageregistry.com/kingslay/KSPlayer) · [MPVKit](https://github.com/mpvkit/MPVKit) · [Engines der Jellyfin-Clients für tvOS](https://perfectmediaserver.com/jellyfinjune/clients/tvos/) · [Infuse-Engine](https://community.firecore.com/t/what-player-does-infuse-use/38003/3)
+
+## 2b. Verkauf im App Store: Metadaten und Engine (03.10.2026)
+
+Ziel: Cover, Hintergrund, Handlung, Besetzung und Trailer in guter Qualität bei jedem Film und jeder Serie, rechtlich sauber in einer kostenpflichtigen App.
+
+**Fakten**
+
+| Quelle | Kosten bei kommerzieller App | Bemerkung |
+|---|---|---|
+| Daten des Anbieters (Xtream `get_vod_info`, `get_series_info`) | keine | Cover, Handlung, Besetzung, Trailer-Link, oft die TMDB-ID. Qualität schwankt je Anbieter |
+| TMDB | eigene kommerzielle Lizenz nötig, Preis nicht öffentlich (**unklar**, Verkauf anfragen) | gratis nur nicht-kommerziell mit Quellenangabe ([TMDB FAQ](https://developer.themoviedb.org/docs/faq)). Bilder bis Originalauflösung |
+| TheTVDB | gratis mit Quellenangabe bis 50'000 $ Umsatz/Jahr, 1'000 $/Jahr bis 250'000 $, 10'000 $/Jahr bis 1 Mio. $ ([TheTVDB](https://www.thetvdb.com/api-information)) | stark bei Serien, schwächer bei Filmen |
+
+**Entscheid: drei Stufen**
+
+1. **Anbieter-Daten zuerst.** Gratis; mit der mitgelieferten TMDB-ID ist der Treffer eindeutig.
+2. **Ergänzung aus TMDB mit kommerzieller Lizenz** über einen **eigenen kleinen Server** (z. B. Cloudflare Worker): Schlüssel bleibt geheim, Zwischenspeicher, Anbieter später wechselbar ohne App-Update. Bilder: Poster w500/w780, Hintergründe w1280 (iPhone) bzw. original (Apple TV 4K), Titel-Logos (PNG), Trailer als YouTube-Schlüssel.
+3. **Lizenzanfrage bei TMDB früh stellen**, sobald das Preismodell steht. Der Preis entscheidet, ob TMDB oder TheTVDB die Hauptquelle wird.
+
+Verworfen: Schlüssel pro Nutzer (wie im Prototyp) – rechtliche Grauzone in einer Bezahl-App und umständlich.
+
+**App Store:** Screenshots ohne echte Cover und Senderlogos (Testdaten), keine Inhalte und keine Anbieter-Empfehlungen in der App. LGPL-Engines (MPVKit, VLCKit) dynamisch einbinden, Lizenzhinweis in der App. Einschätzung, keine Rechtsberatung: vor dem Start prüfen lassen.
+
+**Im Prototyp:** Echte Beispiel-Cover (Wikipedia, TVmaze) für die Optik. Mit eigenem TMDB-Schlüssel (nur Prototyp, nicht-kommerziell) zusätzlich Hintergründe, Titel-Logos, Trailer, Handlung, Besetzung und Folgen. Detailseite im Stil der Apple TV App.
 
 ## 3. Architektur
 
@@ -53,8 +77,9 @@ OndaCore (Swift Package)
 ├── EPG             XMLTV-Parser (SAX/XMLParser, streamend), gz-Entpacken, Zeitzonen
 ├── Matching        Titel-Normalisierung + Index (Trends ↔ Playlist)
 ├── Trends          Client für Film-Datenbank (TMDB o. ä.), täglicher Cache, eine zusammengeführte Trend-Liste
+├── Metadata        Anbieter-Daten + TMDB über eigenen Server, Cache 7 Tage, Bildgrössen je Gerät
 ├── Storage         SQLite/SwiftData im Caches-Ordner, iCloud für Favoriten/Einstellungen/Senderliste, Keychain für Zugangsdaten
-├── Player          Protokoll PlayerEngine + AVPlayerEngine + VLCEngine, Stream-Analyse, vorheriger Sender
+├── Player          Protokoll PlayerEngine + AVPlayerEngine + FFmpeg-Engine (Testsieger), Stream-Analyse, vorheriger Sender
 ├── Display         Bildwiederholrate/Dynamikbereich (AVDisplayCriteria, nur tvOS)
 └── Localization    String Catalog
 OndaTV (tvOS-Target)     SwiftUI, Focus Engine, Tab-Leiste oben, Top Shelf, QR-Einrichtung
@@ -198,8 +223,8 @@ Bewusste Vereinfachungen im Prototyp (in Swift richtig lösen):
 | 3 | **EPG-Grösse** (oft > 50 MB, gezippt) | streamend parsen, nur ±2 Tage behalten, Zeitzonen und Sommerzeit aus XMLTV korrekt umrechnen |
 | 4 | **Live pausieren** mit VLC | Puffer nur wenige Minuten. Auf dem Gerät prüfen, sonst entfernen |
 | 5 | **Senderwechsel-Tempo** mit VLC bei .ts | Puffer klein halten, auf dem Gerät messen. Vergleich gemäss Abschnitt 2a |
-| 6 | **LGPL-Pflichten VLCKit** | als dynamisches Framework einbinden, Lizenzhinweis in der App, Quellcode-Hinweis. Kurz rechtlich prüfen |
-| 7 | **Trend-Daten:** TMDB ist nur für nicht-kommerzielle Nutzung kostenlos | bei kostenpflichtiger App Lizenz klären. Alternativen prüfen oder Trends weglassen |
+| 6 | **LGPL-Pflichten (MPVKit, VLCKit)** | als dynamisches Framework einbinden, Lizenzhinweis in der App, Quellcode-Hinweis. Kurz rechtlich prüfen |
+| 7 | **Metadaten und Trends:** TMDB ist nur für nicht-kommerzielle Nutzung kostenlos | kommerzielle Lizenz anfragen, Anbieter-Daten zuerst, TheTVDB als Alternative (Abschnitt 2b) |
 | 8 | **App-Review bei IPTV-Apps** ist streng | keine Inhalte mitliefern, kein „Free TV“, Demo-Playlist mit legalen Streams für die Prüfer, Screenshots ohne geschützte Senderlogos |
 | 9 | **Markenrecht „Onda“** | Swissreg, DPMA und EUIPO vor dem Launch prüfen, Namen in App Store Connect reservieren |
 | 10 | **Bildqualität** VLC vs. Infuse-Niveau | Vergleich mit eigenen Sendern (1080i, 720p50, 4K) auf Apple TV 4K |
@@ -208,7 +233,7 @@ Bewusste Vereinfachungen im Prototyp (in Swift richtig lösen):
 | 13 | **Surround-Ton** | Dolby Digital wird nach Systemeinstellung weitergegeben. DTS kann das Apple TV nicht als Bitstream ausgeben, VLC wandelt es in PCM um (auf dem Gerät prüfen) |
 | 14 | **Zeitversetzt/Pause bei Live** | VLC braucht dafür einen Zwischenspeicher, AVPlayer kann nur im Zeitfenster der HLS-Playlist zurück. Auf dem Gerät prüfen |
 | 15 | **QR-Einrichtung über unverschlüsseltes http im Heimnetz** | Einmal-Code mit kurzer Gültigkeit. Sicherer über die iOS-App (verschlüsselte Verbindung per Bonjour) |
-| 16 | **Bild-in-Bild mit VLC (iOS)** | mit VLCKit 3 nicht möglich. VLCKit 4 bringt es voraussichtlich (VLC-4-Beta), ist aber Alpha. Bis dahin Bild-in-Bild nur für HLS über AVPlayer, oder Umpacken nach HLS (2a) |
+| 16 | **Bild-in-Bild mit der FFmpeg-Engine (iOS)** | AVPlayer kann es sicher, VLCKit 4 laut Projekt, KSPlayer ja, MPVKit eingeschränkt. Im Player-Test prüfen; sonst Umpacken nach HLS (2a) |
 | 17 | **AirPlay mit VLC (iOS)** | Bild und Ton sicher nur mit AVPlayer. Mit VLC vermutlich nur Ton oder Bildschirmsynchronisierung ([VLCKit-Ticket](https://code.videolan.org/videolan/VLCKit/-/issues/624), ohne klare Antwort). Auf dem Gerät testen |
 | 18 | **Hintergrund und Mobilfunk (iOS)** | Bild-in-Bild und Ton im Hintergrund brauchen `UIBackgroundModes: audio` und `AVAudioSession(.playback)`. Einstellung „Mobile Daten“ mit `NWPathMonitor` umsetzen |
 | 19 | **Langes Drücken (iOS)** ist schlecht auffindbar | Hinweis im leeren Favoriten-Zustand; in Swift `.contextMenu` verwenden, dann zeigt iOS die Vorschau und das Menü wie gewohnt |
@@ -258,13 +283,26 @@ Einstellungen nur auf iOS: HDR-Wiedergabe, Bild-in-Bild beim Verlassen, Mobile D
 
 **Empfehlung:** zuerst tvOS fertigstellen, iOS danach als zweites Target. Universal Purchase: ein Kauf für Apple TV, iPhone und iPad.
 
+### 8a. Umbau nach MyTVOnline+-Abläufen (02.–03.10.2026, Prototyp iPhone)
+
+| Bereich | Neu |
+|---|---|
+| Start | Live-Karte 16:9 mit Titel im Bild, Meine Sender als Logo-Kacheln, Weiterschauen, Trendfilme, Trendserien (ohne Platznummern), Regale seitenweise mit Punkten |
+| Live TV | öffnet die zuletzt genutzte Gruppe; Gruppen-Leiste («Gruppe · Name · Anzahl · ↕») führt zur Gruppenliste mit «Zuletzt genutzt» und Playlist-Umschalter |
+| Player hochkant | Video oben, Sendungszeile (Tippen klappt das Programm auf, ersetzt einen Guide-Knopf), Gruppen-Leiste, darunter scrollt nur die Senderliste; oben Ton/Untertitel, Favorit, AirPlay, Bild-in-Bild; Mitte vorheriger/nächster Sender |
+| Tab-Leiste | gleitende Markierung, schrumpft beim Runterscrollen, erneutes Tippen: Übersicht → nach oben → Gruppen |
+| Detailseite | Apple-TV-Stil: grosses Bild mit stummer Trailer-Vorschau, Titel-Logo, Abspielen/Fortsetzen, Merkliste, Trailer, Folgen-Karussell, Besetzung, Ähnliches, Info |
+| Bedienung | Tipp-Schutz beim Scrollen, Home-Bildschirm-Modus mit eigenem App-Symbol |
+
+Für tvOS sinngemäss übernehmen; dort bleibt der Player im Vollbild.
+
 ## 9. Vorgehen (Meilensteine)
 
 1. **Voraussetzungen:** Entweder ein Mac (Apple Silicon, 16 GB RAM) mit Xcode: Mit einer Gratis-Apple-ID läuft die App 7 Tage und wird dann neu installiert. Oder ohne Mac: Build in der Cloud (GitHub) und TestFlight, dafür ist das Apple Developer Program nötig (99 USD/Jahr).
-2. **Player-Test:** fünf Kandidaten gemäss Abschnitt 2a mit eigenen .ts-Sendern; Bildqualität, Deinterlacing, Bildwiederholrate und Senderwechsel-Tempo messen, auf dem iPhone zusätzlich Bild-in-Bild und AirPlay
+2. **Player-Test:** fünf Kandidaten gemäss Abschnitt 2a (AVPlayer, MPVKit, VLCKit 4, KSPlayer, AVPlayer mit Umpacken) mit denselben eigenen Sendern und Filmen auf Apple TV 4K und iPhone. Messen: Startzeit, Umschaltzeit, Aussetzer/Neuverbindungen, Bildqualität und Deinterlacing (1080i, 720p50, 4K), Bildwiederholrate, HDR/Dolby Vision, Ton (AC3, E-AC3, DTS), Untertitel, Akku; iPhone zusätzlich Bild-in-Bild und AirPlay. Ergebnis: eine FFmpeg-Engine neben AVPlayer
 3. **Live-Kern:** Playlist (M3U/Xtream), Live TV, Player, Favoriten
 4. **TV-Guide:** XMLTV, Erinnerungen
-5. **Mediathek:** VOD, Trends mit Abgleich
+5. **Mediathek:** VOD, Trends mit Abgleich, Metadaten (Anbieter-Daten + TMDB über eigenen Server, Abschnitt 2b)
 6. **Einstellungen, Sprache, Erscheinungsbild**
 7. **TestFlight** auf dem eigenen Apple TV
 8. **iOS-Target**
@@ -280,6 +318,8 @@ Einstellungen nur auf iOS: HDR-Wiedergabe, Bild-in-Bild beim Verlassen, Mobile D
 ## 11. Offene Entscheidungen
 
 - Soll Onda kostenlos, kostenpflichtig oder mit Abo erscheinen? Davon hängen die TMDB-Lizenz und das Thema Markenschutz ab.
+- TMDB-Lizenz anfragen (Preis unklar) oder TheTVDB als Hauptquelle?
+- Bei KSPlayer als Testsieger: LGPL-Lizenz kaufen (Preis anfragen)?
 - Trends behalten, wenn die Datenquelle Kosten verursacht?
 - Live pausieren behalten, wenn der Puffer auf dem Gerät nur kurz ist?
-- iOS: Bild-in-Bild auch für .ts-Streams, falls VLCKit 4 nicht rechtzeitig stabil ist? (Dann Umpacken nach HLS oder ein zweiter Player wie KSPlayer mit Lizenzkosten.)
+- iOS: Bild-in-Bild auch für .ts-Streams, falls die gewählte FFmpeg-Engine es nicht kann? (Dann Umpacken nach HLS.)
