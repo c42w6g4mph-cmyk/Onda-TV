@@ -1198,7 +1198,10 @@ function renderTabbar(){
   const idx=TABS.findIndex(t=>t[0]===S.tab);
   $("#tabbar").innerHTML=`<div class="tabs" role="tablist" data-i="${idx}" style="--i:${Math.max(0,idx)}"><span class="tind"></span>${TABS.map(([id,l,ic])=>`<button class="tb ${S.tab===id?"on":""}" data-act="tab:${id}" role="tab" aria-selected="${S.tab===id}" aria-label="${l}">${IC[ic]}<span>${l}</span></button>`).join("")}</div><button class="tsearch ${S.tab==="search"?"on":""}" data-act="tab:search" aria-label="Suche">${IC.search}</button>`;
 }
-function setTabMini(on){const t=$("#tabbar");if(t&&t.classList.contains("mini")!==on)t.classList.toggle("mini",on)}
+/* Die Leiste bleibt fest stehen. Das Einklappen beim Scrollen läuft im Browser nicht flüssig (Layout-Animation mit Glas-Effekt);
+   die native App nutzt dafür tabBarMinimizeBehavior(.onScrollDown) von iOS 26. */
+const TABMINI=false;
+function setTabMini(on){if(!TABMINI)on=false;const t=$("#tabbar");if(t&&t.classList.contains("mini")!==on)t.classList.toggle("mini",on)}
 /* Beim Runterscrollen schrumpft die Leiste, beim Hochscrollen oder oben kommt sie zurück */
 {const last=new WeakMap();let raf=0,pend=null;
  /* Strecke in eine Richtung aufsummieren: iOS liefert beim Wischen viele kleine Schritte */
@@ -1206,7 +1209,7 @@ function setTabMini(on){const t=$("#tabbar");if(t&&t.classList.contains("mini")!
   const st=el.scrollTop,o=last.get(el)||{y:st,acc:0};let d=st-o.y;o.y=st;
   if(Math.sign(d)!==Math.sign(o.acc))o.acc=0;o.acc+=d;last.set(el,o);
   if(st<40)setTabMini(false);else if(o.acc>28)setTabMini(true);else if(o.acc<-18)setTabMini(false)};
- document.addEventListener("scroll",e=>{const el=e.target;if(!(el instanceof Element)||!el.closest(".view,.page")||el.closest(".shrow,.sx,.tcar"))return;
+ if(TABMINI)document.addEventListener("scroll",e=>{const el=e.target;if(!(el instanceof Element)||!el.closest(".view,.page")||el.closest(".shrow,.sx,.tcar"))return;
   pend=el;if(!raf)raf=requestAnimationFrame(run)},{capture:true,passive:true});}
 
 const R={home:renderHome,live:renderLive,epg:renderEPG,media:renderMedia,search:renderSearch};
