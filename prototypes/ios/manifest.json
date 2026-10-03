@@ -1,6 +1,6 @@
 {
- "name": "Onda",
- "short_name": "Onda",
+ "name": "Onda TV",
+ "short_name": "Onda TV",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
