@@ -686,6 +686,13 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .logo .lg-glow{position:absolute;z-index:-1;inset:-40%;width:180%!important;height:180%!important;object-fit:cover!important;filter:blur(14px) saturate(1.5) brightness(.75);opacity:.45}
 
 .btn.danger{color:var(--live)}
+/* Senderzeile mit EPG: Titel bis 2 Zeilen, darunter eine ruhige Meta-Zeile */
+.rs.rs2{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.28;color:var(--fg);opacity:.86;font-size:14px}
+.rmeta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--faint);margin-top:2px;min-width:0}
+.rmeta span:last-child{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mbar{flex:none;width:34px;height:3px;border-radius:2px;background:var(--surface2);overflow:hidden}
+.mbar i{display:block;height:100%;background:var(--accent)}
+.pnow-t .t{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.25}
 /* Minimal-Umbau */
 .fstar{color:var(--gold);font-size:12px;flex:none}
 .row{padding-right:20px}
@@ -1214,7 +1221,7 @@ const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+(t.g?" · "+esc(t.
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
 const gbar=(name,n,act)=>`<button class="gbar tap" data-act="${act}" id="${act==="lvgroups"?"gbar":"pgbar"}" aria-label="Gruppe wechseln, aktuell ${esc(name)}"><span class="gb-ic">${IC.list}</span><span class="gb-t"><small>Gruppe</small><b>${esc(name)}</b></span><span class="gcnt">${n} Sender</span><span class="gb-sw">${IC.updown}</span></button>`;
-const ltile=c=>{const p=nowP(c),ep=!noEpg(c),L=c.logo?esc(c.logo):"";return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${L?"haslogo":""}" style="--h:${c.hue}">${L?`<img class="lt-glow" src="${L}" alt="" aria-hidden="true" loading="lazy"><img class="lt-main" src="${L}" alt="" loading="lazy" onerror="var t=this.parentNode;t.classList.remove('haslogo');t.querySelector('.lt-glow')&&t.querySelector('.lt-glow').remove();this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${ep?`<span class="lt-live" aria-hidden="true"></span><div class="lt-bar"><i style="width:${pct(p)}%"></i></div>`:""}</div><b>${esc(c.name)}</b><small>${esc(ep?p.title:gName(c.group))}</small></div>`};
+const ltile=c=>{const p=nowP(c),ep=!noEpg(c),L=c.logo?esc(c.logo):"";return `<div class="ltile tap" data-act="play:${c.id}" data-ctx="${c.id}" role="button"><div class="lt-logo ${L?"haslogo":""}" style="--h:${c.hue}">${L?`<img class="lt-glow" src="${L}" alt="" aria-hidden="true" loading="lazy"><img class="lt-main" src="${L}" alt="" loading="lazy" onerror="var t=this.parentNode;t.classList.remove('haslogo');t.querySelector('.lt-glow')&&t.querySelector('.lt-glow').remove();this.remove()">`:""}<span class="ab">${esc(abbr(c.real?cleanT(c.name):c.name))}</span>${ep?`<span class="lt-live" aria-hidden="true"></span><div class="lt-bar"><i style="width:${pct(p)}%"></i></div>`:""}</div><b>${esc(c.name)}</b><small>${esc(ep?splitT(p.title).t:gName(c.group))}</small></div>`};
 const shelf=(title,items,actFn)=>shelfH(esc(title),items.map(o=>poster(o,actFn(o))).join(""));
 const chCard=c=>{const p=nowP(c);return `<div class="chcard tap" data-act="playf:${c.id}" role="button"><div class="cc-top">${logo(c,"sm")}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now">${esc(p.title)}</div></div></div><div class="bar"><i style="width:${pct(p)}%"></i></div></div>`};
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
@@ -1224,9 +1231,12 @@ const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group);
 function chOf(g){if(g==="fav")return CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));if(g==="all")return orderedGroups().flatMap(x=>chOrdered(x.id)).filter(chVisible);return chOrdered(g).filter(chVisible)}
 const gName=g=>(liveGroups().find(x=>x.id===g)||{}).name||"";
 const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${f?IC.starF:IC.star}</button>`};
+/* EPG-Titel wie Profi-Apps aufteilen: «Wettbewerb : Paarung» → Hauptzeile + kleine Zusatzzeile */
+function splitT(t){t=(t||"").trim();const m=t.match(/^(.{2,48}?)\s?:\s+(.{3,})$/);const d=x=>x.replace(/ - /g," – ");return m?{k:m[1].trim(),t:d(m[2].trim())}:{k:"",t:d(t)}}
+const untilTxt=p=>"bis "+fmt(p.end);
 function chRow(c,act="play",curId){
-  const p=nowP(c);
-  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${noEpg(c)?(S.group==="fav"||S.group==="all"||S.tab!=="live"?`<div class="rs">${esc(gName(c.group))}</div>`:""):`<div class="rs">${esc(p.title)}</div><div class="bar"><i style="width:${pct(p)}%"></i></div>`}</div></div>`;
+  const p=nowP(c),sp=splitT(p.title);
+  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${noEpg(c)?(S.group==="fav"||S.group==="all"||S.tab!=="live"?`<div class="rs">${esc(gName(c.group))}</div>`:""):`<div class="rs rs2">${esc(sp.t)}</div><div class="rmeta"><span class="mbar"><i style="width:${pct(p)}%"></i></span><span>${sp.k?esc(sp.k)+" · ":""}${untilTxt(p)}</span></div>`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
 function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
@@ -1243,7 +1253,7 @@ function renderHome(){
    <div class="nowcard tap" style="--h:${hc.hue}" data-act="play:${hc.id}" role="button">
      <div class="pv-anim"></div>
      <div class="nc-top"><span class="livebadge">LIVE</span>${logo(hc,"sm")}</div>
-     <div class="nc-bot"><div class="nc-txt">${noEpg(hc)?`<span class="nc-m">${esc(gName(hc.group))}</span><h2>${esc(hc.name)}</h2>`:`<span class="nc-m">${esc(hc.name)} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(hp.title)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div>`}</div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
+     <div class="nc-bot"><div class="nc-txt">${noEpg(hc)?`<span class="nc-m">${esc(gName(hc.group))}</span><h2>${esc(hc.name)}</h2>`:`<span class="nc-m">${esc(hc.name)}${splitT(hp.title).k?" · "+esc(splitT(hp.title).k):""} · ${fmt(hp.start)} – ${fmt(hp.end)}</span><h2>${esc(splitT(hp.title).t)}</h2><div class="bar"><i style="width:${pct(hp)}%"></i></div>`}</div><span class="nb-play" aria-label="Live ansehen">${IC.play}</span></div>
    </div>
    ${pool.length?`<section class="shelf"><h3>Meine Sender</h3><div class="shrow sx">${pool.map(ltile).join("")}</div></section>`:""}
    ${shelf("Weiterschauen",MOVIES.filter(m=>m.prog),o=>"movie:"+o.i)}
@@ -1619,7 +1629,7 @@ function belowHTML(){
   if(P.type==="live"){
     const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
-    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${noEpg(c)?`<span class="tm">${esc(gName(c.group))} · keine Programmdaten</span>`:`<span class="t">${esc(p.title)}</span><span class="tm">${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
+    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${noEpg(c)?`<span class="tm">${esc(gName(c.group))} · keine Programmdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span><span class="tm">${splitT(p.title).k?esc(splitT(p.title).k)+" · ":""}${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
      ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
