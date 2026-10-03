@@ -170,6 +170,15 @@ Ziel: übersichtlicher, weniger Information auf dem Bildschirm, gleiche Funktion
 
 Geprüft im Browser: alle geänderten Bildschirme beider Apps, Deutsch und Englisch, dunkel und hell, Fernbedienung (tvOS) und Touch inkl. langem Drücken (iOS). Keine Skriptfehler.
 
+## 4b. Review-Umsetzung (03.10.2026, beide Apps)
+
+- **Weiterschauen:** Fortschritt wird gespeichert (beim Stoppen, alle 15 s). Ab 95 % gilt ein Film als gesehen bzw. springt die Serie zur nächsten Folge. Einstellung «Filme fortsetzen»: Fragen / Immer / Nie.
+- **Zeitversatz** wirkt auf das EPG (Anzeige und Fortschritt).
+- **Mediathek:** «Alle Filme/Serien», «Neueste», Kategorie-Reihen mit «Alle N ›» und Raster (sortierbar Neueste/A–Z, nachladen in 60er-Schritten). Trends nur noch auf Start.
+- **TV-Guide:** Gruppenwahl wie bei Live TV.
+- **EPG-Quelle pro Playlist:** Automatisch (Xtream xmltv.php) / Eigene URL / Datei, im Playlist-Editor.
+- **Schnellstart + Refresh-Intervall:** Die geparste Playlist liegt im Cache (IndexedDB), der Start lädt nicht neu. Einstellung «Playlist & EPG aktualisieren»: Bei jedem Start / Täglich / Alle 3 Tage (Standard) / Alle 7 Tage / Nur manuell. Ist ein Update fällig und der automatische Abruf nicht möglich, erscheint ein Hinweis auf Start.
+
 ## 5. End-to-End-Prüfung des Prototyps
 
 Getestet in einem Browser: alle Bildschirme, Deutsch und Englisch, dunkel und hell, dazu ein Zufallstest mit 2'800 Fernbedienungs-Eingaben. **Ergebnis: keine Skriptfehler, der Fokus geht nie verloren.**
