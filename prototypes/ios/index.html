@@ -113,10 +113,10 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .tabbar>*{pointer-events:auto}
 .tabscrim{position:absolute;left:0;right:0;bottom:0;height:calc(var(--sab) + var(--tabh) + 40px);z-index:17;pointer-events:none;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--bg) 78%,transparent) 55%,var(--bg))}
 #app.pl .tabscrim{display:none}
-.tabs{position:relative;flex:1;display:flex;padding:4px;height:var(--tabh);max-width:100%;border-radius:40px;background:linear-gradient(180deg,rgba(48,55,72,.78),rgba(26,31,43,.84));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.04),0 0 0 .5px rgba(255,255,255,.14),0 14px 34px rgba(0,0,0,.42);backdrop-filter:blur(28px) saturate(1.9);-webkit-backdrop-filter:blur(28px) saturate(1.9);transition:max-width .42s cubic-bezier(.3,1.25,.4,1)}
+.tabs{position:relative;flex:1;display:flex;padding:4px;height:var(--tabh);max-width:100%;border-radius:40px;background:linear-gradient(180deg,rgba(48,55,72,.78),rgba(26,31,43,.84));box-shadow:inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(255,255,255,.04),0 0 0 .5px rgba(255,255,255,.14),0 14px 34px rgba(0,0,0,.42);backdrop-filter:blur(28px) saturate(1.9);-webkit-backdrop-filter:blur(28px) saturate(1.9);transition:max-width .3s cubic-bezier(.25,.9,.3,1)}
 .tind{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/4);border-radius:30px;background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.16);transform:translateX(calc(var(--i,0) * 100%));transition:transform .42s cubic-bezier(.3,1.3,.4,1),opacity .2s;pointer-events:none}
 .tabs[data-i="-1"] .tind{opacity:0}
-.tb{position:relative;flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:30px;font-size:10.5px;font-weight:600;letter-spacing:-.01em;color:var(--fg);opacity:.82;min-width:0;overflow:hidden;transition:color .25s,opacity .25s,flex-basis .42s cubic-bezier(.3,1.25,.4,1)}
+.tb{position:relative;flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:30px;font-size:10.5px;font-weight:600;letter-spacing:-.01em;color:var(--fg);opacity:.82;min-width:0;overflow:hidden;transition:color .25s,opacity .2s,flex-basis .3s cubic-bezier(.25,.9,.3,1),flex-grow .3s cubic-bezier(.25,.9,.3,1)}
 .tb svg{width:24px;height:24px;transition:transform .3s cubic-bezier(.3,1.6,.4,1)}
 .tb span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;transition:opacity .2s}
 .tb.on{color:var(--accent);opacity:1}
@@ -167,7 +167,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 
 /* Kanalzeilen */
 .list{display:flex;flex-direction:column}
-.row{display:flex;align-items:center;gap:12px;padding:9px 12px 9px 20px;position:relative}
+.row{display:flex;align-items:center;gap:12px;padding:9px 12px 9px 20px;position:relative;content-visibility:auto;contain-intrinsic-size:auto 66px}
 .row::after{content:"";position:absolute;left:88px;right:0;bottom:0;height:1px;background:var(--line)}
 .row:last-child::after{display:none}
 .row:active,.row.cur{background:var(--surface)}
@@ -180,7 +180,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .row.cur .rn{color:var(--accent)}
 
 /* Regale & Poster */
-.shelf{margin-bottom:22px}
+.shelf{margin-bottom:22px;content-visibility:auto;contain-intrinsic-size:auto 250px}
 .shelf h3,.shead h3{font-size:20px;font-weight:700;margin:0 20px 10px;letter-spacing:-.01em;display:flex;align-items:baseline;gap:8px}
 .shead{display:flex;align-items:center;justify-content:space-between;padding-right:20px;margin-bottom:10px}
 .shead h3{margin-bottom:0}
@@ -214,7 +214,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .dim .pt,.dim .py{opacity:.6}
 .qtag{position:absolute;top:7px;left:7px;z-index:2;font-size:9px;font-weight:800;letter-spacing:.05em;padding:2px 5px;border-radius:5px;background:rgba(10,14,22,.62);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
 .qtag.k4{background:rgba(255,255,255,.92);color:#0a0d14}
-.avail{position:absolute;top:7px;left:7px;z-index:2;font-size:9.5px;font-weight:700;padding:3px 6px;border-radius:6px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.avail{position:absolute;top:7px;left:7px;z-index:2;font-size:9.5px;font-weight:700;padding:3px 6px;border-radius:6px}
 .avail.ok{background:rgba(47,191,113,.92);color:#04140b}
 .avail.no{background:rgba(10,14,22,.72);color:#c3cad8}
 .chcard{flex:none;width:204px;border-radius:16px;background:var(--surface);padding:11px 12px;display:flex;flex-direction:column;gap:9px}
@@ -686,6 +686,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 #app[data-look="light"] .lt-glow{opacity:.45;filter:blur(26px) saturate(1.6)}
 /* Logos in Listen: gleicher Farbschein, dezenter */
 .logo.haslogo{position:relative;overflow:hidden;isolation:isolate}
+.logo.haslogo{contain:paint}
 .logo .lg-glow{position:absolute;z-index:-1;inset:-40%;width:180%!important;height:180%!important;object-fit:cover!important;filter:blur(14px) saturate(1.5) brightness(.75);opacity:.45}
 
 .btn.danger{color:var(--live)}
@@ -1199,10 +1200,14 @@ function renderTabbar(){
 }
 function setTabMini(on){const t=$("#tabbar");if(t&&t.classList.contains("mini")!==on)t.classList.toggle("mini",on)}
 /* Beim Runterscrollen schrumpft die Leiste, beim Hochscrollen oder oben kommt sie zurück */
-{const last=new WeakMap();
+{const last=new WeakMap();let raf=0,pend=null;
+ /* Strecke in eine Richtung aufsummieren: iOS liefert beim Wischen viele kleine Schritte */
+ const run=()=>{raf=0;const el=pend;pend=null;if(!el||!el.isConnected)return;
+  const st=el.scrollTop,o=last.get(el)||{y:st,acc:0};let d=st-o.y;o.y=st;
+  if(Math.sign(d)!==Math.sign(o.acc))o.acc=0;o.acc+=d;last.set(el,o);
+  if(st<40)setTabMini(false);else if(o.acc>28)setTabMini(true);else if(o.acc<-18)setTabMini(false)};
  document.addEventListener("scroll",e=>{const el=e.target;if(!(el instanceof Element)||!el.closest(".view,.page")||el.closest(".shrow,.sx,.tcar"))return;
-  const st=el.scrollTop,p=last.get(el)??st,d=st-p;last.set(el,st);
-  if(st<60)setTabMini(false);else if(d>6)setTabMini(true);else if(d<-10)setTabMini(false)},{capture:true,passive:true});}
+  pend=el;if(!raf)raf=requestAnimationFrame(run)},{capture:true,passive:true});}
 
 const R={home:renderHome,live:renderLive,epg:renderEPG,media:renderMedia,search:renderSearch};
 function showTab(id){
@@ -2092,7 +2097,7 @@ function srcLine(m){if(!m||!m.src||!m.src.length)return"";const s=m.src;
   return `<p class="asrc">Infos: ${s.map(esc).join(" · ")}.${s.includes("TheTVDB")?" Daten teilweise von TheTVDB.com – bitte unterstütze sie.":""}${s.includes("TMDB")?" Dieses Produkt nutzt die TMDB-API, ist aber nicht von TMDB unterstützt oder zertifiziert.":""}</p>`}
 /* Alle sichtbaren Cover nachladen (max. 4 Anfragen gleichzeitig) */
 const ALLV=()=>[...MOVIES,...SERIES,...TREND.m,...TREND.s];
-const byKey=k=>ALLV().find(o=>o.key===k);
+let BK=null,BKn=-1;const byKey=k=>{const n=MOVIES.length+SERIES.length+TREND.m.length+TREND.s.length;if(!BK||BKn!==n||(MOVIES[0]&&BK.get(MOVIES[0].key)!==MOVIES[0])){BK=new Map();ALLV().forEach(o=>{if(!BK.has(o.key))BK.set(o.key,o)});BKn=n}return BK.get(k)};
 const MQ=[];let mRun=0;
 function mPump(){while(mRun<4&&MQ.length){const o=MQ.shift();mRun++;loadMeta(o).then(m=>{if(m)paintKey(mKey(o))}).finally(()=>{mRun--;mPump()})}}
 function paintKey(mk){$$(`[data-mk]`).forEach(el=>{const o=byKey(el.dataset.mk);if(o&&mKey(o)===mk)paintPoster(el,o)});}
