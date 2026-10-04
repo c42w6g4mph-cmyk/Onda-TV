@@ -92,7 +92,10 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .jrow{gap:13px!important;padding:9px 18px!important}
 .jrow .cno{width:30px;flex:none;text-align:right;font-size:14px;font-weight:800;color:var(--faint);font-variant-numeric:tabular-nums}
 .jrow .logo{width:74px;height:48px;border-radius:12px}
-.jrow .rt{gap:4px}
+.jrow .rt{gap:3px}
+.jk{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:-1px}
+.jrow .jbar{margin-top:2px}
+.row.cur .jk{color:var(--accent)}
 .j1{display:flex;align-items:baseline;gap:8px;min-width:0}
 .jt{flex:1;min-width:0;font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .jrm{flex:none;font-size:12px;font-weight:700;color:#cfe1ff;background:color-mix(in srgb,var(--accent) 18%,transparent);padding:2px 7px;border-radius:7px;font-variant-numeric:tabular-nums}
@@ -1303,11 +1306,11 @@ const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on"
 function splitT(t){t=(t||"").trim();const m=t.match(/^(.{2,48}?)\s?:\s+(.{3,})$/);const d=x=>x.replace(/ - /g," – ");return m?{k:m[1].trim(),t:d(m[2].trim())}:{k:"",t:d(t)}}
 const untilTxt=p=>"bis "+fmt(p.end);
 function chRow(c,act="play",curId){
-  const p=nowP(c),sp=splitT(p.title),ep=!noEpg(c),fav=S.favCh.has(c.id),rm=Math.max(1,Math.round((p.end-Date.now())/6e4));
+  const p=nowP(c),sp=splitT(p.title),ep=!noEpg(c),fav=S.favCh.has(c.id),nm=esc(c.real?(cleanT(c.name)||c.name):c.name);
   const extra=[fav?'<span class="fstar">★</span>':"",chQ(c)==="4K"?'<span class="chq">4K</span>':""].join("");
-  return `<div class="row jrow tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt">${ep
-    ?`<div class="j1"><span class="jt">${esc(sp.t)}</span></div><span class="jbar"><i style="width:${pct(p)}%"></i></span><div class="j2">${extra}<span class="jn">${esc(c.real?(cleanT(c.name)||c.name):c.name)}</span><span class="jtm">${fmt(p.start)}–${fmt(p.end)}${sp.k?" · "+esc(sp.k):""}</span></div>`
-    :`<div class="j1"><span class="jt">${esc(c.name)}</span></div><div class="j2">${extra}<span class="na">Keine Sendungsdaten</span></div>`}</div></div>`;
+  return `<div class="row jrow tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="jk">${nm}</div>${ep
+    ?`<div class="j1"><span class="jt">${esc(sp.t)}</span></div><span class="jbar"><i style="width:${pct(p)}%"></i></span><div class="j2">${extra}<span>${fmt(p.start)}–${fmt(p.end)}${sp.k?" · "+esc(sp.k):""}</span></div>`
+    :`<div class="j1"><span class="jt na">Keine Sendungsdaten</span></div>${extra?`<div class="j2">${extra}</div>`:""}`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
 function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
