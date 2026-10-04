@@ -106,6 +106,13 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .j2 .jn{flex:0 1 auto;color:var(--dim);font-weight:600}.j2 .jtm{flex:0 10 auto}.j2 .jn+.jtm::before{content:"·";margin-right:6px;color:var(--faint)}
 .row.jrow::after{left:105px}
 .row.cur .cno{color:var(--accent)}.row.cur .jt{color:var(--accent)}
+
+.gchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 10px;scroll-padding:0 16px;-webkit-overflow-scrolling:touch}
+.gchips::-webkit-scrollbar{display:none}
+.gchip{flex:none;white-space:nowrap;font-size:14px;font-weight:600;padding:8px 14px;border-radius:18px;background:var(--surface);color:var(--fg);opacity:.92;transition:background .2s,color .2s}
+.gchip .n{font-size:11px;font-weight:700;opacity:.55;margin-left:6px;font-variant-numeric:tabular-nums}
+.gchip.on{background:var(--fg);color:var(--bg);opacity:1}
+.gchip.on .n{opacity:.6}
 /* Onda-Logo: Wellen + TV (Variante 1.1) */
 .onda-logo{flex:none;overflow:visible}
 .wm-tv{font-weight:300;color:#9fd4ff;margin-left:.2em;letter-spacing:.02em}
@@ -1300,7 +1307,12 @@ const liveGroups=()=>[{id:"fav",name:"Favoriten"},{id:"all",name:"Alle Kanäle"}
 function chOrdered(g){const list=CH.filter(c=>c.group===g),o=S.cOrder[g]||[];return list.sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?1e6+(a.num||a.id):x)-(y<0?1e6+(b.num||b.id):y)})}
 const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group);
 function chOf(g){if(g==="fav")return CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));if(g==="all")return orderedGroups().flatMap(x=>chOrdered(x.id)).filter(chVisible);return chOrdered(g).filter(chVisible)}
-const gName=g=>(liveGroups().find(x=>x.id===g)||{}).name||"";
+const prettyG=n=>{n=String(n||"");if(!/[A-ZÄÖÜ]{4}/.test(n)||n!==n.toUpperCase())return n;return n.replace(/[A-Za-zÄÖÜäöüß]+/g,w=>w.length<=3?w:w[0]+w.slice(1).toLowerCase())};
+/* Gruppen als wischbare Leiste: Namen nie gekürzt, aktive Gruppe wird ganz ins Bild gescrollt */
+function gChips(act){const gs=liveGroups().filter(g=>g.id==="fav"||chOf(g.id).length);
+  return `<div class="gchips sx" data-gc="${act}">${gs.map(g=>`<button class="gchip tap ${g.id===S.group?"on":""}" data-act="${act}:${g.id}">${g.id==="fav"?"★ ":""}${esc(prettyG(g.name))}<span class="n">${chOf(g.id).length}</span></button>`).join("")}</div>`}
+function centerChip(root){(root||document).querySelectorAll(".gchips").forEach(c=>{const on=c.querySelector(".gchip.on");if(!on)return;const l=on.offsetLeft-(c.clientWidth-on.offsetWidth)/2;c.scrollLeft=Math.max(0,l)})}
+const gName=g=>prettyG((liveGroups().find(x=>x.id===g)||{}).name||"");
 const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${f?IC.starF:IC.star}</button>`};
 /* EPG-Titel wie Profi-Apps aufteilen: «Wettbewerb : Paarung» → Hauptzeile + kleine Zusatzzeile */
 function splitT(t){t=(t||"").trim();const m=t.match(/^(.{2,48}?)\s?:\s+(.{3,})$/);const d=x=>x.replace(/ - /g," – ");return m?{k:m[1].trim(),t:d(m[2].trim())}:{k:"",t:d(t)}}
@@ -1352,9 +1364,9 @@ function renderLive(){
     return;
   }
   L.innerHTML=`<div class="scroller" id="lvScroll"><div class="lhdr"><h1>Live TV</h1>${hbtn()}</div>
-   <div class="gstick">${gbar(gName(S.group),chOf(S.group).length,"lvgroups")}</div>
+   <div class="gstick">${gChips("gpick")}</div>
    <div class="list" id="chList"></div></div>`;
-  renderChList();
+  renderChList();centerChip($("#v-live"));
 }
 function renderChList(){
   const list=chOf(S.group),more=list.length>S.chLimit;
@@ -1371,10 +1383,10 @@ function renderEPG(){
   const slots=[[null,"Jetzt"],[20.25,"20:15"]].map(([h,l])=>`<button class="chip ${(h==null?d===0&&S.epgSlot==null:h===S.epgSlot)?"sel":""}" data-act="eslot:${h}">${l}</button>`).join("");
   $("#v-epg").innerHTML=`<div class="epgv"><div class="lhdr"><h1>TV-Guide</h1>${hbtn()}</div>
    <div class="chips sx" id="epgChips"><button class="chip daychip" data-act="edayt">${esc(dayLabel(d))} <i class="dsw">⇄</i></button>${slots}</div>
-   <div style="flex:none">${gbar(gName(S.group),chOf(S.group).length,"egroups")}</div>
+   <div style="flex:none">${gChips("egsel")}</div>
    ${REAL&&(!EPGINFO||EPGINFO.old)?`<button class="epgbar tap" data-act="epgopen">${EPGINFO?`<span>Neue Zuordnung: TV-Guide einmal neu laden</span><b>Neu laden ›</b>`:`<span>Noch keine Sendungsdaten</span><b>Einrichten ›</b>`}</button>`:""}
    <div class="eg" id="eg"></div></div>`;
-  renderEpgGrid();
+  renderEpgGrid();centerChip($("#v-epg"));
 }
 function renderEpgGrid(){
   const W1=W0+ESPAN*MIN,list=chOf(S.group).slice(0,REAL?150:9999),now=Date.now(),TW=ESPAN*PPM,eg=$("#eg");
@@ -1383,7 +1395,7 @@ function renderEpgGrid(){
     const cells=sched(c).filter(p=>p.end>W0&&p.start<W1).map(p=>{
       const l=(Math.max(p.start,W0)-W0)/MIN*PPM,w=(Math.min(p.end,W1)-Math.max(p.start,W0))/MIN*PPM-4;
       const st=p.end<=now?"past":p.start<=now?"live":"future",key=c.id+":"+p.start;
-      return `<div class="cell ${st} ${S.reminders.has(key)?"rem":""}" style="left:${l}px;width:${Math.max(w,6)}px" data-act="cell:${key}" role="button"><div class="ct">${esc(p.title)}</div>${w>84?`<div class="cm">${fmt(p.start)} – ${fmt(p.end)}</div>`:""}</div>`;
+      return `<div class="cell ${st} ${S.reminders.has(key)?"rem":""}" style="left:${l}px;width:${Math.max(w,6)}px" data-act="cell:${key}" role="button"><div class="ct">${esc(p.title)}</div>${w>84&&!noEpg(c)?`<div class="cm">${fmt(p.start)} – ${fmt(p.end)}</div>`:""}</div>`;
     }).join("");
     return `<div class="erow"><div class="ech">${logo(c,"sm")}</div><div class="etrack" style="width:${TW}px">${cells}</div></div>`;
   }).join("");
@@ -1852,6 +1864,7 @@ function act(el){
     case"settings":openSettings();break;
     case"back":popPage();break;
     case"group":S.group=x[0];S.recentG=[x[0],...(S.recentG||[]).filter(g=>g!==x[0])].slice(0,4);LS.set("recentG",S.recentG);persist();S.lvView="list";renderLive();break;
+    case"gpick":{S.group=x[0];S.recentG=[x[0],...(S.recentG||[]).filter(g=>g!==x[0])].slice(0,4);LS.set("recentG",S.recentG);persist();S.lvView="list";S.chLimit=300;const sc=$("#lvScroll");const st=sc?sc.scrollTop:0;renderLive();const sc2=$("#lvScroll");if(sc2&&st>0){const gs=sc2.querySelector(".gstick");sc2.scrollTop=Math.min(st,gs?gs.offsetTop:0)}break}
     case"lvgroups":S.lvView="groups";renderLive();break;
     case"plsel":S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();renderLive();toast("Playlist „"+S.playlists[+x[0]].name+"“ aktiv · Prototyp mit Testdaten");break;
     case"zapd":zap(+x[0]);showCtl();break;
