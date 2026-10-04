@@ -1313,8 +1313,8 @@ const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group);
 function chOf(g){if(g==="fav")return CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));if(g==="all")return orderedGroups().flatMap(x=>chOrdered(x.id)).filter(chVisible);return chOrdered(g).filter(chVisible)}
 const prettyG=n=>{n=String(n||"");if(!/[A-ZÄÖÜ]{4}/.test(n)||n!==n.toUpperCase())return n;return n.replace(/[A-Za-zÄÖÜäöüß]+/g,w=>w.length<=3?w:w[0]+w.slice(1).toLowerCase())};
 /* Gruppen als wischbare Leiste: Namen nie gekürzt, aktive Gruppe wird ganz ins Bild gescrollt */
-function gChips(act){const gs=liveGroups().filter(g=>g.id==="fav"||chOf(g.id).length);
-  return `<div class="gchips sx" data-gc="${act}">${gs.map(g=>`<button class="gchip tap ${g.id===S.group?"on":""}" data-act="${act}:${g.id}">${g.id==="fav"?"★ ":""}${esc(prettyG(g.name))}<span class="n">${chOf(g.id).length}</span></button>`).join("")}</div>`}
+function gChips(act,cur=S.group){const gs=liveGroups().filter(g=>g.id==="fav"||chOf(g.id).length);
+  return `<div class="gchips sx" data-gc="${act}">${gs.map(g=>`<button class="gchip tap ${g.id===cur?"on":""}" data-act="${act}:${g.id}">${g.id==="fav"?"★ ":""}${esc(prettyG(g.name))}<span class="n">${chOf(g.id).length}</span></button>`).join("")}</div>`}
 function centerChip(root){(root||document).querySelectorAll(".gchips").forEach(c=>{const on=c.querySelector(".gchip.on");if(!on)return;const l=on.offsetLeft-(c.clientWidth-on.offsetWidth)/2;c.scrollLeft=Math.max(0,l)})}
 const gName=g=>prettyG((liveGroups().find(x=>x.id===g)||{}).name||"");
 const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${f?IC.starF:IC.star}</button>`};
@@ -1764,13 +1764,13 @@ function belowHTML(){
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
     return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><span class="pk">${esc(c.real?(cleanT(c.name)||c.name):c.name)}${!noEpg(c)&&splitT(p.title).k?`<span class="pkk"> · ${esc(splitT(p.title).k)}</span>`:""}</span>${noEpg(c)?`<span class="t na">Keine Sendungsdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span><span class="tm">${fmt(p.start)}–${fmt(p.end)}<span class="sep">·</span><b>noch ${rem} Min.</b></span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
-     ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
+     ${gChips("pgsel",(liveGroups().find(g=>gName(g.id)===P.listName)||{id:"all"}).id)}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
   const v=P.vod;let next="";
   if(v.ep){const s=SERIES[v.si],e=v.e+1;if(e<=s.seasons[v.se-1])next=`<div class="colhead" style="margin-top:14px">Nächste Folge</div><div class="ep tap" data-act="eplay:${s.i}:${v.se}:${e}" role="button"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">E${e}</div><div><div class="ep-t">${esc(epTitle(s,v.se,e))}</div><div class="ep-m">${epDur(s,v.se,e)} Min.</div></div></div>`}
   return `<div class="plist" id="plist"><div class="pbl"><h2 class="pbl-t">${esc(v.title)}</h2><div class="pbl-sub">${esc(v.sub)}</div></div>${next}</div>`;
 }
-function renderBelow(){const l=$("#plist"),st=l?l.scrollTop:0;$("#p-below").innerHTML=belowHTML();const n=$("#plist");if(n)n.scrollTop=st}
+function renderBelow(){const l=$("#plist"),st=l?l.scrollTop:0;$("#p-below").innerHTML=belowHTML();const n=$("#plist");if(n)n.scrollTop=st;centerChip($("#p-below"))}
 function updPlayer(){
   if(P.type==="live"){const c=chById(P.ch);P.hue=c.hue;$("#p-markname").textContent=c.name}else{P.hue=P.vod.hue;$("#p-markname").textContent=P.vod.title}
   $("#p-ctl").innerHTML=ctlHTML();
@@ -1874,7 +1874,7 @@ function act(el){
     case"zapd":zap(+x[0]);showCtl();break;
     case"pnowx":P.sx=!P.sx;renderBelow();break;
     case"pgroups":openPGroups();break;
-    case"pgsel":P.list=chOf(x[0]);P.listName=gName(x[0]);closeSheet();updPlayer();break;
+    case"pgsel":P.list=chOf(x[0]);P.listName=gName(x[0]);closeSheet();updPlayer();centerChip($("#player"));{const pl=$("#plist");if(pl)pl.scrollTop=0}break;
     case"play":openLive(x[0],chOf(S.group));break;
     case"playq":openLive(x[0],chOf("all"));break;
     case"playf":{const f=chOf("fav");openLive(x[0],f.length?f:chOf("all"),f.length?"Favoriten":"Alle Kanäle");break}
