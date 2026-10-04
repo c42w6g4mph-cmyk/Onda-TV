@@ -114,6 +114,13 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .gchip .n{font-size:11px;font-weight:700;opacity:.55;margin-left:6px;font-variant-numeric:tabular-nums}
 .gchip.on{background:var(--fg);color:var(--bg);opacity:1}
 .gchip.on .n{opacity:.6}
+
+.pl-sub{margin:-4px 20px 16px;font-size:13.5px;color:var(--dim);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pl-on{font-size:11px;font-weight:800;letter-spacing:.04em;color:#0b2a14;background:var(--ok);padding:3px 8px;border-radius:7px}
+.srow.arow b{color:var(--accent);font-weight:600}.srow.arow.danger b{color:var(--live,#ff453a)}.srow.arow.acc b{color:var(--accent)}
+.srow.ifield{gap:12px}.srow.ifield .sl{flex:none}.iinp{flex:1;min-width:0;text-align:right;background:transparent;border:0;outline:0;font:inherit;font-size:15px;color:var(--dim);padding:2px 0}
+.iinp:focus{color:var(--fg)}
+.pl-foot{margin:8px 22px 0}
 /* Onda-Logo: Wellen + TV (Variante 1.1) */
 .onda-logo{flex:none;overflow:visible}
 .wm-tv{font-weight:300;color:#9fd4ff;margin-left:.2em;letter-spacing:.02em}
@@ -125,7 +132,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 @keyframes lgdot{to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.wave-anim path{animation:none;stroke-dashoffset:0}.splash .lg-tv{animation:none;opacity:1}}
 
-.iosicon{width:76px;height:76px;flex:none;border-radius:18px;background:radial-gradient(120% 120% at 0% 0%,#1b3d8f 0%,#0b1430 55%,#060a18 100%);display:grid;place-items:center;box-shadow:0 0 0 .5px rgba(255,255,255,.12),0 10px 24px rgba(0,0,0,.4);position:relative;overflow:hidden}
+.iosicon{width:76px;height:76px;flex:none;border-radius:18px;background:radial-gradient(75% 75% at 50% 40%,#13254a 0%,#070b14 65%,#030406 100%);display:grid;place-items:center;box-shadow:0 0 0 .5px rgba(255,255,255,.12),0 10px 24px rgba(0,0,0,.4);position:relative;overflow:hidden}
 .iosicon::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.16),transparent 45%)}
 
 /* ---------- Ansichten ---------- */
@@ -1005,7 +1012,7 @@ const IC={
  speaker:sv_('<rect x="6" y="3" width="12" height="18" rx="5"/><circle cx="12" cy="13.5" r="3"/>')
 };
 const WAVE=(s,id)=>`<svg class="onda-logo" width="${s}" height="${s}" viewBox="2 4 44 44" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg>`;
-const LOGOFULL=(s,id)=>`<svg class="onda-logo" width="${s}" height="${s}" viewBox="1.5 2 45 45" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><g transform="translate(1.2,-6) scale(.95)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></g><text class="lg-tv" x="24" y="46" text-anchor="middle" font-family="Inter,-apple-system,Helvetica Neue,Arial,sans-serif" font-weight="800" font-size="14" letter-spacing="3" dx="1.5" style="fill:var(--lgT,#9fd4ff)">TV</text></svg>`;
+const LOGOFULL=(s,id)=>`<svg class="onda-logo" width="${s}" height="${s}" viewBox="1.5 2 45 45" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><g transform="translate(4.6,-7.6) scale(.81)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></g><text class="lg-tv" x="24" y="46.9" text-anchor="middle" font-family="Inter,-apple-system,Helvetica Neue,Arial,sans-serif" font-weight="800" font-size="14" letter-spacing="3" dx="1.5" style="fill:var(--lgT,#9fd4ff)">TV</text></svg>`;
 $$(".pipctl .pbtn")[0].innerHTML=IC.expand;$$(".pipctl .pbtn")[1].innerHTML=IC.close;
 
 /* ---------- Einstellungen (iOS-Variante, gleiche Schlüssel wie tvOS wo möglich) ---------- */
@@ -1035,7 +1042,7 @@ const SETTINGS=[
   {k:"pip",l:"Bild-in-Bild beim Verlassen",o:["Automatisch","Aus"],h:["Das Video läuft im kleinen Fenster weiter, wenn du die App verlässt","Die Wiedergabe stoppt, wenn du die App verlässt"]},
   {k:"cell",l:"Mobile Daten",o:["Erlauben","Vorher fragen","Nur WLAN"],h:["Streams laufen auch über Mobilfunk","Hinweis vor dem ersten Stream über Mobilfunk","Kein Abspielen über Mobilfunk"]},
   {k:"resume",l:"Filme fortsetzen",o:["Fragen","Immer","Nie"]}]},
- {sec:"TV-Guide",items:[
+ {sec:"TV-Guide",hide:1,items:[
   {k:"shift",l:"Zeitversatz",o:["0 h","+1 h","−1 h"],h:["Falls der TV-Guide zeitlich verschoben ist"]}]},
  {sec:"Playlists",hide:1,items:[
   {k:"refresh",l:"Automatisch aktualisieren",o:["Bei jedem Start","Täglich","Alle 3 Tage","Alle 7 Tage","Nur manuell"],rec:2,h:["Immer aktuell, startet etwas langsamer","Einmal pro Tag beim ersten Start","Guter Mittelweg – der EPG reicht 3 Tage","Für Playlists, die sich selten ändern","Nur über die Playlist"]}]},
@@ -1600,8 +1607,8 @@ function openSettings(){pushPage(()=>settingsHTML())}
 function settingsHTML(){
   {const ap=S.playlists.find(p=>p.active);S.set.epgsrc=ap&&ap.epgMode?ap.epgMode:0}
   return `${pnav("Einstellungen")}<h1 class="ptitle">Einstellungen</h1>
-   <div class="grp-h">Playlists</div><div class="glist">${S.playlists.map((p,i)=>`<div class="srow tap" data-act="pl:${i}" role="button"><span class="dot ${p.active?"":"off"}"></span><span class="sl"><b>${esc(p.name)}</b><small>${esc(p.type)} · ${esc(p.info)}</small></span>${p.active?'<span class="val">Aktiv</span>':""}</div>`).join("")}
-    <div class="srow tap" data-act="addpl" role="button"><span class="sl"><b>＋ Playlist hinzufügen</b></span><span class="val">M3U · Xtream</span></div>${REAL?`<div class="srow tap" data-act="set:refresh" role="button"><span class="sl"><b>Automatisch aktualisieren</b><small>Playlist und TV-Guide · zuletzt ${ageTxt(PLTS)}</small></span><span class="val">${esc(itOf("refresh").o[sv("refresh")])}</span><i class="chev">›</i></div>`:""}
+   <div class="grp-h">Playlists</div><div class="glist">${S.playlists.map((p,i)=>{const live=p.real&&REAL,miss=live&&EPGINFO?CH.filter(c=>!c.epg).length:0;return `<div class="srow tap" data-act="pl:${i}" role="button"><span class="dot ${p.active?"":"off"}"></span><span class="sl"><b>${esc(p.name)}</b><small>${esc(p.type)} · ${esc(p.info)}${live?`<br>TV-Guide: ${EPGINFO?(CH.length-miss)+" von "+CH.length+" Sendern":"noch nicht eingerichtet"}`:""}</small></span>${p.active?'<span class="val">Aktiv</span>':""}<i class="chev">›</i></div>`}).join("")}
+    <div class="srow tap" data-act="addpl" role="button"><span class="sl"><b>＋ Playlist hinzufügen</b></span><span class="val">M3U · Xtream</span></div>
     <div class="srow tap" data-act="tvsend" role="button"><span class="sl"><b>An Apple TV senden</b><small>Playlist ohne Tippen auf der Fernbedienung einrichten</small></span><i class="chev">›</i></div></div>
    <div class="grp-h">Senderliste</div><div class="glist"><div class="srow tap" data-act="editlist" role="button"><span class="sl"><b>Senderliste bearbeiten</b><small>Gruppen und Sender ausblenden oder sortieren</small></span><span class="val">${chOf("all").length} von ${CH.length}</span><i class="chev">›</i></div></div>
    <div class="grp-h">Cover &amp; Infos</div><div class="glist">${metaRows()}</div>
@@ -1949,7 +1956,7 @@ function act(el){
     case"pl":openPlEdit(+x[0]);break;
     case"plact":{closeSheet();const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
       if(!pp.real&&REAL){backToTest();break}
-      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();refreshTop();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
+      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();refreshTop();{const b=PG[PG.length-2];if(b&&b._r)b._r()}toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
     case"addpl":S.formType="xtream";openSheet(renderForm(),"","form");break;
     case"loadpl":{const x=S.formType==="xtream",nm=($("#fName").value||"").trim();let url;
       if(x){const sv=$("#fServer").value,u=$("#fUser").value,p=$("#fPass").value;if(!sv.trim()||!u.trim()||!p.trim()){toast("Bitte Server, Benutzername und Passwort eingeben");break}url=xtreamUrl(sv,u,p)}
@@ -1959,12 +1966,14 @@ function act(el){
     case"totest":backToTest();break;
     case"epgopen":openPlEdit(plIdx());break;case"epgmiss":openEpgMiss();break;case"noop":break;
     case"pldiag":plDiag();break;
-    case"pem":{peCollect();S.playlists[PLE].epgMode=+x[0];LS.set("pl",S.playlists);persist();openPlEdit(PLE);break}
-    case"pesave":{peCollect();closeSheet();toast("Gespeichert");const pg=topPage();if(pg)pg._r();if(S.tab!=="epg")rerenderTab();break}
+    case"pem":{const v=+x[x.length-1];S.playlists[PLE].epgMode=v;LS.set("pl",S.playlists);persist();if(v===1){openEpgSrc()}else{closeSheet();openPlEdit(PLE)}break}
+    case"pemsel":openEpgSrc();break;
+    case"peurl":{const e=$("#peEpg");S.playlists[PLE].epgUrl=(e&&e.value||"").trim();LS.set("pl",S.playlists);closeSheet();openPlEdit(PLE);toast("Adresse gespeichert");break}
+    case"pesave":{peCollect();toast("Gespeichert");break}
     case"pesaveepg":{const p=peCollect();closeSheet();const u=p.epgMode===1?p.epgUrl:EPGURL;if(!u){toast("Keine EPG-Adresse bekannt – bitte «Eigene URL» oder «Datei» wählen");break}
       if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Die Adresse nutzt http – im Browser nur über die Datei möglich");setTimeout(openEPGSheet,1400);break}
       toast("Lade EPG …");fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1400)});break}
-    case"pedel":{const p=S.playlists[PLE];if(!confirm("„"+p.name+"“ entfernen?"))break;closeSheet();
+    case"pedel":{const p=S.playlists[PLE];if(!confirm("„"+p.name+"“ entfernen?"))break;closeSheet();if(PG[PG.length-1]&&PG[PG.length-1]._pl!=null)popPage();
       if(p.real){IDB.set("m3u",null).catch(()=>{});IDB.set("epg",null).catch(()=>{});S.playlists.splice(PLE,1);if(!S.playlists.some(q=>q.active)&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);if(REAL){backToTest()}else{const pg=topPage();if(pg)pg._r()}}
       else{const wasA=p.active;S.playlists.splice(PLE,1);if(wasA&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);const pg=topPage();if(pg)pg._r()}
       toast("Entfernt");break}
@@ -2359,40 +2368,54 @@ let PLE=0;
 let PEHINT=0;
 const plIdx=()=>{const i=S.playlists.findIndex(p=>p.real&&REAL||(!REAL&&p.active));return i<0?0:i};
 function openEPGSheet(){PEHINT=1;openPlEdit(plIdx())}
-function openPlEdit(i){
-  PLE=i;const p=S.playlists[i],m=p.epgMode||0,cur=p.real?REAL:!REAL&&p.active,live=p.real&&REAL,mask=u=>esc((u||"").replace(/(password=)[^&]+/i,"$1•••"));
-  const u=m===1?(p.epgUrl||""):EPGURL,blocked=live&&m!==2&&u&&location.protocol==="https:"&&/^http:/i.test(u),hint=PEHINT;PEHINT=0;
+/* ---------- Playlist-Seite (wie MyTV Online): Status, TV-Guide, Aktualisierung, Erweitert ---------- */
+const EPGM=["Automatisch","Eigene URL","Datei"];
+function plPageHTML(i){
+  const p=S.playlists[i];if(!p)return pnav("Playlist");
+  const m=p.epgMode||0,cur=p.real?REAL:!REAL&&p.active,live=p.real&&REAL,mask=u=>esc((u||"").replace(/(password=)[^&]+/i,"$1•••").replace(/(\/\/[^\/]+\/(?:live\/|movie\/|series\/)?[^\/]+\/)[^\/]+/i,"$1•••"));
+  const u=m===1?(p.epgUrl||""):EPGURL,blocked=live&&m!==2&&u&&location.protocol==="https:"&&/^http:/i.test(u),hint=PEHINT;
   const miss=live?CH.filter(c=>!c.epg).length:0,stand=t=>new Date(t).toLocaleString("de-CH",{day:"numeric",month:"numeric",hour:"2-digit",minute:"2-digit"});
-  const fileBtn=(pr)=>`<label class="btn ${pr?"primary":""}" style="cursor:pointer">EPG-Datei wählen<input type="file" id="epgFile" accept=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*" hidden></label>`;
-  openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">${esc(p.name)}</h2>
-   <p class="foot" style="margin:0 0 12px">${esc(p.type)} · ${esc(p.info)}${p.active?" · <b style='color:var(--ok)'>aktiv</b>":""}</p>
-   ${live?`<div class="glist pe-st">
-     <div class="srow"><span class="sl"><b>Playlist</b><small>Aktualisiert ${ageTxt(PLTS)}</small></span></div>
-     <div class="srow ${miss&&EPGINFO?"tap":""}" ${miss&&EPGINFO?'data-act="epgmiss" role="button"':""}><span class="sl"><b>TV-Guide</b><small>${EPGINFO?`${CH.length-miss} von ${CH.length} Sendern · Stand ${stand(EPGINFO.ts)}`:"Noch keine Sendungsdaten"}</small></span>${miss&&EPGINFO?`<span class="val">${miss} ohne Daten</span><i class="chev">›</i>`:""}</div>
-    </div>${EPGINFO&&EPGINFO.old?'<p class="foot">Tipp: TV-Guide einmal neu laden – die verbesserte Zuordnung erfasst auch doppelte Sender (HD/SD, mehrere Länder).</p>':""}`:`<p class="foot" style="margin-top:0">${p.real?"Nicht aktiv":"Testdaten (simuliert)"}</p>`}
-   <div class="grp-h" style="padding-left:2px">TV-Guide-Quelle</div>
-   <div class="segw form"><button class="${m===0?"on":""}" data-act="pem:0">Automatisch</button><button class="${m===1?"on":""}" data-act="pem:1">Eigene URL</button><button class="${m===2?"on":""}" data-act="pem:2">Datei</button></div>
-   ${m===0?`<p class="foot">${live&&EPGURL?(EPGDERIVED?"Aus deinen Xtream-Zugangsdaten: ":"Aus der Playlist: ")+mask(EPGURL):"Onda nimmt die EPG-Adresse aus der Playlist bzw. aus den Xtream-Zugangsdaten."}</p>`
-    :m===1?`<div class="field"><label for="peEpg">XMLTV-URL (.xml oder .xml.gz)</label><input id="peEpg" class="finput" inputmode="url" autocapitalize="off" placeholder="https://…/epg.xml.gz" value="${esc(p.epgUrl||"")}"></div>`:""}
-   ${live&&(m===2||blocked||hint)?`<ol class="foot pe-steps">${u?`<li>Link kopieren, in Safari öffnen und in «Dateien» sichern (Teilen › In Dateien sichern).</li>`:`<li>XMLTV-Datei deines Anbieters in «Dateien» sichern.</li>`}<li>Hier die Datei wählen – auch .gz geht.</li></ol>${blocked?'<p class="foot" style="margin-top:0">Der Anbieter liefert über http. Das blockiert der Browser – die fertige App lädt direkt.</p>':""}`:""}
-   ${live?`<div class="btns col">${m===2||blocked?`${u?'<button class="btn" data-act="epgcopy">Link kopieren</button>':""}${fileBtn(true)}`:`<button class="btn primary" data-act="pesaveepg">TV-Guide jetzt laden</button>${hint?fileBtn(false):""}`}</div>`:""}
-   ${p.real?`<div class="grp-h" style="padding-left:2px">Playlist</div><div class="btns col"><label class="btn" style="cursor:pointer">Playlist neu laden (Datei)<input type="file" id="m3uFile3" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,*/*" hidden></label></div>`:""}
-   <div class="grp-h" style="padding-left:2px">Allgemein</div>
-   <div class="field"><label for="peName">Name</label><input id="peName" class="finput" value="${esc(p.name)}"></div>
-   <div class="field"><label for="peUa">User-Agent (optional)</label><input id="peUa" class="finput" autocomplete="off" value="${esc(p.ua||"")}" placeholder="Standard: Onda/1.0"></div>
-   <div class="btns col">
-    <button class="btn" data-act="pesave">Speichern</button>
-    ${cur?"":`<button class="btn" data-act="plact:${i}">Diese Playlist verwenden</button>`}
-    ${p.real&&REAL?'<button class="btn" data-act="pldiag">Playlist prüfen</button>':""}
-    ${S.playlists.length>1?`<button class="btn danger" data-act="pedel">Playlist entfernen</button>`:""}
-   </div>`,"","pledit");
+  const row=(l,v,act,sub,cls="")=>`<div class="srow ${act?"tap":""} ${cls}" ${act?`data-act="${act}" role="button"`:""}><span class="sl"><b>${l}</b>${sub?`<small>${sub}</small>`:""}</span>${v!=null?`<span class="val">${v}</span>`:""}${act?'<i class="chev">›</i>':""}</div>`;
+  const arow=(l,act,cls="")=>`<div class="srow tap arow ${cls}" data-act="${act}" role="button"><span class="sl"><b>${l}</b></span></div>`;
+  const filerow=(l,id,acc)=>`<label class="srow tap arow" style="cursor:pointer"><span class="sl"><b>${l}</b></span><input type="file" id="${id}" accept="${acc}" hidden></label>`;
+  const epgAcc=".xml,.gz,.xmltv,text/xml,application/xml,application/gzip,*/*";
+  const src=m===2?"Datei aus «Dateien»":m===1?(p.epgUrl?mask(p.epgUrl):"Noch keine Adresse"):(live&&EPGURL?(EPGDERIVED?"Aus deinen Xtream-Zugangsdaten":"Aus der Playlist"):"Aus Playlist bzw. Xtream-Zugang");
+  const epgStat=live?(EPGINFO?`${CH.length-miss} von ${CH.length}`:"Keine Daten"):"Simuliert";
+  return `${pnav("Playlist")}<h1 class="ptitle">${esc(p.name)}</h1>
+   <p class="pl-sub">${cur?'<span class="pl-on">Aktiv</span>':""}${esc(p.type)} · ${esc(p.info)}</p>
+   ${cur?"":`<div class="glist">${arow("Diese Playlist verwenden","plact:"+i,"acc")}</div>`}
+   <div class="grp-h">TV-Guide (EPG)</div><div class="glist">
+    ${row("Quelle",esc(EPGM[m]),"pemsel",src)}
+    ${live?row("Sender mit Programm",epgStat,miss&&EPGINFO?"epgmiss":"",EPGINFO?"Stand "+stand(EPGINFO.ts):"Noch nicht geladen"):""}
+    ${live?(m===2||blocked?filerow("EPG-Datei wählen","epgFile",epgAcc)+(u?arow("Link kopieren","epgcopy"):""):arow("TV-Guide jetzt laden","pesaveepg","acc")+(hint?filerow("Stattdessen Datei wählen","epgFile",epgAcc):"")):""}
+    ${row("Zeitversatz",esc(itOf("shift").o[sv("shift")]),"set:shift","Falls die Sendezeiten verschoben sind")}
+   </div>
+   ${live&&(m===2||blocked||hint)?`<p class="foot pl-foot">${blocked?"Dein Anbieter liefert über http. Das blockiert der Browser – die fertige App lädt direkt. ":""}${u?"So geht es: «Link kopieren», in Safari öffnen, über Teilen › «In Dateien sichern» ablegen und hier die Datei wählen (auch .gz).":"XMLTV-Datei deines Anbieters in «Dateien» sichern und hier wählen (auch .gz)."}</p>`:""}
+   ${EPGINFO&&EPGINFO.old&&live?'<p class="foot pl-foot">Tipp: TV-Guide einmal neu laden – die verbesserte Zuordnung erfasst auch doppelte Sender.</p>':""}
+   <div class="grp-h">Aktualisierung</div><div class="glist">
+    ${row("Automatisch",esc(itOf("refresh").o[sv("refresh")]),"set:refresh",live?"Zuletzt "+ageTxt(PLTS):"")}
+    ${p.real?filerow("Playlist neu laden (Datei)","m3uFile3",".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,*/*"):""}
+   </div>
+   <div class="grp-h">Erweitert</div><div class="glist">
+    <div class="srow ifield"><span class="sl"><b>Name</b></span><input id="peName" class="iinp" value="${esc(p.name)}" autocomplete="off"></div>
+    <div class="srow ifield"><span class="sl"><b>User-Agent</b></span><input id="peUa" class="iinp" value="${esc(p.ua||"")}" placeholder="Standard" autocomplete="off" autocapitalize="off"></div>
+    ${p.real&&REAL?row("Playlist prüfen",null,"pldiag","Felder, tvg-id und Aufbau der Datei"):""}
+   </div>
+   ${S.playlists.length>1?`<div class="glist" style="margin-top:22px">${arow("Playlist entfernen","pedel","danger")}</div>`:""}
+   <div style="height:60px"></div>`;
 }
+function openPlEdit(i){PLE=i;const top=PG[PG.length-1];if(top&&top._pl===i){top._r();PEHINT=0;return}const pg=pushPage(()=>plPageHTML(PLE));pg._pl=i;PEHINT=0}
+function openEpgSrc(){const p=S.playlists[PLE],m=p.epgMode||0;
+  const it={k:"epgsrc",l:"TV-Guide-Quelle",o:EPGM,h:["Onda nimmt die Adresse aus der Playlist oder aus den Xtream-Zugangsdaten (empfohlen)","Eine XMLTV-Adresse selbst eintragen (.xml oder .xml.gz)","Eine heruntergeladene XMLTV-Datei aus «Dateien» wählen"],rec:0};
+  openSheet(`<div class="eyebrow">Playlist</div><h2 class="sh-t">TV-Guide-Quelle</h2><div class="pk-list">${optRows(it,m,"pem")}</div>
+   ${m===1?`<div class="field" style="margin-top:12px"><label for="peEpg">XMLTV-Adresse</label><input id="peEpg" class="finput" inputmode="url" autocapitalize="off" placeholder="https://…/epg.xml.gz" value="${esc(p.epgUrl||"")}"></div><div class="btns col"><button class="btn primary" data-act="peurl">Übernehmen</button></div>`:""}`,"","epgsrc")}
 function openEpgMiss(){const l=CH.filter(c=>!c.epg);
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">Sender ohne TV-Guide</h2>
    <p class="foot" style="margin-top:0">Für diese Sender gibt es in der EPG-Datei keinen Eintrag mit passender tvg-id oder passendem Namen. Oft sind das Sender, für die der Anbieter keine Daten liefert.</p>
    <div class="glist">${l.slice(0,300).map(c=>`<div class="srow" data-act="noop"><span class="sl"><b>${esc(c.name)}</b><small>${esc(gName(c.group))} · tvg-id: ${esc(c.tid||"–")}</small></span></div>`).join("")}</div>
    ${l.length>300?`<p class="foot">… und ${l.length-300} weitere</p>`:""}
-   <div class="btns col"><button class="btn" data-act="pl:${plIdx()}">Zurück</button></div>`,"","epgmiss")}
+   <div class="btns col"><button class="btn" data-act="sclose">Schliessen</button></div>`,"","epgmiss")}
+APP.addEventListener("change",e=>{const t=e.target;if(t&&(t.id==="peName"||t.id==="peUa")&&PG.length&&PG[PG.length-1]._pl!=null){peCollect();const b=PG[PG.length-2];if(b&&b._r)b._r();const h=PG[PG.length-1].querySelector(".ptitle");if(h)h.textContent=S.playlists[PLE].name;toast("Gespeichert")}});
 function peCollect(){const p=S.playlists[PLE];const n=$("#peName");if(n&&n.value.trim())p.name=n.value.trim();const u=$("#peUa");if(u)p.ua=u.value.trim();const e=$("#peEpg");if(e)p.epgUrl=e.value.trim();LS.set("pl",S.playlists);return p}
 async function bootReal(){
   try{let pd=await IDB.get("parsed");if(!pd||pd.v!==1){const d=await IDB.get("m3u");if(!d||!d.text)throw 0;pd={v:1,p:parseM3U(d.text),name:d.name,ts:d.ts};IDB.set("parsed",pd).catch(()=>{})}
