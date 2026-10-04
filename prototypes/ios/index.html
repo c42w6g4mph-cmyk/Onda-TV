@@ -87,6 +87,21 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .splash .wordmark{font-size:64px;color:#fff}
 .splash .tag2{font-size:13px;letter-spacing:.32em;text-transform:uppercase;color:#8fb4ff;font-weight:600}
 @keyframes draw{to{stroke-dashoffset:0}}
+
+/* Senderzeile Variante J: Programmplatz, Logo, Sendung + Restzeit, Balken, Zeiten */
+.jrow{gap:11px!important;padding:9px 16px 9px 10px!important}
+.jrow .cno{width:30px;flex:none;text-align:right;font-size:14px;font-weight:800;color:var(--faint);font-variant-numeric:tabular-nums}
+.jrow .logo{width:68px;height:44px;border-radius:11px}
+.jrow .rt{gap:4px}
+.j1{display:flex;align-items:baseline;gap:8px;min-width:0}
+.jt{flex:1;min-width:0;font-size:15.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jrm{flex:none;font-size:12px;font-weight:700;color:#cfe1ff;background:color-mix(in srgb,var(--accent) 18%,transparent);padding:2px 7px;border-radius:7px;font-variant-numeric:tabular-nums}
+#app[data-look="light"] .jrm{color:#1f4fbf}
+.jbar{display:block;height:3px;border-radius:2px;background:var(--surface2,rgba(255,255,255,.1));overflow:hidden}.jbar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+.j2{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);min-width:0}.j2 span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.j2 .fstar{font-size:11px}
+.row.jrow::after{left:119px}
+.row.cur .cno{color:var(--accent)}.row.cur .jt{color:var(--accent)}
 /* Onda-Logo: Wellen + TV (Variante 1.1) */
 .onda-logo{flex:none;overflow:visible}
 .wm-tv{font-weight:300;color:#9fd4ff;margin-left:.2em;letter-spacing:.02em}
@@ -1287,8 +1302,11 @@ const starBtn=c=>{const f=S.favCh.has(c.id);return `<button class="star ${f?"on"
 function splitT(t){t=(t||"").trim();const m=t.match(/^(.{2,48}?)\s?:\s+(.{3,})$/);const d=x=>x.replace(/ - /g," – ");return m?{k:m[1].trim(),t:d(m[2].trim())}:{k:"",t:d(t)}}
 const untilTxt=p=>"bis "+fmt(p.end);
 function chRow(c,act="play",curId){
-  const p=nowP(c),sp=splitT(p.title);
-  return `<div class="row tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt"><div class="rn"><span class="nm">${esc(c.name)}</span>${S.favCh.has(c.id)?'<span class="fstar">★</span>':""}${chQ(c)==="4K"?'<span class="chq">4K</span>':""}</div>${noEpg(c)?`<div class="rs na">Keine Sendungsdaten</div>`:`<div class="rs rs2">${esc(sp.t)}</div><div class="rmeta"><span class="mbar"><i style="width:${pct(p)}%"></i></span><span>${sp.k?esc(sp.k)+" · ":""}${untilTxt(p)}</span></div>`}</div></div>`;
+  const p=nowP(c),sp=splitT(p.title),ep=!noEpg(c),fav=S.favCh.has(c.id),rm=Math.max(1,Math.round((p.end-Date.now())/6e4));
+  const extra=[fav?'<span class="fstar">★</span>':"",chQ(c)==="4K"?'<span class="chq">4K</span>':""].join("");
+  return `<div class="row jrow tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button"><span class="cno">${c.num}</span>${logo(c)}<div class="rt">${ep
+    ?`<div class="j1"><span class="jt">${esc(sp.t)}</span><b class="jrm">${rm} Min.</b></div><span class="jbar"><i style="width:${pct(p)}%"></i></span><div class="j2">${extra}<span>${fmt(p.start)}–${fmt(p.end)}${sp.k?" · "+esc(sp.k):""}${c.logo?"":" · "+esc(c.name)}</span></div>`
+    :`<div class="j1"><span class="jt">${esc(c.name)}</span></div><div class="j2">${extra}<span class="na">Keine Sendungsdaten</span></div>`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
 function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
