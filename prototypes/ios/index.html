@@ -586,8 +586,12 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .pnow{display:flex;align-items:center;gap:12px;padding:2px 20px 0;text-align:left;width:100%}
 .pnow-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .pnow-t b{font-size:17px;font-weight:700}
-.pnow-t .t{font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pnow-t .tm{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums}
+.pnow-t .t{font-size:16px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnow-t .tm{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnow-t .tm .sep{margin:0 6px;color:var(--faint)}.pnow-t .tm b{font-size:inherit;font-weight:600;color:var(--fg);opacity:.85}
+.pnow-t .pk{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pnow-t .pk .pkk{font-weight:600}
+.pnow .logo{width:74px;height:48px;border-radius:12px}
 .pnow .exp{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface);transition:transform .25s}
 .pnow .exp svg{width:16px;height:16px;transform:rotate(90deg)}
 .pnow.open .exp{transform:rotate(180deg)}
@@ -1758,7 +1762,7 @@ function belowHTML(){
   if(P.type==="live"){
     const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
-    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><b>${esc(c.name)}</b>${noEpg(c)?`<span class="tm">Keine Sendungsdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span><span class="tm">${splitT(p.title).k?esc(splitT(p.title).k)+" · ":""}${fmt(p.start)} – ${fmt(p.end)} · noch ${rem} Min.</span>`}</span><span class="exp">${IC.chR}</span></button>
+    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><span class="pk">${esc(c.real?(cleanT(c.name)||c.name):c.name)}${!noEpg(c)&&splitT(p.title).k?`<span class="pkk"> · ${esc(splitT(p.title).k)}</span>`:""}</span>${noEpg(c)?`<span class="t na">Keine Sendungsdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span><span class="tm">${fmt(p.start)}–${fmt(p.end)}<span class="sep">·</span><b>noch ${rem} Min.</b></span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
      ${gbar(P.listName,P.list.length,"pgroups")}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
