@@ -100,6 +100,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .jbar{display:block;height:3px;border-radius:2px;background:var(--surface2,rgba(255,255,255,.1));overflow:hidden}.jbar i{display:block;height:100%;background:var(--accent);border-radius:2px}
 .j2{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint);min-width:0}.j2 span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .j2 .fstar{font-size:11px}
+.j2 .jn{flex:0 1 auto;color:var(--dim);font-weight:600}.j2 .jtm{flex:0 10 auto}.j2 .jn+.jtm::before{content:"·";margin-right:6px;color:var(--faint)}
 .row.jrow::after{left:105px}
 .row.cur .cno{color:var(--accent)}.row.cur .jt{color:var(--accent)}
 /* Onda-Logo: Wellen + TV (Variante 1.1) */
@@ -1305,7 +1306,7 @@ function chRow(c,act="play",curId){
   const p=nowP(c),sp=splitT(p.title),ep=!noEpg(c),fav=S.favCh.has(c.id),rm=Math.max(1,Math.round((p.end-Date.now())/6e4));
   const extra=[fav?'<span class="fstar">★</span>':"",chQ(c)==="4K"?'<span class="chq">4K</span>':""].join("");
   return `<div class="row jrow tap ${c.id===curId?"cur":""}" data-act="${act}:${c.id}" data-ctx="${c.id}" role="button">${logo(c)}<div class="rt">${ep
-    ?`<div class="j1"><span class="jt">${esc(sp.t)}</span></div><span class="jbar"><i style="width:${pct(p)}%"></i></span><div class="j2">${extra}<span>${fmt(p.start)}–${fmt(p.end)}${sp.k?" · "+esc(sp.k):""}${c.logo?"":" · "+esc(c.name)}</span></div>`
+    ?`<div class="j1"><span class="jt">${esc(sp.t)}</span></div><span class="jbar"><i style="width:${pct(p)}%"></i></span><div class="j2">${extra}<span class="jn">${esc(c.real?(cleanT(c.name)||c.name):c.name)}</span><span class="jtm">${fmt(p.start)}–${fmt(p.end)}${sp.k?" · "+esc(sp.k):""}</span></div>`
     :`<div class="j1"><span class="jt">${esc(c.name)}</span></div><div class="j2">${extra}<span class="na">Keine Sendungsdaten</span></div>`}</div></div>`;
 }
 /* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
