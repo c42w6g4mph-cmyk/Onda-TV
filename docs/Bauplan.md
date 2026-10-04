@@ -192,6 +192,17 @@ Geprüft im Browser: alle geänderten Bildschirme beider Apps, Deutsch und Engli
 
 4. Ausgeschlossen: OMDb (nicht kommerziell), IMDb (zu teuer), Watchmode (zu teuer), Wikimedia-Poster (meist nicht frei).
 
+## 4d. Design-Review (04.10.2026, Referenz: Apple TV, Netflix, blue TV, Sunrise TV, MyTV Online)
+
+- **Erster Start:** Live TV und TV-Guide öffnen «Alle Kanäle» statt der ersten (oft kleinen) Gruppe; leere Favoriten fallen auf «Alle Kanäle» zurück.
+- **Detailseiten:** Titel in Systemschrift (fett) statt Zierschrift; keine Einrichtungs-Hinweise mehr auf Detailseiten (nur in Einstellungen); Gruppen wie «SERIEN» nicht mehr als Genre; tvOS: kein «0 Min.» / «seit null», kein Platzhaltertext als Beschreibung, «Ähnliches in deiner Playlist» auch bei Filmen.
+- **Begriffe vereinheitlicht:** «Meine Liste» überall (statt Merkliste/Favoriten bei Filmen); «Favoriten» nur für Sender.
+- **Langes Drücken auf Film/Serie (iOS):** Abspielen/Fortsetzen, Details, Meine Liste, Aus «Weiterschauen» entfernen – wie bei Netflix/Apple TV.
+- **Platzhalter-Cover:** Titel werden nicht mehr mitten im Wort getrennt, Schrift passt sich an.
+- **TV-Guide:** Sendungstitel bleiben beim seitlichen Scrollen links sichtbar.
+- **Suche:** Feld ist beim Öffnen aktiv, «Zuletzt gesucht», Vorschläge aus der eigenen Playlist, einheitliche Überschriften.
+- **Heller Modus:** Detailkopf mit dunkler Schrift statt weiss auf hell.
+
 ## 5. End-to-End-Prüfung des Prototyps
 
 Getestet in einem Browser: alle Bildschirme, Deutsch und Englisch, dunkel und hell, dazu ein Zufallstest mit 2'800 Fernbedienungs-Eingaben. **Ergebnis: keine Skriptfehler, der Fokus geht nie verloren.**

@@ -210,7 +210,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .sdots i.on{width:16px;border-radius:3px;background:var(--fg)}
 .poster{--h:200;position:relative;flex:none;width:116px;aspect-ratio:2/3;max-width:100%;border-radius:12px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:10px;background:linear-gradient(165deg,hsl(var(--h) 52% 40%),hsl(calc(var(--h) + 35) 60% 13%) 75%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.08)}
 .poster::before{content:"";position:absolute;width:150%;height:70%;left:-25%;top:-20%;background:radial-gradient(closest-side,hsl(calc(var(--h) - 20) 80% 70% / .35),transparent);pointer-events:none}
-.pt{position:relative;color:#fff;line-height:1.02;text-wrap:balance;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:anywhere}
+.pt{position:relative;color:#fff;line-height:1.02;text-wrap:balance;hyphens:manual;-webkit-hyphens:manual;overflow-wrap:normal;word-break:normal}
 .pt.ff1{font-family:var(--f1);font-size:15px;text-transform:uppercase}
 .pt.ff2{font-family:var(--f2);font-size:19px}
 .pt.ff3{font-family:var(--f3);font-size:22px;text-transform:uppercase;letter-spacing:.01em}
@@ -260,8 +260,9 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .erow{display:flex;height:64px;border-bottom:1px solid var(--line)}
 .ech{position:sticky;left:0;z-index:2;width:76px;flex:none;display:grid;place-items:center;background:var(--bg)}
 .etrack{position:relative;flex:none}
-.cell{position:absolute;top:5px;bottom:5px;border-radius:9px;background:var(--surface);padding:6px 8px;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:1px;cursor:pointer}
+.cell{position:absolute;top:5px;bottom:5px;border-radius:9px;background:var(--surface);padding:6px 8px;overflow:hidden;overflow:clip;display:flex;flex-direction:column;justify-content:center;gap:1px;cursor:pointer}
 .cell .ct{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell .ct,.cell .cm{position:sticky;left:84px;align-self:flex-start;max-width:100%}
 .cell .cm{font-size:11px;color:var(--dim);white-space:nowrap;font-variant-numeric:tabular-nums}
 .cell.past{background:rgba(206,222,255,.035);color:var(--dim)}
 .cell.live{background:rgba(124,196,255,.17)}
@@ -600,9 +601,13 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .ah-fade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.45),transparent 22%,transparent 45%,color-mix(in srgb,var(--bg) 70%,transparent) 75%,var(--bg))}
 .ah-txt{position:absolute;left:20px;right:20px;bottom:14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
 .ah-logo{max-width:72%;max-height:96px;object-fit:contain;filter:drop-shadow(0 4px 18px rgba(0,0,0,.45))}
-.ah-txt h1{margin:0;font-family:var(--f2);font-weight:400;font-size:36px;line-height:1.02;text-wrap:balance;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.ah-txt h1{margin:0;font-weight:800;letter-spacing:-.02em;font-size:34px;line-height:1.05;text-wrap:balance;color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.5)}
 .ah-meta{font-size:13.5px;font-weight:600;color:rgba(238,242,248,.86)}
 .ah-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+#app[data-look="light"] .ah-txt h1{color:var(--fg);text-shadow:none}
+#app[data-look="light"] .ah-meta{color:var(--dim)}
+#app[data-look="light"] .bdg{color:var(--fg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--fg) 35%,transparent)}
+#app[data-look="light"] .bdg.vote{color:#a06b00}
 .bdg{font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:3px 6px;border-radius:5px;color:rgba(238,242,248,.92);box-shadow:inset 0 0 0 1px rgba(238,242,248,.45)}
 .bdg.vote{color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,201,90,.5)}
 .abody{position:relative;padding:6px 20px 8px;display:flex;flex-direction:column;gap:14px}
@@ -1030,12 +1035,12 @@ const EN={
 "Heute":"Today","Morgen":"Tomorrow","Gestern":"Yesterday","Jetzt":"Now","Live":"Live","Demnächst":"Upcoming","Bereits gelaufen":"Already aired","⏰ Erinnerung":"⏰ Reminder","OK: Erinnerung setzen oder entfernen":"OK: set or remove reminder","OK: Live ansehen":"OK: watch live","Diese Sendung ist bereits gelaufen":"This programme has already aired","Erinnerung entfernt":"Reminder removed",
 "Aktuell im Trend":"Trending now","Nur verfügbare":"Available only","✓ Nur verfügbare":"✓ Available only","Top 10 Filme heute":"Top 10 movies today","Top 10 Serien heute":"Top 10 series today","Aus deiner Playlist":"From your playlist",
 "✓ Verfügbar":"✓ Available","Nicht in Playlist":"Not in playlist","✓ In deiner Playlist":"✓ In your playlist","Nicht in deiner Playlist":"Not in your playlist","In deiner Playlist verfügbar":"Available in your playlist","Gefunden als":"Found as",
-"▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes","＋ Merken und benachrichtigen":"＋ Save and notify me","✓ Auf der Merkliste":"✓ On your watchlist","Stattdessen neu in deiner Playlist":"New in your playlist instead",
+"▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes","＋ Merken und benachrichtigen":"＋ Save and notify me","✓ In «Meine Liste»":"✓ On your watchlist","Stattdessen neu in deiner Playlist":"New in your playlist instead",
 "Neu hinzugefügt":"Recently added","Action":"Action","Science-Fiction":"Science fiction","Drama & Thriller":"Drama & thriller","Komödie & Animation":"Comedy & animation","Alle Serien":"All series","Krimi & Thriller":"Crime & thriller","Drama":"Drama","Sci-Fi, Fantasy & Komödie":"Sci-fi, fantasy & comedy",
-"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Trendfilme":"Trending movies","Alle Filme":"All movies","Alle Serien":"All series","Neueste Filme":"Newest movies","Neueste Serien":"Newest series","Alle Kategorien":"All categories","Kategorien":"Categories","Neueste":"Newest","Automatisch aktualisieren":"Auto refresh","Bei jedem Start":"Every launch","Täglich":"Daily","Alle 3 Tage":"Every 3 days","Alle 7 Tage":"Every 7 days","Nur manuell":"Manual only","Abspielen":"Play","Fortsetzen":"Resume","Merkliste":"Watchlist","Gemerkt":"Saved","Trailer":"Trailer","Von vorne":"Start over","Besetzung":"Cast","Info":"Info","Originaltitel":"Original title","Regie":"Director","Idee":"Created by","Erschienen":"Released","Studio":"Studio","Laufzeit":"Runtime","Altersfreigabe":"Age rating","Ähnliches in deiner Playlist":"More like this in your playlist","Stattdessen in deiner Playlist":"In your playlist instead","Echte Cover, Trailer und Infos laden":"Load real artwork, trailers and info","Gruppe":"Group","Sender":"channels","Trendserien":"Trending series","Gruppen":"Groups","Zuletzt genutzt":"Recently used","Alle Gruppen":"All groups","Gruppe wählen":"Choose group","Jetzt":"Now","Vorheriger in der Liste":"Previous in list","Nächster in der Liste":"Next in list","Im Trend":"Trending",
+"Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Trendfilme":"Trending movies","Alle Filme":"All movies","Alle Serien":"All series","Neueste Filme":"Newest movies","Neueste Serien":"Newest series","Alle Kategorien":"All categories","Kategorien":"Categories","Neueste":"Newest","Automatisch aktualisieren":"Auto refresh","Bei jedem Start":"Every launch","Täglich":"Daily","Alle 3 Tage":"Every 3 days","Alle 7 Tage":"Every 7 days","Nur manuell":"Manual only","Abspielen":"Play","Fortsetzen":"Resume","Gemerkt":"Saved","Trailer":"Trailer","Von vorne":"Start over","Besetzung":"Cast","Info":"Info","Originaltitel":"Original title","Regie":"Director","Idee":"Created by","Erschienen":"Released","Studio":"Studio","Laufzeit":"Runtime","Altersfreigabe":"Age rating","Ähnliches in deiner Playlist":"More like this in your playlist","Stattdessen in deiner Playlist":"In your playlist instead","Echte Cover, Trailer und Infos laden":"Load real artwork, trailers and info","Gruppe":"Group","Sender":"channels","Trendserien":"Trending series","Gruppen":"Groups","Zuletzt genutzt":"Recently used","Alle Gruppen":"All groups","Gruppe wählen":"Choose group","Jetzt":"Now","Vorheriger in der Liste":"Previous in list","Nächster in der Liste":"Next in list","Im Trend":"Trending",
 "Handlung, Besetzung und Bewertung lädt die echte App automatisch aus einer Film-Datenbank (z. B. TMDB).":"Plot, cast and rating are loaded automatically from a film database (e.g. TMDB) in the real app.",
 "▶ Fortsetzen":"▶ Resume","Von vorne":"From the beginning","★ In Favoriten":"★ In favourites","☆ Zu Favoriten":"☆ Add to favourites","Zu Favoriten hinzugefügt":"Added to favourites","Aus Favoriten entfernt":"Removed from favourites",
-"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Saved. Onda will let you know once the title shows up in your playlist.","Von der Merkliste entfernt":"Removed from watchlist",
+"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Saved. Onda will let you know once the title shows up in your playlist.","Aus «Meine Liste» entfernt":"Removed from watchlist",
 "Lieblingskanäle":"Favourite channels","Zuletzt gesehen":"Recently watched","Filme & Serien":"Movies & series","Noch keine Kanäle markiert. In Live TV einen Kanal wählen und „Favorit“ drücken.":"No channels marked yet. Pick a channel in Live TV and press “Favourite”.",
 "Vorschläge":"Suggestions","Thriller":"Thriller","Bundesliga":"Bundesliga",
 "Playlists":"Playlists","＋ Playlist hinzufügen":"＋ Add playlist","M3U · Xtream":"M3U · Xtream","Über Onda":"About Onda","App-Symbol-Entwurf für den Apple-TV-Homescreen":"App icon draft for the Apple TV home screen","Version":"Version","Testdaten":"Test data","nicht geladen":"not loaded","Mein Anbieter":"My provider","Testliste":"Test list",
@@ -1086,7 +1091,7 @@ const ENRX=[
 ];
 
 Object.assign(EN,{
-"Mediathek":"Library","Meine Liste":"My list","Merkliste":"Watchlist","Kanäle":"Channels","Zurück":"Back","Aktiv":"Active","Display":"Display",
+"Mediathek":"Library","Meine Liste":"My list","Kanäle":"Channels","Zurück":"Back","Aktiv":"Active","Display":"Display",
 "HDR-Wiedergabe":"HDR playback","HDR10, HLG und Dolby Vision mit voller Helligkeit":"HDR10, HLG and Dolby Vision at full brightness","Alles in SDR, schont den Akku":"Everything in SDR, saves battery",
 "Senderwechsel durch Wischen":"Swipe to change channel","Im Player nach links oder rechts wischen":"Swipe left or right in the player","Sender nur über die Kanalliste wechseln":"Change channels via the channel list only",
 "Bild-in-Bild beim Verlassen":"Picture in Picture on leaving","Das Video läuft im kleinen Fenster weiter, wenn du die App verlässt":"Video keeps playing in a small window when you leave the app","Die Wiedergabe stoppt, wenn du die App verlässt":"Playback stops when you leave the app",
@@ -1245,9 +1250,10 @@ const hbtn=()=>`<div class="hbtns"><button class="gbtn" data-act="settings" aria
 const qOf=o=>o.raw&&/4K/i.test(o.raw)?"4K":"";
 const posterImg=o=>{const m=metaOf(o);return m&&m.poster?`;--img:url(&quot;${IMG("w342",m.poster)}&quot;)`:""};
 const pcap=(o,sub)=>`<div class="pcap"><b>${esc(o.t)}</b><small>${esc(sub)}</small></div>`;
-const poster=(o,act)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${(()=>{const p=S.prog[o.key];return p&&p.dur?`<div class="pprog"><i style="width:${Math.min(100,p.pos/p.dur*100)}%"></i></div>`:""})()}</div>${pcap(o,(()=>{const p=S.prog[o.key];return p&&p.se?`S${p.se} · F${p.e}`:[o.y,o.g].filter(Boolean).join(" · ")})())}</div>`;
-const tposter=(o,act,rank)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${o.avail?"":"dim"} ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>${pcap(o,[o.y,o.g].filter(Boolean).join(" · "))}</div>`;
+const poster=(o,act)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" data-vctx="${o.key}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${(()=>{const p=S.prog[o.key];return p&&p.dur?`<div class="pprog"><i style="width:${Math.min(100,p.pos/p.dur*100)}%"></i></div>`:""})()}</div>${pcap(o,(()=>{const p=S.prog[o.key];return p&&p.se?`S${p.se} · F${p.e}`:[o.y,o.g].filter(Boolean).join(" · ")})())}</div>`;
+const tposter=(o,act,rank)=>`<div class="pwrap ${act?"tap":""}" ${act?`data-act="${act}" data-vctx="${o.key}" role="button" aria-label="${esc(o.t)}"`:""}><div class="poster ${o.avail?"":"dim"} ${posterImg(o)?"img":""}" data-mk="${o.key}" style="--h:${o.hue}${posterImg(o)}">${rank?`<span class="rank">${rank}</span>`:""}${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g)}</div></div>${pcap(o,[o.y,o.g].filter(Boolean).join(" · "))}</div>`;
 const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+(t.g?" · "+esc(t.g):"");
+const GEN_RE=/^(serien|series|serie|filme?|movies?|vod|kino)$/i;
 const shelfH=(title,html)=>html?`<section class="shelf"><h3>${title}</h3><div class="shrow sx">${html}</div></section>`:"";
 const shelfCh=(title,list)=>list.length?`<section class="shelf"><h3>${title}</h3><div class="shrow ch sx ${list.length<=2?"fit":""} ${list.length===1?"one":""}">${list.map(chCard).join("")}</div></section>`:"";
 const gbar=(name,n,act)=>`<button class="gbar tap" data-act="${act}" id="${act==="lvgroups"?"gbar":"pgbar"}" aria-label="Gruppe wechseln, aktuell ${esc(name)}"><span class="gb-ic">${IC.list}</span><span class="gb-t"><small>Gruppe</small><b>${esc(name)}</b></span><span class="gcnt">${n} Sender</span><span class="gb-sw">${IC.updown}</span></button>`;
@@ -1413,7 +1419,7 @@ function favsHTML(){
   return `${fc.length?shelfCh("Lieblingskanäle",fc):`<section class="shelf"><h3>Lieblingskanäle</h3><p class="empty">Noch keine Kanäle markiert. In Live TV beim Kanal auf den Stern tippen.</p></section>`}
    ${shelfCh("Zuletzt gesehen",rc)}
    ${shelfH("Filme & Serien",fv.map(o=>poster(o,(o.key[0]==="m"?"movie:":"series:")+o.i)).join(""))}
-   ${wl.length?shelfH("Merkliste",wl.map(t=>tposter(t,"trend:"+t.k+":"+t.i)).join("")):""}`;
+   ${wl.length?shelfH("Meine Liste",wl.map(t=>tposter(t,"trend:"+t.k+":"+t.i)).join("")):""}`;
 }
 
 /* ---------- Suche ---------- */
@@ -1422,12 +1428,15 @@ function renderSearch(){
   $("#q").addEventListener("input",e=>{S.query=e.target.value;renderSResults()});
   renderSResults();
 }
+let SQT=0;
 function renderSResults(){
   const q=S.query.trim().toLowerCase(),el=$("#sres");
-  if(!q){el.innerHTML=`<div class="subhead">Vorschläge</div><div class="suggest">${["Dune","Ted Lasso","Thriller","Sci-Fi","SRF","Bundesliga"].map(s=>`<button class="chip" data-act="q:${s}">${s}</button>`).join("")}</div>`;return}
+  if(!q){const rq=LS.get("recentQ",[]),sg=REAL?[...new Set([...MOVIES.slice(0,400).map(m=>m.g),...GROUPS.map(g=>g.name)])].filter(x=>x&&!GEN_RE.test(x)).slice(0,6):["Dune","Ted Lasso","Thriller","Sci-Fi","SRF","Bundesliga"];
+    el.innerHTML=(rq.length?`<div class="subhead">Zuletzt gesucht</div><div class="suggest">${rq.map(s=>`<button class="chip" data-act="q:${esc(s)}">${esc(s)}</button>`).join("")}</div>`:"")+`<div class="subhead">Vorschläge</div><div class="suggest">${sg.map(s=>`<button class="chip" data-act="q:${esc(s)}">${esc(s)}</button>`).join("")}</div>`;return}
   const ch=CH.filter(chVisible).filter(c=>c.name.toLowerCase().includes(q)||nowP(c).title.toLowerCase().includes(q));
   const mv=MOVIES.filter(m=>(m.t+" "+m.g).toLowerCase().includes(q)),se=SERIES.filter(s=>(s.t+" "+s.g).toLowerCase().includes(q));
-  el.innerHTML=(ch.length?`<div class="subhead">Kanäle (${ch.length})</div><div class="list" style="margin-bottom:20px">${ch.slice(0,20).map(c=>chRow(c,"playq")).join("")}</div>`:"")+shelf("Filme",mv.slice(0,30),m=>"movie:"+m.i)+shelf("Serien",se.slice(0,30),s=>"series:"+s.i)
+  if(q.length>1){clearTimeout(SQT);SQT=setTimeout(()=>{const r=[S.query.trim(),...LS.get("recentQ",[]).filter(x=>x.toLowerCase()!==q)].slice(0,6);LS.set("recentQ",r)},1500)}
+  el.innerHTML=(ch.length?`<section class="shelf"><h3>Kanäle</h3></section><div class="list" style="margin:-10px 0 20px">${ch.slice(0,20).map(c=>chRow(c,"playq")).join("")}</div>`:"")+shelf("Filme",mv.slice(0,30),m=>"movie:"+m.i)+shelf("Serien",se.slice(0,30),s=>"series:"+s.i)
    ||`<p class="empty">Keine Treffer für „${esc(S.query)}“. Gesucht wird in Kanalnamen, laufenden Sendungen, Filmen und Serien.</p>`;
 }
 
@@ -1457,7 +1466,7 @@ function detailHTML(d){
   const rr=()=>{const p=PG.find(p=>p._d===d);if(p)p._r()};
   if(!m&&metaOn()&&!META[mKey(o)])loadMeta(o).then(x=>{if(x){paintKey(mKey(o));rr()}});
   const title=m?m.title:o.t,yr=m&&m.year||o.y||"";
-  const metaL=[...(m?m.genres.slice(0,2):[o.g]),yr,isS?((m&&m.nsea)||(own&&own.seasons.length)||"")+((m&&m.nsea||own&&own.seasons.length)?(((m&&m.nsea)||own.seasons.length)>1?" Staffeln":" Staffel"):""):(m&&m.rt?dur(m.rt):own&&own.d?dur(own.d):"")].filter(Boolean);
+  const metaL=[...(m?m.genres.slice(0,2):[GEN_RE.test(o.g||"")?"":o.g]),yr,isS?((m&&m.nsea)||(own&&own.seasons.length)||"")+((m&&m.nsea||own&&own.seasons.length)?(((m&&m.nsea)||own.seasons.length)>1?" Staffeln":" Staffel"):""):(m&&m.rt?dur(m.rt):own&&own.d?dur(own.d):"")].filter(Boolean);
   const badges=[own&&qOf(own)?`<span class="bdg">${qOf(own)}</span>`:own?'<span class="bdg">HD</span>':"",m&&m.cert?`<span class="bdg">FSK ${esc(m.cert)}</span>`:"",m&&m.vote?`<span class="bdg vote">★ ${m.vote.toLocaleString(loc())}</span>`:""].join("");
   const auto=m&&m.trailer&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
   const hero=`<div class="ahero" style="--h:${o.hue}">
@@ -1471,9 +1480,9 @@ function detailHTML(d){
   let main="";
   if(own&&!isS){const mv=own,rsm=sv("resume");main=mv.prog&&rsm!==2?`<button class="abtn primary" data-act="mplay:${mv.i}:r"><span>${IC.play}Fortsetzen</span><small>noch ${dur(mv.d-mv.prog)}</small><i class="abar"><b style="width:${mv.prog/mv.d*100}%"></b></i></button>`:`<button class="abtn primary" data-act="mplay:${mv.i}">${IC.play}<span>${mv.prog&&rsm===2?"Von vorne abspielen":"Abspielen"}</span></button>`}
   else if(own&&isS){const pr=S.prog[own.key];main=pr&&sv("resume")!==2?`<button class="abtn primary" data-act="eplay:${own.i}:${pr.se}:${pr.e}:r"><span>${IC.play}${pr.pos?"Fortsetzen":"Weiter"} · S${pr.se} F${pr.e}</span>${pr.pos&&pr.dur?`<small>noch ${dur(Math.round((pr.dur-pr.pos)/60))}</small><i class="abar"><b style="width:${pr.pos/pr.dur*100}%"></b></i>`:""}</button>`:`<button class="abtn primary" data-act="eplay:${own.i}:1:1">${IC.play}<span>S1 · F1 abspielen</span></button>`}
-  else main=`<button class="abtn primary" data-act="watch:${o.key}">${S.watch.has(o.key)?"✓ Auf der Merkliste":"＋ Auf die Merkliste"}</button>`;
+  else main=`<button class="abtn primary" data-act="watch:${o.key}">${S.watch.has(o.key)?"✓ In «Meine Liste»":"＋ Meine Liste"}</button>`;
   const fk=own?own.key:null,fav=fk&&S.favVod.has(fk);
-  const acts=`<div class="aacts">${fk?`<button class="around" data-act="vfav:${fk}" aria-label="Merkliste"><span>${fav?"✓":"＋"}</span><small>${fav?"Gemerkt":"Merkliste"}</small></button>`:""}${m&&m.trailer?`<button class="around" data-act="trailer:${m.trailer}" aria-label="Trailer"><span>${IC.play}</span><small>Trailer</small></button>`:""}${own&&!isS&&own.prog&&sv("resume")===0?`<button class="around" data-act="mplay:${own.i}" aria-label="Von vorne"><span>↺</span><small>Von vorne</small></button>`:""}</div>`;
+  const acts=`<div class="aacts">${fk?`<button class="around" data-act="vfav:${fk}" aria-label="Meine Liste"><span>${fav?"✓":"＋"}</span><small>${fav?"Gemerkt":"Meine Liste"}</small></button>`:""}${m&&m.trailer?`<button class="around" data-act="trailer:${m.trailer}" aria-label="Trailer"><span>${IC.play}</span><small>Trailer</small></button>`:""}${own&&!isS&&own.prog&&sv("resume")===0?`<button class="around" data-act="mplay:${own.i}" aria-label="Von vorne"><span>↺</span><small>Von vorne</small></button>`:""}</div>`;
   const avail=tr?`<div class="aavail ${d.match?"ok":""}">${d.match?"✓ In deiner Playlist":"Nicht in deiner Playlist · Onda meldet sich, sobald der Titel auftaucht"}</div>`:"";
   const ov=m&&m.ov?m.ov:DESC_NOTE;
   /* Staffeln & Folgen */
@@ -1488,7 +1497,7 @@ function detailHTML(d){
   let sim=pool.filter(x=>x!==own&&simIdx.includes(norm(x.t)));if(sim.length<6)sim=[...sim,...pool.filter(x=>x!==own&&!sim.includes(x)&&(x.g===(own||o).g))].slice(0,9);
   const simH=shelf(tr&&!d.match?"Stattdessen in deiner Playlist":"Ähnliches in deiner Playlist",sim.slice(0,9),x=>(isS?"series:":"movie:")+x.i);
   const info=m?`<section class="asec"><h3>Info</h3><dl class="ainfo">${[["Originaltitel",m.orig!==m.title?m.orig:""],[m.type==="movie"?"Regie":"Idee",m.dir.join(", ")],["Erschienen",m.date?new Date(m.date).toLocaleDateString(loc(),{day:"numeric",month:"long",year:"numeric"}):""],[m.type==="movie"?"Studio":"Sender",m.studio],["Laufzeit",m.rt?dur(m.rt):""],["Altersfreigabe",m.cert?"FSK "+m.cert:""]].filter(r=>r[1]).map(r=>`<div><dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd></div>`).join("")}</dl></section>`:"";
-  const src=m?srcLine(m):metaOn()?"":`<button class="akey tap" data-act="metaset"><b>Cover und Infos einrichten</b><span>Zuerst vom Anbieter, ergänzt durch TheTVDB</span></button>`;
+  const src=m?srcLine(m):"";const _unused=`<button class="akey tap" data-act="metaset"><b>Cover und Infos einrichten</b><span>Zuerst vom Anbieter, ergänzt durch TheTVDB</span></button>`;
   return `${pnav(title)}<div class="adetail">${hero}<div class="abody">${avail}<div class="amain">${main}${acts}</div>
     ${m&&m.tag?`<p class="atag">${esc(m.tag)}</p>`:""}${m&&m.ov?`<p class="aov tap" data-act="ovx" role="button">${esc(ov)}</p>`:""}</div>${eps}${cast}${simH}${info}${src}</div>`;
 }
@@ -1814,7 +1823,7 @@ function updateStars(id){const f=S.favCh.has(id);$$(`[data-act="fav:${id}"]`).fo
 function act(el){
   const[t,...x]=el.dataset.act.split(":");
   switch(t){
-    case"tab":showTab(x[0]);break;
+    case"tab":showTab(x[0]);if(x[0]==="search"&&!S.query){const q=$("#q");if(q)q.focus({preventScroll:true})}break;
     case"settings":openSettings();break;
     case"back":popPage();break;
     case"group":S.group=x[0];S.recentG=[x[0],...(S.recentG||[]).filter(g=>g!==x[0])].slice(0,4);LS.set("recentG",S.recentG);persist();S.lvView="list";renderLive();break;
@@ -1849,8 +1858,8 @@ function act(el){
     case"trend":openTrend(x[0],+x[1]);break;
     case"movie":openMovie(+x[0]);break;
     case"series":openSeries(+x[0]);break;
-    case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();refreshTop();toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Von der Merkliste entfernt");break}
-    case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu Favoriten hinzugefügt":"Aus Favoriten entfernt");refreshTop();break}
+    case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();refreshTop();toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Aus «Meine Liste» entfernt");break}
+    case"vfav":{const k=x[0];S.favVod.has(k)?S.favVod.delete(k):S.favVod.add(k);persist();toast(S.favVod.has(k)?"Zu «Meine Liste» hinzugefügt":"Aus «Meine Liste» entfernt");refreshTop();break}
     case"season":{const pg=topPage();if(!pg||!pg._d)break;pg._d.season=+x[0];pg._r();break}
     case"trailer":openTrailer(x[0]);break;
     case"trlclose":{const t=$(".trl");if(t){t.classList.remove("in");setTimeout(()=>t.remove(),300)}break}
@@ -1865,7 +1874,7 @@ function act(el){
     case"tmdbdel":LS.set("tmdb","");resetMeta();closeSheet();toast("Schlüssel entfernt");rerenderTab();{const pg=topPage();if(pg)pg._r()}break;
     case"mplay":{const m=MOVIES[+x[0]],pr=S.prog[m.key];openVod({key:m.key,title:m.t,sub:"Film · "+(m.y?m.y+" · ":"")+m.g,dur:pr&&pr.dur?pr.dur:(m.d||120)*60,pos:x[1]&&pr?pr.pos:0,hue:m.hue,raw:m.raw});break}
     case"eplay":{const s=SERIES[+x[0]],se=+x[1],e=+x[2],pr=S.prog[s.key],rs=pr&&pr.se===se&&pr.e===e&&pr.pos>0&&(x[3]==="r"||sv("resume")===1);openVod({key:s.key,pos:rs?pr.pos:0,title:epTitle(s,se,e),sub:s.t+" · Staffel "+se+", Folge "+e,dur:epDur(s,se,e)*60,hue:(s.hue+e*9)%360,raw:s.raw+(s.i%3?" FHD":""),ep:true,si:s.i,se,e});break}
-    case"q":S.query=x[0];$("#q").value=x[0];renderSResults();break;
+    case"q":{const v=x.join(":");S.query=v;$("#q").value=v;renderSResults();break}
     case"set":if(x[0]==="epgsrc"){openPlEdit(Math.max(0,S.playlists.findIndex(p=>p.active)));break}openPicker(x[0]);break;
     case"pick":if(x[0]==="shift"){CH.forEach(c=>c._s=null)}
     if(x[0]==="epgsrc"){S.set.epgsrc=+x[1];persist();const ai=Math.max(0,S.playlists.findIndex(p=>p.active));S.playlists[ai].epgMode=+x[1]===1?1:0;LS.set("pl",S.playlists);closeSheet();setTimeout(()=>openPlEdit(ai),250);break}
@@ -1900,6 +1909,12 @@ function act(el){
     case"seg":{const n=$("#fName").value;S.formType=x[0];openSheet(renderForm(),"","form");$("#fName").value=n;break}
     case"savepl":{const name=($("#fName").value||"").trim()||"Neue Playlist",ua=(($("#fUa")||{}).value||"").trim();S.playlists.push({name,type:S.formType==="xtream"?"Xtream Codes":"M3U-URL",info:ua?"User-Agent: "+ua:"nicht geladen",active:false,ua});persist();closeSheet();const pg=topPage();if(pg)pg._r();toast("Playlist „"+name+"“ angelegt");break}
     case"sclose":closeSheet();break;
+    case"vx":{const[op,k]=x,o=byKey(k);closeSheet();if(!o)break;const own=o.key[0]!=="t"?o:(o.avail&&o.avail.o),isS=mType(o)==="tv";
+      if(op==="info"){if(own)isS?openSeries(own.i):openMovie(own.i);else openTrend(o.k,o.i);break}
+      if(op==="play"&&own){if(isS){const pr=S.prog[own.key];act({dataset:{act:pr?`eplay:${own.i}:${pr.se}:${pr.e}:r`:`eplay:${own.i}:1:1`}})}else act({dataset:{act:`mplay:${own.i}${own.prog?":r":""}`}});break}
+      if(op==="list"){if(own){S.favVod.has(own.key)?S.favVod.delete(own.key):S.favVod.add(own.key);toast(S.favVod.has(own.key)?"Zu «Meine Liste» hinzugefügt":"Aus «Meine Liste» entfernt")}else{S.watch.has(o.key)?S.watch.delete(o.key):S.watch.add(o.key);toast(S.watch.has(o.key)?"Zu «Meine Liste» hinzugefügt":"Aus «Meine Liste» entfernt")}persist();refreshTop();if(!topPage())rerenderTab();break}
+      if(op==="rm"&&own){delete S.prog[own.key];own.prog=0;LS.set("prog",S.prog);persist();applyProg();toast("Aus «Weiterschauen» entfernt");refreshTop();if(!topPage())rerenderTab();break}
+      break}
     case"cx":{const[op,ids]=x,id=+ids,c=chById(id);
       if(op==="play"){closeSheet();if(!$("#player").hidden&&P.type==="live"&&P.mode==="full"){if(id!==P.ch){P.prevCh=P.ch;P.ch=id;P.shift=0;P.paused=false;if(!P.list.find(v=>v.id===id)){P.list=chOf("all");P.listName="Alle Kanäle"}updPlayer();resetStats();flashZap()}}else{const l=S.tab==="live"?chOf(S.group):chOf("all");openLive(id,l,S.tab==="live"?gName(S.group):"Alle Kanäle")}}
       else if(op==="fav"){S.favCh.has(id)?S.favCh.delete(id):S.favCh.add(id);persist();closeSheet();refreshFav(id);toast(S.favCh.has(id)?c.name+" zu Favoriten hinzugefügt":c.name+" aus Favoriten entfernt")}
@@ -1938,11 +1953,14 @@ function act(el){
 }
 /* Langes Drücken auf einen Sender: Abspielen, Favorit, Programm, Ausblenden */
 let LP=null,LPfired=false;
-APP.addEventListener("pointerdown",e=>{const r=e.target.closest("[data-ctx]");if(!r||e.target.closest("button"))return;LPfired=false;const x0=e.clientX,y0=e.clientY;
-  clearTimeout(LP&&LP.t);LP={x0,y0,t:setTimeout(()=>{LPfired=true;LP=null;openCtx(+r.dataset.ctx)},480)}});
+APP.addEventListener("pointerdown",e=>{const r=e.target.closest("[data-ctx],[data-vctx]");if(!r||e.target.closest("button"))return;LPfired=false;const x0=e.clientX,y0=e.clientY;
+  clearTimeout(LP&&LP.t);LP={x0,y0,t:setTimeout(()=>{LPfired=true;LP=null;if(navigator.vibrate)navigator.vibrate(8);r.dataset.vctx?openVCtx(r.dataset.vctx):openCtx(+r.dataset.ctx)},480)}});
 APP.addEventListener("pointermove",e=>{if(LP&&Math.hypot(e.clientX-LP.x0,e.clientY-LP.y0)>8){clearTimeout(LP.t);LP=null}});
 ["pointerup","pointercancel"].forEach(ev=>APP.addEventListener(ev,()=>{if(LP){clearTimeout(LP.t);LP=null}}));
-APP.addEventListener("contextmenu",e=>{const r=e.target.closest("[data-ctx]");if(!r)return;e.preventDefault();LPfired=true;openCtx(+r.dataset.ctx)});
+APP.addEventListener("contextmenu",e=>{const r=e.target.closest("[data-ctx],[data-vctx]");if(!r)return;e.preventDefault();LPfired=true;r.dataset.vctx?openVCtx(r.dataset.vctx):openCtx(+r.dataset.ctx)});
+/* Langes Drücken auf Film/Serie: Abspielen, Details, Meine Liste, aus Weiterschauen entfernen */
+function openVCtx(k){const o=byKey(k);if(!o)return;const own=o.key[0]!=="t"?o:(o.avail&&o.avail.o),isS=mType(o)==="tv",ok=own&&own.key,inL=ok?S.favVod.has(own.key):S.watch.has(o.key),pr=ok&&S.prog[own.key];
+  openSheet(`<div class="es-top"><div class="cx-n" style="font-size:19px;font-weight:700">${esc(o.t)}</div></div><div class="pk-list cx">${own?`<div class="ap tap" data-act="vx:play:${k}" role="button"><span class="apic">${IC.play}</span><b>${pr?"Fortsetzen":"Abspielen"}</b></div>`:""}<div class="ap tap" data-act="vx:info:${k}" role="button"><span class="apic">ⓘ</span><b>Details</b></div><div class="ap tap" data-act="vx:list:${k}" role="button"><span class="apic">${inL?"✓":"＋"}</span><b>${inL?"Aus «Meine Liste» entfernen":"Zu «Meine Liste»"}</b></div>${pr?`<div class="ap tap" data-act="vx:rm:${k}" role="button"><span class="apic">✕</span><b>Aus «Weiterschauen» entfernen</b></div>`:""}</div>`,"","vctx")}
 function openCtx(id){
   const c=chById(id),fav=S.favCh.has(id),p=nowP(c);
   openSheet(`<div class="es-top">${logo(c,"lg")}<div><b class="cx-n">${esc(c.name)}</b><div class="es-time">${esc(p.title)}</div></div></div>
@@ -2115,7 +2133,8 @@ const MQ=[];let mRun=0;
 function mPump(){while(mRun<4&&MQ.length){const o=MQ.shift();mRun++;loadMeta(o).then(m=>{if(m)paintKey(mKey(o))}).finally(()=>{mRun--;mPump()})}}
 function paintKey(mk){$$(`[data-mk]`).forEach(el=>{const o=byKey(el.dataset.mk);if(o&&mKey(o)===mk)paintPoster(el,o)});}
 function paintPoster(el,o){const m=metaOf(o);if(!m||!m.poster){if(!el.classList.contains("img"))paintSample(el,o);return}if(el.classList.contains("img"))return;const im=new Image();im.onload=()=>{el.style.setProperty("--img",`url("${im.src}")`);el.classList.add("img")};im.src=IMG("w342",m.poster)}
-function hydrate(){const ext=!!(tvKey()||tmKey()),xt=xtOK();$$("[data-mk]:not(.img):not(.nimg)").forEach(el=>{const o=byKey(el.dataset.mk);if(!o)return;if(metaOf(o))paintPoster(el,o);else if((ext||(xt&&!coverList(o).length))&&!META[mKey(o)]){paintSample(el,o);if(!MQ.includes(o))MQ.push(o)}else paintSample(el,o)});if(MQ.length)mPump()}
+function fitPts(){$$(".pt:not([data-fit])").forEach(el=>{const w=el.clientWidth;if(!w)return;el.dataset.fit=1;let fs=parseFloat(getComputedStyle(el).fontSize),i=0;while(el.scrollWidth>w+1&&i<7){fs*=.88;el.style.fontSize=fs.toFixed(1)+"px";i++}})}
+function hydrate(){fitPts();const ext=!!(tvKey()||tmKey()),xt=xtOK();$$("[data-mk]:not(.img):not(.nimg)").forEach(el=>{const o=byKey(el.dataset.mk);if(!o)return;if(metaOf(o))paintPoster(el,o);else if((ext||(xt&&!coverList(o).length))&&!META[mKey(o)]){paintSample(el,o);if(!MQ.includes(o))MQ.push(o)}else paintSample(el,o)});if(MQ.length)mPump()}
 const SIMG={};
 function coverList(o){const a=[o.cover,o.avail&&o.avail.o&&o.avail.o.cover,SAMPLE[o.t],o.avail&&o.avail.o&&SAMPLE[o.avail.o.t]].filter(Boolean);return[...new Set(a)]}
 function paintSample(el,o){const L=coverList(o).filter(u=>SIMG[u]!=="bad");if(!L.length){el.classList.add("nimg");return}const u=L[0];const set=()=>{el.style.setProperty("--img",`url("${u}")`);el.classList.add("img");el.classList.remove("nimg")};if(SIMG[u]==="ok")return set();if(SIMG[u]==="wait"){el.classList.add("nimg");return}SIMG[u]="wait";el.classList.add("nimg");const im=new Image();im.onload=()=>{SIMG[u]="ok";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&coverList(ob).filter(v=>SIMG[v]!=="bad")[0]===u){x.classList.remove("nimg");x.style.setProperty("--img",`url("${u}")`);x.classList.add("img")}})};im.onerror=()=>{SIMG[u]="bad";$$("[data-mk].nimg").forEach(x=>{const ob=byKey(x.dataset.mk);if(ob&&coverList(ob).includes(u)){x.classList.remove("nimg");paintSample(x,ob)}})};im.src=u}
@@ -2154,7 +2173,8 @@ function applyReal(P0,name){
     o.seasons[se-1]=Math.max(o.seasons[se-1]||0,ep);(o.eps[se]=o.eps[se]||{})[ep]=x.url});
   SERIES.forEach(o=>{for(let k=0;k<o.seasons.length;k++)o.seasons[k]=o.seasons[k]||0;if(!o.seasons.length)o.seasons=[1]});
   ["m","s"].forEach(k=>TREND[k].forEach(t=>{const r=findInPlaylist(t);t.avail=r;AVAIL[t.key]=!!r}));
-  if(!GROUPS.some(g=>g.id===S.group))S.group=GROUPS[0]?GROUPS[0].id:"all";
+  if(!GROUPS.some(g=>g.id===S.group)&&!["all","fav","ch"].includes(S.group))S.group="all";
+  try{if(!chOf(S.group).length)S.group="all"}catch(e){S.group="all"}
   const info=CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien";
   const prev=S.playlists.find(p=>p.real)||{};if(S.pendingSrc){prev.srcUrl=S.pendingSrc;S.pendingSrc=null}S.playlists=S.playlists.filter(p=>!p.real);S.playlists.forEach(p=>p.active=false);S.playlists.unshift({...prev,name:name||prev.name||"Meine Playlist",type:"Eigene Playlist",info,active:true,real:true});LS.set("pl",S.playlists);
   return info;
