@@ -107,9 +107,10 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .row.jrow::after{left:105px}
 .row.cur .cno{color:var(--accent)}.row.cur .jt{color:var(--accent)}
 
+.pfix .gchips{padding-top:16px;padding-bottom:12px}
 .gchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 16px 10px;scroll-padding:0 16px;-webkit-overflow-scrolling:touch}
 .gchips::-webkit-scrollbar{display:none}
-.gchip{flex:none;white-space:nowrap;font-size:14px;font-weight:600;padding:8px 14px;border-radius:18px;background:var(--surface);color:var(--fg);opacity:.92;transition:background .2s,color .2s}
+.gchip{flex:none;white-space:nowrap;font-size:14.5px;font-weight:600;min-height:40px;padding:10px 14px;border-radius:20px;background:var(--surface);color:var(--fg);opacity:.92;transition:background .2s,color .2s}
 .gchip .n{font-size:11px;font-weight:700;opacity:.55;margin-left:6px;font-variant-numeric:tabular-nums}
 .gchip.on{background:var(--fg);color:var(--bg);opacity:1}
 .gchip.on .n{opacity:.6}
@@ -590,7 +591,7 @@ body.native #device.land #app{--sat:0px;--sab:env(safe-area-inset-bottom,0px);--
 .pnow-t .tm{font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pnow-t .tm .sep{margin:0 6px;color:var(--faint)}.pnow-t .tm b{font-size:inherit;font-weight:600;color:var(--fg);opacity:.85}
 .pnow-t .pk{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pnow-t .pk .pkk{font-weight:600}
+.pnow-t .pkk{font-size:13px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pnow .logo{width:74px;height:48px;border-radius:12px}
 .pnow .exp{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface);transition:transform .25s}
 .pnow .exp svg{width:16px;height:16px;transform:rotate(90deg)}
@@ -1568,6 +1569,19 @@ function openTvdbSheet(){
    <div class="btns col" style="margin-top:12px"><button class="btn primary" data-act="tvdbsave">Speichern und testen</button>${tvKey()?'<button class="btn" data-act="tvdbdel">Schlüssel entfernen</button>':""}</div>
    <p class="foot">Der Schlüssel bleibt nur auf diesem Gerät.${SRCERR.tv?" Letzter Abruf fehlgeschlagen ("+esc(String(SRCERR.tv))+").":""}</p>`,"","tvdb")}
 function resetMeta(){META={};LS.set("meta1",{});for(const k in SRCERR)delete SRCERR[k];$$("[data-mk]").forEach(el=>{el.classList.remove("img","nimg");el.style.removeProperty("--img")})}
+/* ---------- Backup: alle Onda-Einstellungen als JSON-Datei ---------- */
+function backupData(){const d={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith("onda.ios.")&&!/meta1|tvdbtok/.test(k))d[k]=localStorage.getItem(k)}return{app:"onda",kind:"backup",v:1,platform:"ios",ts:new Date().toISOString(),data:d}}
+async function saveBackup(){const j=JSON.stringify(backupData(),null,1),name=`Onda-Backup-${new Date().toISOString().slice(0,10)}.json`;
+  const file=new File([j],name,{type:"application/json"});
+  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Onda-Backup"});toast("Backup erstellt");return}}catch(e){if(e&&e.name==="AbortError")return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(file);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast("Backup gespeichert")}
+APP.addEventListener("change",e=>{const inp=e.target;if(!inp||inp.id!=="bkFile"||!inp.files||!inp.files[0])return;const f=inp.files[0];inp.value="";
+  f.text().then(t=>{let o;try{o=JSON.parse(t)}catch(_){throw new Error("Keine gültige Datei")}if(!o||o.app!=="onda"||!o.data)throw new Error("Keine Onda-Backup-Datei");
+    const n=Object.keys(o.data).filter(k=>k.startsWith("onda.ios.")).length;if(!n)throw new Error("Backup ist leer");
+    if(!confirm(`Backup vom ${new Date(o.ts).toLocaleString("de-CH",{day:"numeric",month:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit"})} wiederherstellen? Aktuelle Einstellungen werden ersetzt.`))return;
+    Object.keys(localStorage).filter(k=>k.startsWith("onda.ios.")).forEach(k=>localStorage.removeItem(k));
+    Object.entries(o.data).forEach(([k,v])=>{if(k.startsWith("onda.ios."))localStorage.setItem(k,v)});
+    toast("Backup wiederhergestellt");setTimeout(()=>location.reload(),900)}).catch(err=>toast(err.message||"Backup konnte nicht gelesen werden"))});
 function openKeySheet(){
   openSheet(`<button class="sh-x" data-act="sclose" aria-label="Schliessen">${IC.close}</button><h2 class="sh-t">TMDB</h2>
    <p class="foot" style="margin-top:0">Dritte Quelle, nur wenn Anbieter und TheTVDB nichts liefern. Für den Verkauf braucht es eine kommerzielle TMDB-Lizenz – der private Schlüssel ist nur zum Testen im Prototyp.</p>
@@ -1587,6 +1601,10 @@ function settingsHTML(){
    <div class="grp-h">Senderliste</div><div class="glist"><div class="srow tap" data-act="editlist" role="button"><span class="sl"><b>Senderliste bearbeiten</b><small>Gruppen und Sender ausblenden oder sortieren</small></span><span class="val">${chOf("all").length} von ${CH.length}</span><i class="chev">›</i></div></div>
    <div class="grp-h">Cover &amp; Infos</div><div class="glist">${metaRows()}</div>
    ${SETTINGS.filter(sec=>!sec.hide).map(sec=>`<div class="grp-h">${esc(sec.sec)}</div><div class="glist">${sec.items.map(it=>`<div class="srow tap" data-act="set:${it.k}" role="button"><span class="sl"><b>${esc(it.l)}</b>${it.h?`<small>${esc(hv(it))}</small>`:""}</span><span class="val">${esc(it.o[sv(it.k)])}</span><i class="chev">›</i></div>`).join("")}</div>`).join("")}
+   <div class="grp-h">Backup</div><div class="glist">
+    <div class="srow tap" data-act="bksave" role="button"><span class="sl"><b>Backup sichern</b><small>Playlists, Einstellungen, Favoriten, Meine Liste und Weiterschauen als Datei</small></span><i class="chev">›</i></div>
+    <label class="srow tap" style="cursor:pointer"><span class="sl"><b>Backup wiederherstellen</b><small>Eine Onda-Backup-Datei auswählen</small></span><i class="chev">›</i><input type="file" id="bkFile" accept=".json,application/json,*/*" hidden></label>
+   </div><p class="foot" style="margin:6px 22px 0">Das Backup enthält deine Zugangsdaten – sicher aufbewahren. In der fertigen App wird es zusätzlich automatisch in iCloud gesichert.</p>
    <div class="grp-h">Über Onda</div><div class="glist"><div class="about"><div class="iosicon">${LOGOFULL(60,"ogi")}</div><div class="about-txt"><b>Onda – IPTV Player</b><span>App-Symbol-Entwurf für den iPhone-Homescreen</span></div></div><div class="srow"><span class="sl"><b>Version</b></span><span class="val">Prototyp 1.0 · Testdaten</span></div></div>`;
 }
 function pkDesc(it,i){
@@ -1762,7 +1780,7 @@ function belowHTML(){
   if(P.type==="live"){
     const c=chById(P.ch),p=nowP(c),rem=Math.max(1,Math.round((p.end-Date.now())/MIN));
     let sch="";if(P.sx){const s=sched(c),i=s.indexOf(p);sch=`<div class="psched">${s.slice(i,i+7).map((q,j)=>`<div class="psr ${j?"":"now"}"><time>${j?fmt(q.start):"Jetzt"}</time><span>${esc(q.title)}</span></div>`).join("")}</div>`}
-    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><span class="pk">${esc(c.real?(cleanT(c.name)||c.name):c.name)}${!noEpg(c)&&splitT(p.title).k?`<span class="pkk"> · ${esc(splitT(p.title).k)}</span>`:""}</span>${noEpg(c)?`<span class="t na">Keine Sendungsdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span><span class="tm">${fmt(p.start)}–${fmt(p.end)}<span class="sep">·</span><b>noch ${rem} Min.</b></span>`}</span><span class="exp">${IC.chR}</span></button>
+    return `<div class="pfix"><button class="pnow tap ${P.sx?"open":""}" data-act="pnowx" aria-expanded="${!!P.sx}">${logo(c)}<span class="pnow-t"><span class="pk">${esc(c.real?(cleanT(c.name)||c.name):c.name)}</span>${noEpg(c)?`<span class="t na">Keine Sendungsdaten</span>`:`<span class="t">${esc(splitT(p.title).t)}</span>${splitT(p.title).k?`<span class="pkk">${esc(splitT(p.title).k)}</span>`:""}<span class="tm">${fmt(p.start)}–${fmt(p.end)}<span class="sep">·</span><b>noch ${rem} Min.</b></span>`}</span><span class="exp">${IC.chR}</span></button>
      <div class="bar pnow-bar"><i style="width:${pct(p)}%"></i></div>${sch}
      ${gChips("pgsel",(liveGroups().find(g=>gName(g.id)===P.listName)||{id:"all"}).id)}</div><div class="plist" id="plist"><div class="list">${(()=>{const i=Math.max(0,P.list.findIndex(x=>x.id===P.ch)),a=Math.max(0,i-150);return P.list.slice(a,a+400).map(x=>chRow(x,"zap",P.ch)).join("")})()}</div></div>`;
   }
@@ -1907,6 +1925,7 @@ function act(el){
     case"trlclose":{const t=$(".trl");if(t){t.classList.remove("in");setTimeout(()=>t.remove(),300)}break}
     case"ovx":el.classList.toggle("open");break;
     case"tmdbkey":openKeySheet();break;
+    case"bksave":saveBackup();break;
     case"metaset":openMetaSheet();break;
     case"metaclear":resetMeta();closeSheet();toast("Infos werden neu geladen");rerenderTab();{const pg=topPage();if(pg)pg._r()}break;
     case"tvdbkey":openTvdbSheet();break;
