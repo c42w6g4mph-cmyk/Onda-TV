@@ -1,6 +1,6 @@
 # Onda – Bauplan für tvOS und iOS
 
-Stand: 05.10.2026 · Grundlage: Prototyp 1.6 (Apple TV) bzw. 1.4 (iPhone), iOS nach MyTVOnline+-Abläufen (Artifacts „Onda“ für Apple TV und „Onda iPhone“), mit **Neutralitäts-Vorgaben (Abschnitt 2c)** und **Gesamtprüfung (Abschnitt 4e)** und **rechtlicher Prüfung (Abschnitt 4f, Details in `Rechtliches.md`)** · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
+Stand: 05.10.2026 · Grundlage: Prototyp 1.6 (Apple TV) bzw. 1.5 (iPhone), iOS nach MyTVOnline+-Abläufen (Artifacts „Onda“ für Apple TV und „Onda iPhone“), mit **Neutralitäts-Vorgaben (Abschnitt 2c)** und **Gesamtprüfung (Abschnitt 4e)** und **rechtlicher Prüfung (Abschnitt 4f, Details in `Rechtliches.md`)** · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
 
 ---
 
@@ -321,6 +321,12 @@ Pro Playlist (nicht mehr global): Quelle (URL bzw. Server/Benutzer/Passwort, bea
 - **Vorheriger Sender mit 2× OK** (tvOS), ◀-Liste mit Fokus auf dem vorherigen Sender.
 - **Weiterschauen setzt direkt fort** (Details über die Detailseite bzw. langes Drücken).
 - **Über Onda & Rechtliches:** sieben Seiten (Abschnitt 4f) – Texte sind Entwürfe bis zur anwaltlichen Prüfung.
+
+## 4e-1. Bild-in-Bild (iPhone, Prototyp 1.5, 05.10.2026)
+
+- **Vorher:** ▣ verkleinerte das Video nur zu einem festen Fenster innerhalb der Prototyp-Seite; beim Verlassen der App passierte nichts.
+- **Jetzt:** ▣ öffnet das **echte Bild-in-Bild-Fenster des Systems** (Testbild als Video-Stream), das auch ausserhalb der App bleibt. Mit «Bild-in-Bild automatisch» wird es beim Verlassen angefordert, soweit der Browser das unterstützt. Wo das System-Fenster nicht verfügbar ist (z. B. im Artifact-Fenster auf claude.ai), erscheint ein Fenster in der App, das sich in jede Ecke ziehen lässt; Antippen vergrössert, ✕ beendet.
+- **Grenze des Prototyps:** Ob Safari das Fenster im Hintergrund weiter aktualisiert und ob «automatisch» in der Home-Bildschirm-Version greift, ist **unklar** und muss auf dem iPhone getestet werden. In Swift: `AVPictureInPictureController` mit `canStartPictureInPictureAutomaticallyFromInline` (AVPlayer); für die FFmpeg-Engine siehe Risiko 16.
 
 ## 4f. Rechtliche Prüfung «Über Onda» (05.10.2026, Prototyp 1.6 bzw. 1.4)
 

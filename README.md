@@ -2,7 +2,7 @@
 
 Premium-IPTV-Player für **Apple TV** und **iPhone/iPad**. Ein gemeinsamer Swift-Kern, zwei Apps, die parallel entwickelt werden.
 
-> Status (05.10.2026): Prototyp 1.6 (Apple TV) und 1.4 (iPhone) nach Gesamtprüfung und rechtlicher Prüfung; Swift-Grundgerüst angelegt. Plan: [`docs/Bauplan.md`](docs/Bauplan.md) · Rechtliches: [`docs/Rechtliches.md`](docs/Rechtliches.md)
+> Status (05.10.2026): Prototyp 1.6 (Apple TV) und 1.5 (iPhone) nach Gesamtprüfung und rechtlicher Prüfung; Swift-Grundgerüst angelegt. Plan: [`docs/Bauplan.md`](docs/Bauplan.md) · Rechtliches: [`docs/Rechtliches.md`](docs/Rechtliches.md)
 
 ## Aufbau
 
