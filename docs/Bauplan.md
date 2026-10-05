@@ -322,11 +322,15 @@ Pro Playlist (nicht mehr global): Quelle (URL bzw. Server/Benutzer/Passwort, bea
 - **Weiterschauen setzt direkt fort** (Details über die Detailseite bzw. langes Drücken).
 - **Über Onda & Rechtliches:** sieben Seiten (Abschnitt 4f) – Texte sind Entwürfe bis zur anwaltlichen Prüfung.
 
-## 4e-1. Bild-in-Bild (iPhone, Prototyp 1.5, 05.10.2026)
+## 4e-1. Mini-Player und Bild-in-Bild (iPhone, Prototyp 1.5, 05.10.2026)
 
-- **Vorher:** ▣ verkleinerte das Video nur zu einem festen Fenster innerhalb der Prototyp-Seite; beim Verlassen der App passierte nichts.
-- **Jetzt:** ▣ öffnet das **echte Bild-in-Bild-Fenster des Systems** (Testbild als Video-Stream), das auch ausserhalb der App bleibt. Mit «Bild-in-Bild automatisch» wird es beim Verlassen angefordert, soweit der Browser das unterstützt. Wo das System-Fenster nicht verfügbar ist (z. B. im Artifact-Fenster auf claude.ai), erscheint ein Fenster in der App, das sich in jede Ecke ziehen lässt; Antippen vergrössert, ✕ beendet.
-- **Grenze des Prototyps:** Ob Safari das Fenster im Hintergrund weiter aktualisiert und ob «automatisch» in der Home-Bildschirm-Version greift, ist **unklar** und muss auf dem iPhone getestet werden. In Swift: `AVPictureInPictureController` mit `canStartPictureInPictureAutomaticallyFromInline` (AVPlayer); für die FFmpeg-Engine siehe Risiko 16.
+Zwei getrennte Wege, wie bei YouTube bzw. Apple:
+
+- **Mini-Player (in der App):** Video nach unten ziehen (folgt dem Finger, wird kleiner) oder Pfeil ⌄ oben links → Leiste über der Tab-Leiste mit Vorschaubild, Sender bzw. Titel, Sendung, Fortschritt, ⏯ und ✕. Antippen oder nach oben wischen = wieder gross; nach unten oder seitlich wischen bzw. ✕ = beenden. Man kann dabei frei durch Start, Live TV, TV-Guide und Mediathek navigieren. Kurzes Ziehen federt zurück. Im Querformat: nach unten wischen dreht zurück und verkleinert.
+- **Bild-in-Bild (System):** ▣ öffnet das echte Bild-in-Bild-Fenster von iOS, das auch ausserhalb der App bleibt; mit «Bild-in-Bild automatisch» beim Verlassen der App, soweit unterstützt. Nach dem Schliessen des System-Fensters erscheint der Mini-Player. Wo das System-Fenster nicht verfügbar ist (z. B. im Artifact-Fenster auf claude.ai), öffnet ▣ den Mini-Player.
+- **Geändert:** Nach unten wischen beendet die Wiedergabe nicht mehr, sondern verkleinert sie (wie bei YouTube). Beenden: ✕ im Mini-Player.
+- **Grenze des Prototyps:** Ob Safari das System-Fenster im Hintergrund weiter aktualisiert und ob «automatisch» in der Home-Bildschirm-Version greift, ist **unklar** und muss auf dem iPhone getestet werden.
+- **Swift:** Mini-Player als eigener Zustand über dem `TabView` (z. B. `safeAreaInset(edge: .bottom)` bzw. `tabViewBottomAccessory` ab iOS 26, mit `matchedGeometryEffect` für den Übergang); System-Bild-in-Bild über `AVPictureInPictureController` mit `canStartPictureInPictureAutomaticallyFromInline` (AVPlayer), für die FFmpeg-Engine siehe Risiko 16.
 
 ## 4f. Rechtliche Prüfung «Über Onda» (05.10.2026, Prototyp 1.6 bzw. 1.4)
 

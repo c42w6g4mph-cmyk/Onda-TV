@@ -519,10 +519,7 @@ html,body{overscroll-behavior-x:none}
 #pcanvas,#pipv{position:absolute;inset:0;width:100%;height:100%}
 #pipv{object-fit:fill;pointer-events:none;background:transparent}
 #player.syspip{visibility:hidden;pointer-events:none}
-#player.pip.pl-l{right:auto;left:12px}
-#player.pip.pl-t{bottom:auto;top:calc(var(--sat) + 64px)}
-#player.pip.drag{transition:none!important}
-#player.pip{transition:left .25s ease,right .25s ease,top .25s ease,bottom .25s ease}
+
 .p-mark{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center;color:rgba(255,255,255,.5);font-size:11px;line-height:1.5}
 .pv:has(.pctl:not(.hide)) .p-mark{opacity:0}
 .p-mark{transition:opacity .3s}
@@ -589,12 +586,21 @@ html,body{overscroll-behavior-x:none}
 #app.land .p-mark b{font-size:34px}
 /* Bild-in-Bild */
 .pipctl{display:none}
-#player.pip{inset:auto;right:12px;bottom:calc(max(8px,calc(var(--sab) - 12px)) + var(--tabh) + 12px);width:208px;height:auto;border-radius:16px;overflow:hidden;box-shadow:0 18px 40px rgba(0,0,0,.55),0 0 0 .5px rgba(255,255,255,.15)}
-#player.pip .pv{margin:0}
-#player.pip .p-below,#player.pip .pctl,#player.pip .p-mark,#player.pip .p-osd{display:none}
-#player.pip .pipctl{display:flex;position:absolute;top:6px;left:6px;right:6px;justify-content:space-between}
-#player.pip .pipctl .pbtn{width:28px;height:28px}
-#player.pip .pipctl svg{width:14px;height:14px}
+#player.pip{inset:auto;left:10px;right:10px;bottom:calc(max(8px,calc(var(--sab) - 12px)) + var(--tabh) + 12px);height:64px;flex-direction:row;align-items:stretch;border-radius:16px;overflow:hidden;background:rgba(22,27,38,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 16px 36px rgba(0,0,0,.5),0 0 0 .5px rgba(255,255,255,.14);animation:minin .28s cubic-bezier(.2,.8,.2,1);touch-action:none}
+@keyframes minin{from{transform:translateY(-120px) scale(1.04);opacity:.4}to{transform:none;opacity:1}}
+#player.pip .pv{margin:0;width:114px;height:64px;aspect-ratio:auto;flex:none}
+#player.pip .p-below,#player.pip .pctl,#player.pip .p-mark,#player.pip .p-osd,#player.pip .p-zap{display:none}
+.minibar{display:none}
+#player.pip .minibar{display:flex;flex:1;min-width:0;align-items:center;gap:2px;padding:0 4px 0 12px;position:relative}
+.minibar .mt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.minibar .mt b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.minibar .mt span{font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.minibar .pbtn{width:44px;height:44px;flex:none;background:none}
+.minibar .mprog{position:absolute;left:-114px;right:0;bottom:0;height:2px;background:rgba(255,255,255,.12)}
+.minibar .mprog i{display:block;height:100%;background:var(--accent)}
+#player.dragdn{transition:none!important;transform-origin:50% 0}
+#player.snap{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+#app.hasmini .scroller,#app.hasmini .eg,#app.hasmini .page{padding-bottom:calc(var(--sab) + var(--tabh) + 110px)}
 
 
 /* ---------- Umbau nach MyTVOnline+-Abläufen ---------- */
@@ -874,7 +880,7 @@ body[data-look="light"] #cap{--fg:#121826;--dim:#4a5468;--faint:#7c8598}
   <aside id="cap">
     <div class="wm"><svg class="onda-logo" width="40" height="40" viewBox="2 4 44 44" aria-hidden="true"><defs><linearGradient id="owv2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv2)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv2)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda<span class="wm-tv">TV</span></span></div>
     <div><b id="capT">iPhone-Prototyp 1.5</b><br><span id="capS">Gleiche Daten, Logik und Optik wie die Apple-TV-Version, bedient per Touch.</span></div>
-    <ul id="capL"><li>Tab-Leiste unten, Einstellungen oben rechts</li><li>Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten wischen zum Schliessen</li><li>⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)</li></ul>
+    <ul id="capL"><li>Tab-Leiste unten, Einstellungen oben rechts</li><li>Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten ziehen für den Mini-Player</li><li>⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)</li></ul>
     <div class="note" id="capN">Auf dem iPhone geöffnet, füllt der Prototyp den ganzen Bildschirm.</div>
   </aside>
   <div id="devwrap">
@@ -899,8 +905,8 @@ body[data-look="light"] #cap{--fg:#121826;--dim:#4a5468;--faint:#7c8598}
             <div class="pctl" id="p-ctl"></div>
             <div class="p-osd" id="p-osd"></div>
             <div class="p-zap" id="p-zap"></div>
-            <div class="pipctl"><button class="pbtn" data-act="pipopen" aria-label="Vergrössern"></button><button class="pbtn" data-act="pclose" aria-label="Schliessen"></button></div>
           </div>
+          <div class="minibar" id="minibar"></div>
           <div class="p-below" id="p-below"></div>
         </div>
         <div id="sheet" hidden></div>
@@ -1060,7 +1066,7 @@ const IC={
 };
 const WAVE=(s,id)=>`<svg class="onda-logo" width="${s}" height="${s}" viewBox="2 4 44 44" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg>`;
 const LOGOFULL=(s,id)=>`<svg class="onda-logo" width="${s}" height="${s}" viewBox="1.5 3.2 45 45" aria-hidden="true"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><g transform="translate(4.6,-5.2) scale(.81)"><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#${id})" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></g><text class="lg-tv" x="24" y="46.9" text-anchor="middle" font-family="Inter,-apple-system,Helvetica Neue,Arial,sans-serif" font-weight="800" font-size="14" letter-spacing="3" dx="1.5" style="fill:var(--lgT,#9fd4ff)">TV</text></svg>`;
-$$(".pipctl .pbtn")[0].innerHTML=IC.expand;$$(".pipctl .pbtn")[1].innerHTML=IC.close;
+
 
 /* ---------- Einstellungen (iOS-Variante, gleiche Schlüssel wie tvOS wo möglich) ---------- */
 const SHIFTS=Array.from({length:13},(_,i)=>(i-6)/2);
@@ -1200,14 +1206,14 @@ Object.assign(EN,{
 "Ton & Untertitel":"Audio & subtitles","Bild":"Picture","Nächste Folge":"Next episode","Kanalliste":"Channel list",
 "Wiedergabe auf":"Play on","Dieses iPhone":"This iPhone","Wohnzimmer":"Living room","Küche":"Kitchen","Apple TV 4K":"Apple TV 4K","HomePod mini":"HomePod mini","Lautsprecher":"Speaker",
 "ProMotion":"ProMotion","vom System gesteuert":"controlled by the system","iPhone-Lautsprecher":"iPhone speaker",
-"Bild-in-Bild":"Picture in Picture","Bild-in-Bild in der App · antippen zum Vergrössern":"Picture in Picture inside the app · tap to enlarge","Bild-in-Bild in der App · Fenster verschieben, antippen zum Vergrössern":"Picture in Picture inside the app · drag the window, tap to enlarge","Wischen ist ausgeschaltet. Sender über die Kanalliste wechseln.":"Swiping is turned off. Change channels via the channel list.",
+"Bild-in-Bild":"Picture in Picture","Bild-in-Bild ist hier nicht verfügbar · Mini-Player unten":"Picture in Picture isn’t available here · mini player below","Verkleinern":"Minimise","Bild-in-Bild in der App · antippen zum Vergrössern":"Picture in Picture inside the app · tap to enlarge","Bild-in-Bild in der App · Fenster verschieben, antippen zum Vergrössern":"Picture in Picture inside the app · drag the window, tap to enlarge","Wischen ist ausgeschaltet. Sender über die Kanalliste wechseln.":"Swiping is turned off. Change channels via the channel list.",
 "Prototyp: In der echten App zeigt iOS hier die AirPlay-Auswahl (AVRoutePickerView).":"Prototype: in the real app iOS shows the AirPlay picker here (AVRoutePickerView).",
 "Mit AVPlayer (HLS) läuft AirPlay mit Bild und Ton. Mit VLC ist nur Ton oder die Bildschirmsynchronisierung sicher; das muss auf dem Gerät getestet werden.":"With AVPlayer (HLS), AirPlay carries picture and sound. With VLC only audio or screen mirroring is certain; this needs testing on the device.",
 "Erinnern":"Remind me","Erinnerung entfernen":"Remove reminder","Diese Sendung ist bereits gelaufen.":"This programme has already aired.",
 "Keine Treffer.":"No results.","Noch nichts gemerkt.":"Nothing saved yet.",
 "Gerade nichts im Trend verfügbar.":"Nothing trending is available right now.",
 "iPhone-Prototyp 1.5":"iPhone prototype 1.5","Gleiche Daten, Logik und Optik wie die Apple-TV-Version, bedient per Touch.":"Same data, logic and look as the Apple TV version, operated by touch.",
-"Tab-Leiste unten, Einstellungen oben rechts":"Tab bar at the bottom, settings top right","Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten wischen zum Schliessen":"In the player: tap for controls, swipe sideways to change channel, swipe down to close","⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)":"⤢ rotates to landscape, ▣ starts Picture in Picture (the window stays even outside the app)","Auf dem iPhone geöffnet, füllt der Prototyp den ganzen Bildschirm.":"Opened on an iPhone, the prototype fills the whole screen.",
+"Tab-Leiste unten, Einstellungen oben rechts":"Tab bar at the bottom, settings top right","Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten ziehen für den Mini-Player":"In the player: tap for controls, swipe sideways to change channel, swipe down for the mini player","⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)":"⤢ rotates to landscape, ▣ starts Picture in Picture (the window stays even outside the app)","Auf dem iPhone geöffnet, füllt der Prototyp den ganzen Bildschirm.":"Opened on an iPhone, the prototype fills the whole screen.",
 "Testbild · im Prototyp läuft kein echter Stream":"Test picture · no real stream in the prototype",
 "AirPlay":"AirPlay","Meine Sender":"My channels","Alle anzeigen":"Show all","Mehr":"More","Abspielen":"Play","Zu Favoriten":"Add to favourites","Aus Favoriten entfernen":"Remove from favourites","Programm":"Schedule","Ausblenden":"Hide","Vorheriger Sender":"Previous channel",
 "Halte einen Sender gedrückt und wähle „Zu Favoriten“.":"Press and hold a channel and choose “Add to favourites”.","Sender gedrückt halten: Favorit, Programm, Ausblenden":"Press and hold a channel: favourite, schedule, hide","Senderliste":"Channel list","Senderliste bearbeiten":"Edit channel list","Gruppen und Sender ausblenden oder sortieren":"Hide or reorder groups and channels","Sender":"Channels","Alles zurücksetzen":"Reset all","Senderliste zurückgesetzt":"Channel list reset","Nach oben":"Move up","Nach unten":"Move down",
@@ -1248,7 +1254,7 @@ function trNode(root){
 }
 new MutationObserver(ms=>{if(!isEN())return;ms.forEach(m=>{if(m.type==="characterData")trNode(m.target);else m.addedNodes.forEach(trNode)})}).observe(APP,{childList:true,subtree:true,characterData:true});
 const CAP={capT:"iPhone-Prototyp 1.5",capS:"Gleiche Daten, Logik und Optik wie die Apple-TV-Version, bedient per Touch.",capN:"Auf dem iPhone geöffnet, füllt der Prototyp den ganzen Bildschirm."};
-const CAPL=["Tab-Leiste unten, Einstellungen oben rechts","Sender gedrückt halten: Favorit, Programm, Ausblenden","Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten wischen zum Schliessen","⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)"];
+const CAPL=["Tab-Leiste unten, Einstellungen oben rechts","Sender gedrückt halten: Favorit, Programm, Ausblenden","Im Player: tippen für die Steuerung, seitlich wischen für den Senderwechsel, nach unten ziehen für den Mini-Player","⤢ dreht ins Querformat, ▣ startet Bild-in-Bild (Fenster bleibt auch ausserhalb der App)"];
 function setCap(){const t=s=>isEN()?(EN[s]||s):s;for(const k in CAP)$("#"+k).textContent=t(CAP[k]);$("#capL").innerHTML=CAPL.map(s=>`<li>${esc(t(s))}</li>`).join("")}
 
 /* ---------- Erscheinungsbild ---------- */
@@ -1884,14 +1890,14 @@ function prefAV(){P.ov={};const a=analyse(),hasEn=!a.audio.includes("Stereo"),al
   P.sub=sl===0?0:sl===1?(live?0:3):sl===2?1:sl===3?(live?0:2):0}
 const pvs=k=>P.ov&&P.ov[k]!=null?P.ov[k]:sv(k);
 function startPlayer(){
-  closeSheet();const pl=$("#player");pl.hidden=false;pl.classList.remove("pip");P.mode="full";APP.classList.add("pl");
+  closeSheet();const pl=$("#player");pl.hidden=false;pl.classList.remove("pip","syspip");P.mode="full";APP.classList.add("pl");APP.classList.remove("hasmini");
   ST.drop=0;ST.buf=0;ST.br=0;updPlayer();showCtl();anim();pipPrep();
   clearInterval(P.iv);P.iv=setInterval(()=>{if(P.type==="vod"&&!P.paused){P.pos=Math.min(P.vod.dur,P.pos+1);updVodBar();if(P.pos%15===0)saveProg()}if(P.type==="live"&&P.paused){P.shift++;const b=$("#tsBadge");if(b)b.textContent="−"+mmss(P.shift)}tickStats()},1000);
 }
 function stopPlayer(){
   if(P.mode==="sys"){P.mode="full";pipExit()}
   saveProg();cancelAnimationFrame(P.raf);clearInterval(P.iv);clearInterval(P.drawIv);{const v=$("#pipv");if(v)v.pause()}clearTimeout(P.sleepT);P.sleep=0;
-  const pl=$("#player");pl.hidden=true;pl.classList.remove("pip","syspip");APP.classList.remove("pl");closeSheet();
+  const pl=$("#player");pl.hidden=true;pl.classList.remove("pip","syspip","dragdn","snap");pl.style.transform="";APP.classList.remove("pl","hasmini");closeSheet();
   if(FL){FL=false;fit()}
   if(S.tab==="home"||S.tab==="media")rerenderTab();
   {const t=topPage();if(t&&t._r)t._r()}
@@ -1907,23 +1913,28 @@ function pipCan(){const v=$("#pipv");if(!v||!v.srcObject)return 0;
 function pipStart(){
   const v=$("#pipv"),m=pipCan();
   if(m){v.removeAttribute("disablepictureinpicture");
-    try{if(m===1){const pr=v.requestPictureInPicture();if(pr&&pr.catch)pr.catch(()=>{toPip();toast("Bild-in-Bild in der App · antippen zum Vergrössern")});return}
+    try{if(m===1){const pr=v.requestPictureInPicture();if(pr&&pr.catch)pr.catch(()=>{toPip();toast("Bild-in-Bild ist hier nicht verfügbar · Mini-Player unten")});return}
       v.webkitSetPresentationMode("picture-in-picture");return}catch(e){}}
-  toPip();toast("Bild-in-Bild in der App · Fenster verschieben, antippen zum Vergrössern");
+  toPip();toast("Bild-in-Bild ist hier nicht verfügbar · Mini-Player unten");
 }
 function pipExit(){const v=$("#pipv");try{if(document.pictureInPictureElement)document.exitPictureInPicture().catch(()=>{});else if(v&&v.webkitPresentationMode==="picture-in-picture")v.webkitSetPresentationMode("inline")}catch(e){}}
-function sysOn(){if($("#player").hidden)return pipExit();if(FL){FL=false;fit()}closeSheet();P.mode="sys";const pl=$("#player");pl.classList.remove("pip");pl.classList.add("syspip");APP.classList.remove("pl");anim()}
+function sysOn(){if($("#player").hidden)return pipExit();if(FL){FL=false;fit()}closeSheet();P.mode="sys";const pl=$("#player");pl.classList.remove("pip");pl.classList.add("syspip");APP.classList.remove("pl","hasmini");anim()}
 function sysOff(){if(P.mode!=="sys")return;$("#player").classList.remove("syspip");toPip()}
 {const v=$("#pipv");if(v){v.addEventListener("enterpictureinpicture",sysOn);v.addEventListener("leavepictureinpicture",sysOff);
   v.addEventListener("webkitpresentationmodechanged",()=>v.webkitPresentationMode==="picture-in-picture"?sysOn():sysOff())}}
 function toPip(){
-  if(FL){FL=false;fit()}closeSheet();P.mode="pip";$("#player").classList.add("pip");APP.classList.remove("pl");anim();
+  if(FL){FL=false;fit()}closeSheet();P.mode="pip";const pl=$("#player");pl.classList.remove("syspip","dragdn","snap");pl.style.transform="";pl.style.background="";pl.style.borderRadius="";$("#p-below").style.opacity="";$("#p-ctl").style.opacity="";
+  pl.classList.add("pip");APP.classList.remove("pl");APP.classList.add("hasmini");updMini();anim();
 }
-function fromPip(){if(P.mode==="sys")pipExit();P.mode="full";$("#player").classList.remove("pip","syspip");APP.classList.add("pl");updPlayer();showCtl();anim()}
+function updMini(){if(P.mode!=="pip")return;const live=P.type==="live",c=live?chById(P.ch):null,pr=live?nowP(c):null;
+  const t=live?c.name:P.vod.title,sub=live?(pr?pr.title:"Keine Sendungsdaten"):(P.vod.ep?P.vod.ep:"");
+  const f=live?(pr?Math.max(0,Math.min(1,(Date.now()-pr.start)/(pr.end-pr.start))):0):P.pos/P.vod.dur;
+  $("#minibar").innerHTML=`<div class="mt"><b>${esc(t)}</b>${sub?`<span>${esc(sub)}</span>`:""}</div><button class="pbtn" data-act="ppause" aria-label="Wiedergabe/Pause">${P.paused?IC.play:IC.pause}</button><button class="pbtn" data-act="pclose" aria-label="Schliessen">${IC.close}</button><div class="mprog"><i style="width:${(f*100).toFixed(1)}%"></i></div>`}
+function fromPip(){if(P.mode==="sys")pipExit();P.mode="full";$("#player").classList.remove("pip","syspip");APP.classList.remove("hasmini");APP.classList.add("pl");updPlayer();showCtl();anim()}
 function ctlHTML(){
   const live=P.type==="live",c=live?chById(P.ch):null,p=live?nowP(c):null,nx=live?nextP(c):null,land=APP.classList.contains("land");
   const fv=live&&S.favCh.has(c.id);
-  const top=`<div class="pc-top"><button class="pbtn" data-act="pclose" aria-label="Schliessen">${IC.down}</button><div class="pc-tt">${live?esc(c.name):esc(P.vod.title)}</div><button class="pbtn" data-act="pmenu:av" aria-label="Ton & Untertitel">${IC.bubble}</button>${live?`<button class="pbtn ${fv?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${fv?IC.starF:IC.star}</button>`:""}<button class="pbtn ${P.route?"on":""}" data-act="airplay" aria-label="AirPlay">${IC.airplay}</button><button class="pbtn" data-act="pip" aria-label="Bild-in-Bild">${IC.pip}</button></div>`;
+  const top=`<div class="pc-top"><button class="pbtn" data-act="pmin" aria-label="Verkleinern">${IC.down}</button><div class="pc-tt">${live?esc(c.name):esc(P.vod.title)}</div><button class="pbtn" data-act="pmenu:av" aria-label="Ton & Untertitel">${IC.bubble}</button>${live?`<button class="pbtn ${fv?"on":""}" data-act="fav:${c.id}" aria-label="Favorit">${fv?IC.starF:IC.star}</button>`:""}<button class="pbtn ${P.route?"on":""}" data-act="airplay" aria-label="AirPlay">${IC.airplay}</button><button class="pbtn" data-act="pip" aria-label="Bild-in-Bild">${IC.pip}</button></div>`;
   const pp=`<button class="pbig" data-act="ppause" aria-label="Wiedergabe/Pause">${P.paused?IC.play:IC.pause}</button>`;
   const mid=`<div class="pc-mid">${live?`<button class="pskip" data-act="zapd:-1" aria-label="Vorheriger in der Liste">${IC.skipB}</button>${pp}<button class="pskip" data-act="zapd:1" aria-label="Nächster in der Liste">${IC.skipF}</button>`:`<button class="pskip" data-act="seek:-10" aria-label="10 s zurück">${IC.b10}</button>${pp}<button class="pskip" data-act="seek:10" aria-label="10 s vor">${IC.f10}</button>`}</div>`;
   const prev=live&&P.prevCh&&P.prevCh!==P.ch?`<button class="pbtn" data-act="zap:${P.prevCh}" aria-label="Vorheriger Sender">${IC.prev}</button>`:"";
@@ -1953,7 +1964,7 @@ function updPlayer(){
   if(P.type==="live"){const c=chById(P.ch);P.hue=c.hue;$("#p-markname").textContent=c.name}else{P.hue=P.vod.hue;$("#p-markname").textContent=P.vod.title}
   $("#p-ctl").innerHTML=ctlHTML();
   renderBelow();
-  if(P.type==="vod")updVodBar();updOsd();
+  if(P.type==="vod")updVodBar();updOsd();updMini();
 }
 function updVodBar(){const b=$("#vBar");if(!b)return;const v=P.vod,r=P.pos/v.dur*100;b.style.width=r+"%";$("#vKnob").style.left=r+"%";$("#vPos").textContent=mmss(P.pos);$("#vRem").textContent="−"+mmss(v.dur-P.pos)}
 function showCtl(){const c=$("#p-ctl");c.classList.remove("hide");clearTimeout(P.hideT);if(!P.paused&&!sheetKind)P.hideT=setTimeout(()=>c.classList.add("hide"),4000)}
@@ -1965,10 +1976,10 @@ function anim(){
     x.globalCompositeOperation="source-over";x.fillStyle=`hsl(${h},35%,6%)`;x.fillRect(0,0,960,540);x.globalCompositeOperation="lighter";
     for(let i=0;i<4;i++){const px=480+Math.cos(k*.23+i*1.7)*330,py=270+Math.sin(k*.31+i*2.3)*170,g=x.createRadialGradient(px,py,0,px,py,300);
       g.addColorStop(0,`hsla(${(h+i*32)%360},70%,45%,.42)`);g.addColorStop(1,"hsla(0,0%,0%,0)");x.fillStyle=g;x.fillRect(0,0,960,540)}
-    if(P.mode!=="full"){const live=P.type==="live",c=live?chById(P.ch):null,t=live?c&&c.name:P.vod&&P.vod.title;
+    if(P.mode==="sys"){const live=P.type==="live",c=live?chById(P.ch):null,t=live?c&&c.name:P.vod&&P.vod.title;
       if(t){x.globalCompositeOperation="source-over";const g=x.createLinearGradient(0,380,0,540);g.addColorStop(0,"rgba(0,0,0,0)");g.addColorStop(1,"rgba(0,0,0,.65)");x.fillStyle=g;x.fillRect(0,380,960,160);
         x.fillStyle="#fff";x.font="600 58px -apple-system,system-ui,sans-serif";x.fillText(t,40,490);
-        if(live&&P.mode==="sys"){x.fillStyle="#e5484d";x.beginPath();x.roundRect?x.roundRect(40,36,118,48,10):x.rect(40,36,118,48);x.fill();x.fillStyle="#fff";x.font="700 30px -apple-system,system-ui,sans-serif";x.fillText("LIVE",62,71)}}}
+        if(live){x.fillStyle="#e5484d";x.beginPath();x.roundRect?x.roundRect(40,36,118,48,10):x.rect(40,36,118,48);x.fill();x.fillStyle="#fff";x.font="700 30px -apple-system,system-ui,sans-serif";x.fillText("LIVE",62,71)}}}
     if(!$("#player").hidden&&(!still||P.mode==="sys"))P.raf=requestAnimationFrame(draw)};
   P.raf=requestAnimationFrame(draw);
   clearInterval(P.drawIv);P.drawIv=setInterval(()=>{if($("#player").hidden)return clearInterval(P.drawIv);if(document.hidden||still)draw(performance.now())},still?500:120);
@@ -2025,22 +2036,30 @@ function openAirPlay(){
 /* Gesten im Video */
 let G=null;
 const pv=$("#pv");
-pv.addEventListener("pointerdown",e=>{if(e.target.closest("button,.scrub"))return;G={x:e.clientX,y:e.clientY};if(P.mode==="pip"&&pv.setPointerCapture)try{pv.setPointerCapture(e.pointerId)}catch(_){}});
+pv.addEventListener("pointerdown",e=>{if(e.target.closest("button,.scrub")||P.mode==="pip")return;G={x:e.clientX,y:e.clientY}});
 pv.addEventListener("pointerup",e=>{
-  if(!G)return;const dx=(e.clientX-G.x)/SC,dy=(e.clientY-G.y)/SC;G=null;
-  if(P.mode==="pip"){const pl=$("#player");pl.classList.remove("drag");pl.style.transform="";
-    if(Math.abs(dx)+Math.abs(dy)<8)return fromPip();
-    const r=pl.getBoundingClientRect(),a=APP.getBoundingClientRect(),cx=(r.left+r.width/2+dx*SC-a.left)/a.width,cy=(r.top+r.height/2+dy*SC-a.top)/a.height;
-    pl.classList.toggle("pl-l",cx<.5);pl.classList.toggle("pl-t",cy<.5);return}
+  if(!G)return;const dx=(e.clientX-G.x)/SC,dy=(e.clientY-G.y)/SC,G_dn=G.dn;G=null;
+  if(P.mode==="pip")return;
+  if(G_dn){if(dy>110)return toPip();return dragReset(true)}
   const land=APP.classList.contains("land");
   const rx=land&&NATIVE&&FL&&innerHeight>innerWidth?dy:dx,ry=land&&NATIVE&&FL&&innerHeight>innerWidth?-dx:dy;
   if(Math.abs(rx)>50&&Math.abs(rx)>Math.abs(ry)*1.3){if(P.type!=="live")return;if(sv("zap")===0)zap(rx<0?1:-1);else toast("Wischen ist ausgeschaltet. Sender über die Kanalliste wechseln.");return}
-  if(ry>80&&Math.abs(ry)>Math.abs(rx))return stopPlayer();
+  if(ry>80&&Math.abs(ry)>Math.abs(rx))return toPip();
   if(Math.abs(rx)<10&&Math.abs(ry)<10)toggleCtl();
 });
-pv.addEventListener("pointercancel",()=>{G=null;const pl=$("#player");pl.classList.remove("drag");pl.style.transform=""});
-pv.addEventListener("pointermove",e=>{if(!G||P.mode!=="pip")return;const dx=(e.clientX-G.x)/SC,dy=(e.clientY-G.y)/SC;if(Math.abs(dx)+Math.abs(dy)<6&&!G.drag)return;
-  G.drag=true;const pl=$("#player");pl.classList.add("drag");pl.style.transform=`translate(${dx}px,${dy}px)`});
+function dragReset(anim_){const pl=$("#player"),b=$("#p-below");pl.classList.remove("dragdn");if(anim_){pl.classList.add("snap");setTimeout(()=>pl.classList.remove("snap"),260)}pl.style.transform="";pl.style.background="";pl.style.borderRadius="";b.style.opacity="";$("#p-ctl").style.opacity=""}
+pv.addEventListener("pointercancel",()=>{G=null;dragReset(true)});
+const portraitDrag=()=>P.mode==="full"&&!APP.classList.contains("land");
+pv.addEventListener("pointermove",e=>{if(!G||!portraitDrag())return;const dx=(e.clientX-G.x)/SC,dy=(e.clientY-G.y)/SC;
+  if(!G.dn){if(dy>12&&dy>Math.abs(dx)*1.3){G.dn=true;try{pv.setPointerCapture(e.pointerId)}catch(_){}}else return}
+  const d=Math.max(0,dy),pl=$("#player");pl.classList.add("dragdn");const k=Math.max(0,1-d/220);pl.style.transform=`translateY(${d}px) scale(${Math.max(.55,1-d/900)})`;pl.style.background=`rgba(5,7,12,${k})`;pl.style.borderRadius=Math.min(16,d/8)+"px";$("#p-below").style.opacity=k;$("#p-ctl").style.opacity=k});
+/* Mini-Player: antippen oder nach oben = gross, nach unten oder seitlich = schliessen */
+{let M=null;const pl=$("#player");
+ pl.addEventListener("pointerdown",e=>{if(P.mode!=="pip"||e.target.closest("button"))return;M={x:e.clientX,y:e.clientY};try{pl.setPointerCapture(e.pointerId)}catch(_){}});
+ pl.addEventListener("pointermove",e=>{if(!M||P.mode!=="pip")return;const dx=(e.clientX-M.x)/SC,dy=(e.clientY-M.y)/SC;pl.style.animation="none";pl.style.transform=Math.abs(dx)>Math.abs(dy)?`translateX(${dx}px)`:`translateY(${dy}px)`;pl.style.opacity=Math.max(.3,1-Math.max(Math.abs(dx)/300,Math.max(0,dy)/120))});
+ const end=e=>{if(!M)return;const dx=(e.clientX-M.x)/SC,dy=(e.clientY-M.y)/SC;M=null;pl.style.transform="";pl.style.opacity="";pl.style.animation="";
+   if(P.mode!=="pip")return;if(Math.abs(dx)<8&&Math.abs(dy)<8||dy<-30)return fromPip();if(dy>40||Math.abs(dx)>90)return stopPlayer()};
+ pl.addEventListener("pointerup",end);pl.addEventListener("pointercancel",()=>{M=null;pl.style.transform="";pl.style.opacity="";pl.style.animation=""})}
 let scrubbing=false;
 function scrubTo(e){const s=$("#scrub");if(!s)return;const r=s.getBoundingClientRect(),land=NATIVE&&FL&&innerHeight>innerWidth;const f=land?(e.clientY-r.top)/r.height:(e.clientX-r.left)/r.width;P.pos=Math.round(Math.max(0,Math.min(1,f))*P.vod.dur);updVodBar();showCtl()}
 pv.addEventListener("pointerdown",e=>{if(e.target.closest(".scrub")){scrubbing=true;e.target.setPointerCapture&&e.target.setPointerCapture(e.pointerId);scrubTo(e)}});
@@ -2190,6 +2209,7 @@ function act(el){
       setTimeout(()=>{if(sheetKind!=="tvsend")return;closeSheet();toast("„"+pl.name+"“ an Wohnzimmer gesendet")},1200);break}
     /* Player */
     case"pclose":stopPlayer();break;
+    case"pmin":toPip();break;
     case"pip":pipStart();break;
     case"pipopen":fromPip();break;
     case"rotate":FL=!FL;if(NATIVE&&innerWidth>innerHeight)FL=false;fit();updPlayer();showCtl();break;
