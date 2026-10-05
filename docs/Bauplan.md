@@ -1,6 +1,6 @@
 # Onda – Bauplan für tvOS und iOS
 
-Stand: 05.10.2026 · Grundlage: Prototyp 1.6 (Apple TV) bzw. 1.5 (iPhone), iOS nach MyTVOnline+-Abläufen (Artifacts „Onda“ für Apple TV und „Onda iPhone“), mit **Neutralitäts-Vorgaben (Abschnitt 2c)** und **Gesamtprüfung (Abschnitt 4e)** und **rechtlicher Prüfung (Abschnitt 4f, Details in `Rechtliches.md`)** · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
+Stand: 05.10.2026 · Grundlage: Prototyp 1.7 (Apple TV) bzw. 1.6 (iPhone), iOS nach MyTVOnline+-Abläufen (Artifacts „Onda“ für Apple TV und „Onda iPhone“), mit **Neutralitäts-Vorgaben (Abschnitt 2c)** und **Gesamtprüfung (Abschnitt 4e)** und **rechtlicher Prüfung (Abschnitt 4f, Details in `Rechtliches.md`)** · Status: bereit für die Swift-Umsetzung, mit den unten genannten offenen Punkten
 
 ---
 
@@ -61,12 +61,12 @@ Ziel: Cover, Hintergrund, Handlung, Besetzung und Trailer in guter Qualität bei
 **Entscheid: drei Stufen**
 
 1. **Anbieter-Daten zuerst.** Gratis; mit der mitgelieferten TMDB-ID ist der Treffer eindeutig.
-2. **Ergänzung aus TMDB mit kommerzieller Lizenz** über einen **eigenen kleinen Server** (z. B. Cloudflare Worker): Schlüssel bleibt geheim, Zwischenspeicher, Anbieter später wechselbar ohne App-Update. Bilder: Poster w500/w780, Hintergründe w1280 (iPhone) bzw. original (Apple TV 4K), Titel-Logos (PNG), Trailer als YouTube-Schlüssel. Der Server bekommt nur Titel und IDs, **nie Playlist- oder Stream-URLs**, und speichert keine Anfragen pro Nutzer (Abschnitt 2c).
+2. **Ergänzung aus TheTVDB bzw. TMDB direkt vom Gerät, ohne eigenen Server** (Entscheid Sinan, 06.10.2026; ersetzt den geplanten Cloudflare Worker). Der Projekt-Schlüssel steckt in der App. Nachteile: Er lässt sich aus der App auslesen (Missbrauch, Sperre durch den Dienst möglich), Wechsel des Dienstes oder Schlüssels nur per App-Update, kein gemeinsamer Zwischenspeicher (jedes Gerät fragt selbst, Cache 7 Tage auf dem Gerät). Vorteil: keine Betriebskosten, keine Server-Daten, einfache Datenschutzerklärung. Bilder: Poster w500/w780, Hintergründe w1280 (iPhone) bzw. original (Apple TV 4K), Titel-Logos (PNG), Trailer als YouTube-Schlüssel. An TMDB/TheTVDB gehen nur Titel und IDs, **nie Playlist- oder Stream-URLs** (Abschnitt 2c).
 3. **Lizenzanfrage bei TMDB früh stellen**, sobald das Preismodell steht. Der Preis entscheidet, ob TMDB oder TheTVDB die Hauptquelle wird.
 
 Verworfen: Schlüssel pro Nutzer (wie im Prototyp) – rechtliche Grauzone in einer Bezahl-App und umständlich.
 
-**App Store:** siehe Abschnitt 2c. LGPL-Engines (MPVKit, VLCKit) dynamisch einbinden, Lizenzhinweis in der App (umgesetzt unter „Über Onda › Open-Source-Lizenzen“). Einschätzung, keine Rechtsberatung: vor dem Start prüfen lassen.
+**App Store:** siehe Abschnitt 2c. LGPL-Engines (MPVKit, VLCKit) dynamisch einbinden, Lizenzhinweis in der App (umgesetzt unter „Über Onda › Lizenzen & Quellen“). Einschätzung, keine Rechtsberatung: vor dem Start prüfen lassen.
 
 **Im Prototyp:** Echte Beispiel-Cover (Wikipedia, TVmaze) für die Optik, nur intern, nie in Screenshots. Mit eigenem TMDB-Schlüssel (nur Prototyp, nicht-kommerziell) zusätzlich Hintergründe, Titel-Logos, Trailer, Handlung, Besetzung und Folgen. Detailseite im Stil der Apple TV App. Die Schlüssel-Eingabe steht nur noch unter „Cover & Infos (Prototyp)“; in der fertigen App gibt es dort nichts einzustellen.
 
@@ -102,7 +102,7 @@ Ziel: Niemand soll Onda nachweisen können, auf illegale Nutzung **ausgerichtet*
 **4. Rechtliches und Betrieb**
 
 - Nutzungsbedingungen: Nutzung nur für Inhalte mit Nutzungsrecht; Kontaktadresse für Rechteinhaber mit schneller Reaktion
-- **Keine Playlist- oder Stream-URLs serverseitig speichern oder loggen**, keine Telemetrie mit Sendernamen oder Quellen. Was Onda nicht weiss, kann nicht als Wissen ausgelegt werden
+- **Kein eigener Server** (Entscheid 06.10.2026), keine Telemetrie mit Sendernamen oder Quellen. Was Onda nicht weiss, kann nicht als Wissen ausgelegt werden
 - Support: keine Hilfe bei Problemen mit konkreten Anbietern
 - Impressum, Datenschutzerklärung, LGPL-Hinweise (Platzhalter in den Prototypen unter „Über Onda“)
 - Vor dem Start: eine Beratung bei einer Anwältin bzw. einem Anwalt für Urheber- und IT-Recht (CH und EU), zusammen mit der Markenprüfung „Onda“
@@ -137,7 +137,7 @@ OndaCore (Swift Package)
 ├── EPG             XMLTV-Parser (SAX/XMLParser, streamend), gz-Entpacken, Zeitzonen, Zeitversatz pro Playlist
 ├── Matching        Titel-Normalisierung + Index (eigene Playlist ↔ Metadaten/Popularität)
 ├── Popularity      Popularitätswerte aus der Metadaten-Quelle, nur für Titel der eigenen Playlist; keine Dienst-Charts (2c)
-├── Metadata        Anbieter-Daten + TMDB über eigenen Server (nur Titel/IDs, keine URLs), Cache 7 Tage, Bildgrössen je Gerät
+├── Metadata        Anbieter-Daten + TheTVDB/TMDB direkt vom Gerät (nur Titel/IDs, keine URLs), Cache 7 Tage auf dem Gerät, Bildgrössen je Gerät
 ├── Storage         SQLite/SwiftData im Caches-Ordner, iCloud für Favoriten/Einstellungen/Senderliste, Keychain für Zugangsdaten und PIN
 ├── ParentalControl PIN (Keychain), gesperrte Gruppen, Entsperrung bis App-Ende; wirkt als Filter auf alle Senderlisten
 ├── Player          Protokoll PlayerEngine + AVPlayerEngine + FFmpeg-Engine (Testsieger), Stream-Analyse, vorheriger Sender, bevorzugte Ton-/Untertitelsprache
@@ -288,7 +288,7 @@ Vorgehen: zwei unabhängige Prüfer (je einer pro App) testeten alle Bildschirme
 | iCloud & Backup | – | iCloud-Sync (Schalter), Backup sichern, Backup wiederherstellen |
 | Erweitert | Player-Engine, Hardware-Decoding, Live-Puffer, Deinterlacing | gleich (Hardware-Decoding als Schalter) |
 | Cover & Infos (Prototyp) | Anbieter, TheTVDB, TMDB | gleich |
-| Über Onda & Rechtliches | Onda enthält keine Inhalte, Impressum, Datenschutzerklärung, Nutzungsbedingungen, Hinweise für Rechteinhaber, Open-Source-Lizenzen, Quellenangaben und Marken, Version; zusätzlich Knopf «Über Onda & Rechtliches ›» links unter dem App-Symbol | gleich, dazu Trailer-Vorschau (Standard Aus) |
+| Über Onda & Rechtliches | Onda enthält keine Inhalte, Impressum & Kontakt, Datenschutz, Lizenzen & Quellen, Version (seit 06.10.2026 vier statt sieben Seiten, 4f); zusätzlich Knopf «Über Onda & Rechtliches ›» links unter dem App-Symbol | gleich, dazu Trailer-Vorschau (Standard Aus) |
 
 Pro Playlist (nicht mehr global): Quelle (URL bzw. Server/Benutzer/Passwort, bearbeitbar), Automatisch aktualisieren, TV-Guide-Quelle, Zeitversatz, Name, User-Agent. Zeilen zeigen nur noch den Wert; Erklärungen stehen im Auswahlfenster bzw. als kurze Fusszeile unter der Gruppe. Ja/Nein auf dem iPhone als Schalter.
 
@@ -320,7 +320,7 @@ Pro Playlist (nicht mehr global): Quelle (URL bzw. Server/Benutzer/Passwort, bea
 - **Beim Start öffnen › Letzter Sender** (startet direkt den Player).
 - **Vorheriger Sender mit 2× OK** (tvOS), ◀-Liste mit Fokus auf dem vorherigen Sender.
 - **Weiterschauen setzt direkt fort** (Details über die Detailseite bzw. langes Drücken).
-- **Über Onda & Rechtliches:** sieben Seiten (Abschnitt 4f) – Texte sind Entwürfe bis zur anwaltlichen Prüfung.
+- **Über Onda & Rechtliches:** vier Seiten (Abschnitt 4f) – Texte sind Entwürfe bis zur anwaltlichen Prüfung.
 
 ## 4e-1. Mini-Player und Bild-in-Bild (iPhone, Prototyp 1.5, 05.10.2026)
 
@@ -332,17 +332,20 @@ Zwei getrennte Wege, wie bei YouTube bzw. Apple:
 - **Grenze des Prototyps:** Ob Safari das System-Fenster im Hintergrund weiter aktualisiert und ob «automatisch» in der Home-Bildschirm-Version greift, ist **unklar** und muss auf dem iPhone getestet werden.
 - **Swift:** Mini-Player als eigener Zustand über dem `TabView` (z. B. `safeAreaInset(edge: .bottom)` bzw. `tabViewBottomAccessory` ab iOS 26, mit `matchedGeometryEffect` für den Übergang); System-Bild-in-Bild über `AVPictureInPictureController` mit `canStartPictureInPictureAutomaticallyFromInline` (AVPlayer), für die FFmpeg-Engine siehe Risiko 16.
 
-## 4f. Rechtliche Prüfung «Über Onda» (05.10.2026, Prototyp 1.6 bzw. 1.4)
+## 4f. Rechtliches «Über Onda» (05.10.2026, verschlankt 06.10.2026)
 
-Vollständige Befunde (22 Punkte, Muss/Sollte/Persönlich, mit Quellen) in [`Rechtliches.md`](Rechtliches.md). Umgesetzt in beiden Apps:
+Details, Quellen und die Unterscheidung Pflicht/freiwillig in [`Rechtliches.md`](Rechtliches.md).
 
-- **Über Onda & Rechtliches** mit sieben Seiten: Onda enthält keine Inhalte, Impressum (Platzhalter), Datenschutzerklärung (DSG/DSGVO, 12 Punkte), Nutzungsbedingungen (Ergänzung zur Apple-EULA), Hinweise für Rechteinhaber, Open-Source-Lizenzen (LGPL-Quellcode-Angebot), Quellenangaben und Marken (TMDB-Pflichtsatz)
-- Erreichbar über **Einstellungen › Über Onda & Rechtliches**; auf Apple TV zusätzlich als Knopf links unter dem App-Symbol (Impressum in wenigen Schritten, DDG)
-- **Trailer-Vorschau (iPhone)** als Einstellung, Standard **Aus**: kein YouTube-Abruf ohne Zutun (TDDDG § 25)
-- «Anbieter-Login» ohne «Xtream» in der Oberfläche
-- Kindersicherung mit Hinweis «Ein Hilfsmittel, kein vollständiger Schutz»
+**Entscheid Sinan (06.10.2026):** kein eigener Server; nur das rechtlich Nötige in die App. Statt sieben jetzt **vier Seiten** (Apple TV 1.7, iPhone 1.6):
 
-Offen vor dem Start: Händlerangaben (DSA, Adresse öffentlich), Platzhalter füllen, Server ohne Protokolle, Auslandsbekanntgabe je Empfänger, TMDB-Lizenz und offizielles Logo, TheTVDB-Wortlaut, LGPL-Prüfung des konkreten Builds, Altersfreigabe, Arbeitsvertrag/AHV/Steuern. Einschätzung, keine Rechtsberatung.
+1. **Onda enthält keine Inhalte** – inkl. Nutzung nur mit Nutzungsrecht, Kindersicherung als Hilfe, Verweis auf die Standard-EULA von Apple
+2. **Impressum & Kontakt** – Name, Adresse, E-Mail; dieselbe Adresse für Hinweise von Rechteinhabern
+3. **Datenschutz** – 8 kurze Punkte: kein Konto, kein Server, kein Tracking; Daten nur auf dem Gerät; TV-Anbieter, TMDB/TheTVDB direkt vom Gerät, YouTube nur auf Wunsch, iCloud/App Store, Ausland, Rechte
+4. **Lizenzen & Quellen** – LGPL-Komponenten mit Quellcode-Angebot, TMDB-Pflichtsatz, TheTVDB, Marken
+
+Entfallen: eigene Nutzungsbedingungen (Apple-EULA genügt), eigene Seite für Rechteinhaber (Kontakt im Impressum), Server-Abschnitte. Weiterhin: Erreichbar über **Einstellungen › Über Onda & Rechtliches**, auf Apple TV zusätzlich als Knopf; **Trailer-Vorschau (iPhone)** Standard Aus; «Anbieter-Login» ohne «Xtream».
+
+Offen vor dem Start: Gratis oder kostenpflichtig (entscheidet über Händlerangaben, Impressum-Pflicht, TMDB-Lizenz, AHV/Steuern), Platzhalter füllen, Auslandsbekanntgabe je Empfänger, TMDB-Logo, TheTVDB-Wortlaut, LGPL-Prüfung des konkreten Builds, Altersfreigabe, Arbeitsvertrag. Einschätzung, keine Rechtsberatung.
 
 ## 5. End-to-End-Prüfung des Prototyps
 
@@ -403,7 +406,7 @@ Bewusste Vereinfachungen im Prototyp (in Swift richtig lösen):
 | 3 | **EPG-Grösse** (oft > 50 MB, gezippt) | streamend parsen, nur ±2 Tage behalten, Zeitzonen und Sommerzeit aus XMLTV korrekt umrechnen |
 | 4 | **Live pausieren** mit VLC | Puffer nur wenige Minuten. Auf dem Gerät prüfen, sonst entfernen |
 | 5 | **Senderwechsel-Tempo** mit VLC bei .ts | Puffer klein halten, auf dem Gerät messen. Vergleich gemäss Abschnitt 2a |
-| 6 | **LGPL-Pflichten (MPVKit, VLCKit)** | als dynamisches Framework einbinden, Lizenzhinweis in der App (vorgesehen unter „Über Onda“), Quellcode-Hinweis. Kurz rechtlich prüfen |
+| 6 | **LGPL-Pflichten (MPVKit, VLCKit)** | als dynamisches Framework einbinden, Lizenzhinweis in der App (unter „Über Onda › Lizenzen & Quellen“), Quellcode-Hinweis. Kurz rechtlich prüfen |
 | 7 | **Metadaten und Popularität:** TMDB ist nur für nicht-kommerzielle Nutzung kostenlos | kommerzielle Lizenz anfragen, Anbieter-Daten zuerst, TheTVDB als Alternative (Abschnitt 2b) |
 | 8 | **App-Review bei IPTV-Apps** ist streng (Richtlinie 5.2.3) | Massnahmen gemäss Abschnitt 2c: keine Inhalte, kein „gratis“, Demo-Playlist mit legalen Streams, Screenshots mit Testdaten, keine Downloads, Hilfeseite ohne Links |
 | 9 | **Markenrecht „Onda“** | Swissreg, DPMA und EUIPO vor dem Launch prüfen, Namen in App Store Connect reservieren |
@@ -488,7 +491,7 @@ Für tvOS sinngemäss übernehmen; dort bleibt der Player im Vollbild.
 2. **Player-Test:** fünf Kandidaten gemäss Abschnitt 2a (AVPlayer, MPVKit, VLCKit 4, KSPlayer, AVPlayer mit Umpacken) mit denselben eigenen Sendern und Filmen auf Apple TV 4K und iPhone. Messen: Startzeit, Umschaltzeit, Aussetzer/Neuverbindungen, Bildqualität und Deinterlacing (1080i, 720p50, 4K), Bildwiederholrate, HDR/Dolby Vision, Ton (AC3, E-AC3, DTS), Untertitel, Akku; iPhone zusätzlich Bild-in-Bild und AirPlay. Ergebnis: eine FFmpeg-Engine neben AVPlayer
 3. **Live-Kern:** Playlist (M3U/Anbieter-Login, bearbeiten), Live TV, Player, Favoriten, Kindersicherung
 4. **TV-Guide:** XMLTV, Zeitversatz pro Playlist, Erinnerungen
-5. **Mediathek:** VOD, „Beliebt in deiner Mediathek“, Metadaten (Anbieter-Daten + TMDB über eigenen Server, Abschnitt 2b)
+5. **Mediathek:** VOD, „Beliebt in deiner Mediathek“, Metadaten (Anbieter-Daten + TheTVDB/TMDB direkt vom Gerät, Abschnitt 2b)
 6. **Einstellungen (Struktur 4e), Sprache, Erscheinungsbild, Hilfeseite, Über Onda**
 7. **TestFlight** auf dem eigenen Apple TV
 8. **iOS-Target**

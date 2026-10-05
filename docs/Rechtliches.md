@@ -1,25 +1,33 @@
 # Onda – Rechtliche Prüfung «Über Onda» und Regulatorik
 
-Stand: 05.10.2026 · Grundlage: Prototyp 1.6 (Apple TV) bzw. 1.4 (iPhone) · **Einschätzung, keine Rechtsberatung.** Vor dem Start von einer Anwältin bzw. einem Anwalt für IT-, Urheber- und Datenschutzrecht (CH und EU) prüfen lassen.
+Stand: 05.10.2026 · Grundlage: Prototyp 1.7 (Apple TV) bzw. 1.6 (iPhone), aktualisiert 06.10.2026 · **Einschätzung, keine Rechtsberatung.** Vor dem Start von einer Anwältin bzw. einem Anwalt für IT-, Urheber- und Datenschutzrecht (CH und EU) prüfen lassen.
 
-## 1. Umgesetzt in den Prototypen
+## 0. Was wirklich nötig ist (06.10.2026)
 
-«Über Onda» enthält jetzt sieben Seiten:
+**Entscheid Sinan:** kein eigener Server. Cover und Infos fragt die App direkt bei TheTVDB/TMDB ab. Damit entfallen die heikelsten Datenschutzpunkte (Server-Protokolle, IP plus Playlist-Titel beim Anbieter von Onda).
 
-1. **Onda enthält keine Inhalte**
-2. **Impressum** (Platzhalter für Name, Adresse, E-Mail, Telefon, UID)
-3. **Datenschutzerklärung** in 12 Punkten nach DSG und DSGVO
-4. **Nutzungsbedingungen** als Ergänzung zur Standard-EULA von Apple
-5. **Hinweise für Rechteinhaber** mit eigener Kontaktadresse und Antwortfrist
-6. **Open-Source-Lizenzen** mit LGPL-Quellcode-Angebot für mindestens 3 Jahre
-7. **Quellenangaben und Marken** mit dem TMDB-Pflichtsatz und den Markenhinweisen für Apple, Dolby und YouTube
+| Stufe | Was | Gilt |
+|---|---|---|
+| **Immer Pflicht** | Datenschutzerklärung (auch als URL in App Store Connect), App-Datenschutzangaben, Altersfreigabe-Fragebogen, Export-Angabe, LGPL-Hinweise mit Quellcode-Angebot, TMDB-/TheTVDB-Quellenangabe, Neutralität (2c) | auch bei einer Gratis-App |
+| **Pflicht mit Einnahmen** | Händlerangaben im EU-App-Store (Adresse öffentlich), Impressum (CH: UWG Art. 3 lit. s; DE: DDG), kommerzielle TMDB-Lizenz bzw. TheTVDB-Stufen, AHV/Steuern | sobald Onda Geld kostet oder einbringt |
+| **Unklar bei Gratis-App** | Impressum für ein reines Gratis-Hobbyprojekt (Grauzone); ob TMDB eine Gratis-App im App Store als nicht-kommerziell akzeptiert | bei TMDB nachfragen; Impressum vorsorglich drinlassen |
+| **Freiwillig** | eigene Nutzungsbedingungen (Apple-EULA genügt), eigene Seite für Rechteinhaber, EU-Vertreter, Barrierefreiheit über das Übliche hinaus | entfernt bzw. nicht nötig |
+| **Unabhängig von der App** | Arbeitsvertrag (Nebenbeschäftigung, geistiges Eigentum) prüfen, Markenprüfung «Onda» | früh |
 
-Daneben:
+**Folgen von «kein Server»:** Der API-Schlüssel steckt in der App und lässt sich auslesen; ein Wechsel geht nur per Update; jedes Gerät fragt selbst (Cache auf dem Gerät). Die Datenschutzerklärung nennt TMDB und TheTVDB als direkte Empfänger der IP-Adresse.
 
-- **Trailer-Vorschau (iPhone):** Bisher lud jede Detailseite automatisch ein YouTube-Video. Jetzt ist die Vorschau eine Einstellung, Standard «Aus». Ein Trailer startet nur noch nach Tippen.
-- **Begriff in der Oberfläche:** «Anbieter-Login» statt «Anbieter-Login (Xtream-API)».
-- **Kindersicherung:** Hinweis «Ein Hilfsmittel, kein vollständiger Schutz – ersetzt nicht die Bildschirmzeit von Apple».
-- **Englisch:** Die Rechtstexte sind vorerst ein deutscher Entwurf. Im Englischen erscheint ein entsprechender Hinweis.
+## 1. Umgesetzt in den Prototypen (Stand 06.10.2026)
+
+«Über Onda & Rechtliches» hat vier Seiten:
+
+1. **Onda enthält keine Inhalte** (inkl. Nutzungsrecht, Kindersicherung als Hilfe, Verweis auf die Apple-EULA)
+2. **Impressum & Kontakt** (Platzhalter; dieselbe Adresse für Rechteinhaber)
+3. **Datenschutz** (8 kurze Punkte, ohne Server)
+4. **Lizenzen & Quellen** (LGPL mit Quellcode-Angebot, TMDB-Pflichtsatz, TheTVDB, Marken)
+
+Daneben: Trailer-Vorschau (iPhone) Standard «Aus»; «Anbieter-Login» statt «Xtream»; Hinweis bei der Kindersicherung. Die Rechtstexte sind ein deutscher Entwurf.
+
+Die folgende Prüfung vom 05.10.2026 bleibt als Referenz stehen; geänderte Punkte sind markiert.
 
 ## 2. Befunde nach Schwere
 
@@ -29,14 +37,14 @@ Daneben:
 |---|---|---|---|
 | 1 | **Öffentliche Händlerangaben (DSA)** | Wer im EU-App-Store verkauft, gilt als Händler. Apple zeigt dann **Adresse, Telefon und E-Mail öffentlich** auf der Produktseite. Bei Einzelpersonen ist das die eigene Adresse. Ohne Händlerstatus entfernt Apple die App aus der EU ([SD Times](https://sdtimes.com/mobile/apple-adds-new-requirements-for-apps-distributed-through-the-app-store-in-the-eu/)) | Entscheiden: Privatadresse veröffentlichen, Geschäftsadresse bzw. Postfach nutzen (für Einzelpersonen zulässig) oder eine Firma gründen (dann gilt die D-U-N-S-Adresse) |
 | 2 | **Impressum in der App** | Deutschland (DDG): Pflicht auch für Apps, in der App mit höchstens 2 Klicks erreichbar und zusätzlich im Store-Eintrag ([e-recht24](https://www.e-recht24.de/impressum/10176-app-impressum.html)). Schweiz: UWG Art. 3 Abs. 1 lit. s verlangt klare Identität und E-Mail ([Handelsverband](https://handelsverband.swiss/swiss-online-garantie-zertifizierung-impressum/)) | Platzhalter füllen. Apple TV: Einstellungen › Über Onda › Impressum braucht 2–3 Schritte; kurze Wege ohne Scrollen prüfen |
-| 3 | **Datenschutzerklärung** | Muss vollständig und wahr sein. Heikel ist der Metadaten-Server: Die **IP-Adresse plus die Titel einer Playlist** sind Personendaten. Bei illegalen Playlists ist das potenziell belastend. Ausserdem könnte es als «Wissen» von Onda über illegale Inhalte ausgelegt werden, was 2c vermeiden will | Server ohne Protokolle (oder max. 7 Tage, ohne IP), keine Nutzerkennung, Zwischenspeicher pro Titel. In der Erklärung Hoster und Standort nennen. Datenschutzerklärung als URL in App Store Connect (Pflicht) |
+| 3 | **Datenschutzerklärung** | ~~Heikel ist der Metadaten-Server~~ **Entfällt seit 06.10.2026: kein eigener Server.** Bisheriger Befund: Heikel war der Metadaten-Server: Die **IP-Adresse plus die Titel einer Playlist** sind Personendaten. Bei illegalen Playlists ist das potenziell belastend. Ausserdem könnte es als «Wissen» von Onda über illegale Inhalte ausgelegt werden, was 2c vermeiden will | Server ohne Protokolle (oder max. 7 Tage, ohne IP), keine Nutzerkennung, Zwischenspeicher pro Titel. In der Erklärung Hoster und Standort nennen. Datenschutzerklärung als URL in App Store Connect (Pflicht) |
 | 4 | **Bekanntgabe ins Ausland** | TMDB, TheTVDB, Google und Apple bearbeiten Daten in den USA. Nach DSG und DSGVO braucht es dafür eine Grundlage, etwa das Data Privacy Framework (falls zertifiziert) oder Standardvertragsklauseln (**unklar je Empfänger**) | Je Empfänger prüfen und in Punkt 9 eintragen. Bilder allenfalls über den eigenen Server laden, dann geht die IP nicht an TMDB/TheTVDB |
 | 5 | **YouTube ohne Einwilligung** | Die automatische Trailer-Vorschau lud Google-Inhalte ohne Zutun. In Deutschland (TDDDG § 25) und der EU braucht das eine Einwilligung; auch der «nocookie»-Modus überträgt die IP-Adresse | **Umgesetzt:** Vorschau standardmässig aus. In Swift optional ganz ohne YouTube (nur Link nach Tippen) |
 | 6 | **TMDB-Lizenz und Logo** | Kommerzielle Nutzung braucht eine Lizenz. Vorgeschrieben sind das offizielle TMDB-Logo (weniger prominent als das Onda-Logo) und der Satz «This product uses the TMDB API but is not endorsed or certified by TMDB.» im Bereich Über/Credits ([TMDB FAQ](https://developer.themoviedb.org/docs/faq)) | Satz umgesetzt. Das Logo ist nur ein Platzhalter und muss durch das offizielle TMDB-Logo ersetzt werden; Lizenz anfragen |
 | 7 | **TheTVDB-Quellenangabe** | Konkreter Wortlaut nicht geprüft (Seite war nicht abrufbar) | Vorgaben auf thetvdb.com nachlesen und übernehmen |
 | 8 | **LGPL (FFmpeg, Player-Engine)** | Auf iOS und tvOS umstritten, weil Nutzer die Bibliothek wegen der Signatur nicht selbst austauschen können ([FFmpeg-Ticket #1229](https://trac.ffmpeg.org/ticket/1229)). Üblich: dynamische Frameworks, Lizenztexte, schriftliches Quellcode-Angebot, Objektdateien zum Neuverlinken. FFmpeg ohne `--enable-gpl` bauen; ob einzelne Komponenten im gewählten Build (z. B. Deinterlacing-Filter) unter GPL stehen, ist **unklar** und muss geprüft werden | Lizenzprüfung des konkreten Builds. Vollständige Lizenztexte in die App. Angebot bereits als Text umgesetzt |
 | 9 | **Altersfreigabe** | Neue Apple-Stufen 13+, 16+ und 18+, Fragebogen seit Januar 2026 Pflicht ([iPhone in Canada](https://www.iphoneincanada.ca/2025/07/25/updated-app-store-age-ratings)). Ein Player für beliebige Streams wird je nach Antworten vermutlich hoch eingestuft (**unklar**) | Fragebogen ehrlich beantworten; eine hohe Einstufung schadet einem Player kaum |
-| 10 | **Ansprechstelle für Rechteinhaber** | «Kontakt über den App Store» genügt nicht | **Umgesetzt** als eigene Seite mit Adresse und Frist; die Adresse muss tatsächlich betreut werden |
+| 10 | **Ansprechstelle für Rechteinhaber** | Gesetzlich nicht verlangt (Onda speichert keine Inhalte), aber nützlich gegen Druck auf Apple | Seit 06.10.2026 als Kontakt im Impressum statt eigener Seite; die Adresse muss betreut werden |
 
 ### Sollte
 
@@ -69,4 +77,4 @@ Daneben:
 
 ## 4. Offene Platzhalter in den Texten
 
-[Name], [Adresse], [E-Mail-Adressen für Kontakt, Datenschutz, Rechte, OSS], [Telefon], [UID], [Hoster/Standort], [Löschfrist], [Antwortfrist], [Datum], Grundlage der Auslandsbekanntgabe je Empfänger, TheTVDB-Wortlaut, offizielles TMDB-Logo, Name der Player-Engine.
+[Name], [Adresse], [E-Mail], Grundlage der Auslandsbekanntgabe je Empfänger, TheTVDB-Wortlaut, offizielles TMDB-Logo, Name der Player-Engine.
