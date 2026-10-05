@@ -14,7 +14,7 @@
   --line:rgba(206,222,255,.10);
   --fg:#eef2f8;
   --dim:#98a2b6;
-  --faint:#5e677a;
+  --faint:#7f889c;
   --accent:#7cc4ff;
   --focus:#f4f6fa;
   --focusFg:#0a0d14;
@@ -388,7 +388,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
 /* ===== Helles Erscheinungsbild ===== */
 body[data-look="light"]{--bg:#cfd4dd}
-#app[data-look="light"]{--stage:#e9ecf2;--surface:rgba(20,32,60,.06);--surface2:rgba(20,32,60,.10);--line:rgba(20,32,60,.12);--fg:#121826;--dim:#525c70;--faint:#8790a3;--accent:#1d64d8;--focus:#ffffff;--focusFg:#0a0d14;--gold:#c98a00}
+#app[data-look="light"]{--stage:#e9ecf2;--surface:rgba(20,32,60,.06);--surface2:rgba(20,32,60,.10);--line:rgba(20,32,60,.12);--fg:#121826;--dim:#4b5568;--faint:#5f687c;--accent:#1d64d8;--focus:#ffffff;--focusFg:#0a0d14;--gold:#9a6700}
 #app[data-look="light"] #stage{box-shadow:0 0 0 1px rgba(0,0,0,.06),0 30px 80px rgba(20,30,60,.25)}
 #app[data-look="light"] .bgglow{opacity:.55}
 #app[data-look="light"] .tabs{background:linear-gradient(180deg,rgba(255,255,255,.75),rgba(255,255,255,.45));box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(20,32,60,.08),0 14px 40px rgba(20,30,60,.12)}
@@ -418,7 +418,7 @@ body[data-look="light"]{--bg:#cfd4dd}
 #app[data-look="light"] .rhint{color:#5c6578}
 #stage{color:var(--fg)}
 #app[data-look="light"] .brand .wordmark{color:var(--fg)}
-#app[data-look="light"] .proto{color:#a06c00;border-color:rgba(160,108,0,.4)}
+#app[data-look="light"] .proto{color:#7a5200;border-color:rgba(122,82,0,.45)}
 /* Bereiche, die immer dunkel bleiben (Video, Kino-Banner) */
 #app[data-look="light"] #ov-player,#app[data-look="light"] .thero,#app[data-look="light"] .hhero,#app[data-look="light"] .splash{--fg:#eef2f8;--dim:#a9b2c4;--faint:#6f788b;--surface:rgba(206,222,255,.08);--surface2:rgba(206,222,255,.14);--line:rgba(206,222,255,.1);--accent:#7cc4ff;color:var(--fg)}
 #app[data-look="light"] .hhero{background:radial-gradient(70% 120% at 85% 20%,hsl(var(--h) 60% 30% / .9),transparent),linear-gradient(110deg,hsl(var(--h) 35% 12%) 30%,hsl(var(--h) 45% 20%))}
@@ -537,6 +537,36 @@ body[data-look="light"]{--bg:#cfd4dd}
 .modal{display:grid;place-items:center;background:rgba(3,5,10,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .mbox{width:980px;max-width:100%;background:#151b28;border-radius:30px;padding:50px 56px;box-shadow:0 0 0 1px var(--line),0 40px 100px rgba(0,0,0,.6)}
 .mbox h2{font-size:44px;margin:0 0 8px}
+.settings{display:grid;grid-template-columns:540px 1fr;gap:90px;height:100%;padding:16px 110px 0 96px}
+.set-side{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding-bottom:150px}
+.set-side .appicon{width:440px}
+.set-ver{font-size:23px;color:var(--dim);font-weight:600}
+.set-legal{font-size:24px;padding:14px 28px}
+.settings .set-list{height:100%;padding:10px 18px 160px;margin:0 -18px}
+.sfoot{font-size:21px;color:var(--dim);line-height:1.4;margin:4px 24px 0}
+.srow .hint{font-size:21px}
+.pl-on{font-size:18px;font-weight:800;letter-spacing:.04em;color:#04140b;background:#3ddc84;padding:4px 10px;border-radius:8px;margin-right:6px;vertical-align:2px}
+.srow.focused .pl-on{background:#137a45;color:#fff}
+.pinbox{width:760px!important;text-align:center}
+.pin-dots{display:flex;justify-content:center;gap:26px;margin:26px 0 30px}
+.pin-dots i{width:30px;height:30px;border-radius:50%;box-shadow:inset 0 0 0 3px var(--dim)}
+.pin-dots i.on{background:var(--fg);box-shadow:none}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:560px;margin:0 auto}
+.pin-k{padding:20px 0;border-radius:18px;background:var(--surface2);font-size:36px;font-weight:600}
+.pin-k.pin-x{font-size:24px}
+.pin-k.focused{background:var(--focus);color:var(--focusFg)}
+.livebadge{background:#d9372c}
+.ab-h{font-size:24px;margin:22px 0 4px;color:var(--fg)}.ab-p{padding:4px 10px;margin:4px -10px!important;border-radius:10px}.ab-p.focused{background:var(--surface);transform:none;box-shadow:none;color:var(--fg)}.ab-logo{display:inline-block;margin:6px 0 4px;padding:6px 16px;border-radius:10px;font-weight:800;font-size:26px;letter-spacing:.04em;color:#0d253f;background:linear-gradient(90deg,#90cea1,#01b4e4)}
+.pm-note{font-size:19px;color:var(--dim);margin:0 0 6px 18px;line-height:1.35}
+.pm-info .ps-sec{padding:4px 12px;border-radius:14px}
+.pm-info .ps-sec.focused{background:rgba(255,255,255,.08);transform:none;box-shadow:none}
+.ep-thumb{position:relative}
+.ep-ok{position:absolute;top:10px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);display:grid;place-items:center;font-family:var(--ui);font-size:20px;color:#fff}
+.ep .pprog{position:absolute;left:0;right:0;bottom:0;height:6px;background:rgba(0,0,0,.4)}.ep .pprog i{display:block;height:100%;background:var(--accent)}
+.ep.seen .ep-thumb{filter:saturate(.5) brightness(.8)}
+#app[data-look="light"] .srow.focused,#app[data-look="light"] .chip.focused,#app[data-look="light"] .btn.focused,#app[data-look="light"] .grp.focused,#app[data-look="light"] .chrow.focused,#app[data-look="light"] .cell.focused,#app[data-look="light"] .hcard.focused,#app[data-look="light"] .pin-k.focused,#app[data-look="light"] .grow.focused{box-shadow:0 0 0 3px #121826,0 16px 40px rgba(20,30,60,.28)}
+.hbox{max-height:960px;display:flex;flex-direction:column}.hbox .hsy{flex:1;min-height:0;height:auto;padding:10px 14px 10px;margin:0 -14px}.hcard{padding:24px 30px;border-radius:18px;background:var(--surface);margin-bottom:12px;transition:transform .15s}.hcard h3{margin:0 0 8px;font-size:28px}.hcard p,.hcard ul{margin:0;font-size:22px;line-height:1.45;color:var(--dim)}.hcard ul{padding-left:28px}.hcard li+li{margin-top:6px}.hcard.focused{background:var(--focus);color:var(--focusFg);transform:scale(1.02)}.hcard.focused p,.hcard.focused ul{color:#4a536a}.hact{padding:14px 0 6px}.helplnk{margin:-6px 0 18px}
+
 .mbox .warn{font-size:22px;color:var(--gold);margin:0 0 28px;line-height:1.4}
 .seg{display:flex;gap:12px;margin-bottom:26px}
 .field{margin-bottom:16px}
@@ -673,6 +703,8 @@ body[data-look="light"]{--bg:#cfd4dd}
       <div class="overlay" id="ov-detail" hidden></div>
       <div class="overlay modal" id="ov-sheet" hidden></div>
       <div class="overlay modal" id="ov-form" hidden></div>
+      <div class="overlay modal" id="ov-help" hidden></div>
+      <div class="overlay modal" id="ov-pin" hidden></div>
       <div class="overlay picker" id="ov-pick" hidden></div>
       <div class="overlay editor" id="ov-edit" hidden></div>
       <div class="overlay player" id="ov-player" hidden>
@@ -748,11 +780,12 @@ const dayStart=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime()};
 let DAY0=dayStart();
 function sched(c){
   if(c._s)return c._s;
-  if(c.real&&c.epg){const sh=[0,36e5,-36e5][sv("shift")]||0;return c._s=c.epg.map(e=>({ch:c.id,start:e[0]+sh,end:e[1]+sh,title:e[2],desc:e[3]||""}))}
+  if(c.real&&c.epg){const sh=plShiftMs();return c._s=c.epg.map(e=>({ch:c.id,start:e[0]+sh,end:e[1]+sh,title:e[2],desc:e[3]||""}))}
   if(c.real)return c._s=[{ch:c.id,start:DAY0-7*864e5,end:DAY0+3*864e5,title:"Keine Sendungsdaten",desc:""}];
   const R=rng(c.id*7919),G=GEN[c.genre],arr=[];
   let t=DAY0-7*24*60*MIN;const end=DAY0+48*60*MIN;
   while(t<end){const d=G.d[R()*G.d.length|0];arr.push({ch:c.id,start:t,end:t+d*MIN,title:G.t[R()*G.t.length|0],desc:G.x[R()*G.x.length|0]});t+=d*MIN}
+  {const sh=plShiftMs();if(sh)arr.forEach(p=>{p.start+=sh;p.end+=sh})}
   return c._s=arr;
 }
 const nowP=(c,t=Date.now())=>sched(c).find(p=>p.start<=t&&p.end>t)||{ch:c.id,start:t-15*MIN,end:t+15*MIN,title:"Keine Programminformation",desc:""};
@@ -778,12 +811,29 @@ const epTitle=(s,se,e)=>"Folge "+e;
 const epDur=(s,se,e)=>s.g==="Komödie"?24+hash(s.t+e)%6:42+hash(s.t+se+e)%14;
 
 /* ---------- Zustand ---------- */
+const SHIFTS=Array.from({length:13},(_,i)=>(i-6)/2);
+const shiftTxt=h=>h===0?"0 h":(h>0?"+":"−")+String(Math.abs(h)).replace(".",",")+" h";
 const SETTINGS=[
- {sec:"Player",items:[
+ {sec:"Live TV",items:[
+  {k:"zap",l:"Senderwechsel mit ▲ ▼",o:["Ein","Aus"],h:["Im Vollbild wechselt ▲ ▼ den Sender","▲ ▼ blendet nur die Info-Leiste ein"]},
+  {k:"start",l:"Beim Start öffnen",o:["Start","Live TV","TV-Guide","Mediathek","Letzter Sender"],h:["Übersicht mit Live, Weiterschauen und Beliebtem","Senderliste mit Vorschau","Programm der nächsten Stunden","Filme und Serien","Spielt sofort den zuletzt gesehenen Sender"]}]},
+ {sec:"Wiedergabe",items:[
+  {k:"resume",l:"Fortsetzen",o:["Fortsetzen oder von vorne","Immer fortsetzen","Immer von vorne"],h:["Filme und Serien zeigen beide Knöpfe","Startet direkt an der letzten Stelle","Startet immer am Anfang"]},
+  {k:"alang",l:"Bevorzugte Tonsprache",o:["Wie Apple TV","Deutsch","Englisch","Französisch","Italienisch","Originalton"],h:["Sprache des Apple TV, sonst die erste Tonspur","Deutsche Tonspur, wenn vorhanden","Englische Tonspur, wenn vorhanden","Französische Tonspur, wenn vorhanden","Italienische Tonspur, wenn vorhanden","Immer die erste Tonspur des Streams"]},
+  {k:"slang",l:"Untertitel",o:["Aus","Nur erzwungene","Deutsch","Englisch","Französisch","Italienisch"],h:["Keine Untertitel","Nur Einblendungen für fremdsprachige Stellen","Deutsche Untertitel, wenn vorhanden","Englische Untertitel, wenn vorhanden","Französische Untertitel, wenn vorhanden","Italienische Untertitel, wenn vorhanden"]}]},
+ {sec:"Video & Audio",items:[
+  {k:"matchfps",l:"Bildwiederholrate anpassen",o:["Ein","Aus"],h:["Fernseher wechselt auf 50 Hz, 23,976 Hz usw. Dafür muss am Apple TV unter Video und Audio „Inhalt anpassen“ aktiv sein","Fest 60 Hz: Ruckeln bei 50- und 24-fps-Inhalten"]},
+  {k:"matchdr",l:"Dynamikbereich anpassen",o:["Ein","Aus"],h:["HDR nur bei HDR-Inhalten, sonst SDR. Benötigt „Inhalt anpassen“ am Apple TV","Ausgabe bleibt im Format des Apple TV"]},
+  {k:"aspect",l:"Bildformat",o:["Original","Füllen","Zoom"],h:["Ganzes Bild, mit Balken falls nötig","Füllt den Bildschirm, schneidet Ränder ab","Vergrössert 4:3-Sendungen ohne Verzerrung"]},
+  {k:"passthru",l:"Surround-Ton",o:["Automatisch","Immer als PCM"],h:["Dolby Digital wird weitergegeben, wenn Apple TV und Receiver es können. DTS wird in PCM umgewandelt","Alles wird im Apple TV decodiert"]}]},
+ {sec:"Darstellung",items:[
+  {k:"theme",l:"Erscheinungsbild",o:["Dunkel","Hell","Wie Apple TV"],h:["Ideal für abends und im Heimkino","Helle Flächen, ideal bei Tageslicht","Folgt der Einstellung des Apple TV"]},
+  {k:"lang",l:"Sprache / Language",o:["Deutsch","English"],h:["Alle Menüs und Texte auf Deutsch","All menus and texts in English"]},
+  {k:"osd",l:"Qualitäts-Anzeige im Player",o:["Mit der Info-Leiste","Immer","Aus"],h:["z. B. 1080p50 · HEVC · 5.1 – erscheint mit der Info-Leiste","Bleibt dauerhaft oben links sichtbar","Keine Qualitäts-Etiketten im Player"]}]},
+ {sec:"Erweitert",items:[
   {k:"engine",l:"Player-Engine",o:["Automatisch","AVPlayer (Apple)","VLC (VLCKit)"],h:["MPEG-TS und Dateien über VLC, HLS über AVPlayer","Apple-Systemplayer: nur HLS und MP4, kein MPEG-TS","Spielt MPEG-TS, MKV und fast alles, mit Deinterlacing"]},
   {k:"hwdec",l:"Hardware-Decoding",o:["Ein","Aus"],h:["VideoToolbox: schont den Prozessor","Software: nur zur Fehlersuche"]},
-  {k:"buffer",l:"Live-Puffer",o:["Ausgewogen (1 s)","Schnell (0,5 s)","Stabil (3 s)"],h:["Schneller Senderwechsel, selten Aussetzer","Schnellster Senderwechsel, anfälliger bei schwachem Netz","Weniger Aussetzer, Senderwechsel dauert länger"]}]},
- {sec:"Bild",items:[
+  {k:"buffer",l:"Live-Puffer",o:["Ausgewogen (1 s)","Schnell (0,5 s)","Stabil (3 s)"],h:["Schneller Senderwechsel, selten Aussetzer","Schnellster Senderwechsel, anfälliger bei schwachem Netz","Weniger Aussetzer, Senderwechsel dauert länger"]},
   {k:"deint",l:"Deinterlacing",o:["Automatisch","Aus","Verwerfen","Überblenden","Bob","Yadif","Yadif 2x"],
    h:["Wählt Yadif 2x bei Halbbild-Sendern, sonst Aus","Keine Bearbeitung","Halbe Bildhöhe, sehr sparsam","Zwei Halbbilder übereinander gelegt","Jedes Halbbild wird ein Vollbild","Gute Schärfe, 25 Bilder/s","Gute Schärfe, flüssige 50 Bilder/s"],
    q:[0,0,1,2,2,4,5],
@@ -794,44 +844,35 @@ const SETTINGS=[
        ["Flüssige Bewegung (50 Bilder/s)","Feine Linien und Schrift flimmern leicht"],
        ["Scharf, ruhiges Bild","Nur 25 Bilder/s: Sport und Kameraschwenks wirken ruckelig"],
        ["Scharf und flüssig, beste Wahl für Live-TV","Etwas mehr Rechenaufwand (für Apple TV 4K kein Problem)"]],
-   rec:6},
-  {k:"matchfps",l:"Bildwiederholrate anpassen",o:["Ein","Aus"],h:["Fernseher wechselt auf 50 Hz, 23,976 Hz usw. Dafür muss am Apple TV unter Video und Audio „Inhalt anpassen“ aktiv sein","Fest 60 Hz: Ruckeln bei 50- und 24-fps-Inhalten"]},
-  {k:"matchdr",l:"Dynamikbereich anpassen",o:["Ein","Aus"],h:["HDR nur bei HDR-Inhalten, sonst SDR. Benötigt „Inhalt anpassen“ am Apple TV","Ausgabe bleibt im Format des Apple TV"]},
-  {k:"aspect",l:"Bildformat",o:["Original","Füllen","Zoom"]}]},
- {sec:"Ton & Anzeige",items:[
-  {k:"passthru",l:"Surround-Ton",o:["Automatisch","Immer als PCM"],h:["Dolby Digital wird weitergegeben, wenn Apple TV und Receiver es können. DTS wird in PCM umgewandelt","Alles wird im Apple TV decodiert"]},
-  {k:"osd",l:"Qualitäts-Anzeige im Player",o:["Mit der Info-Leiste","Immer","Aus"],h:["z. B. 1080p50 · HEVC · 5.1"]}]},
- {sec:"Wiedergabe",items:[
-  {k:"zap",l:"Senderwechsel mit ▲ ▼",o:["Ein","Aus"]},
-  {k:"resume",l:"Filme fortsetzen",o:["Fragen","Immer","Nie"]}]},
- {sec:"TV-Guide",items:[
-  {k:"shift",l:"Zeitversatz",o:["0 h","+1 h","−1 h"],h:["Falls der TV-Guide zeitlich verschoben ist"]}]},
- {sec:"Playlists",hide:1,items:[
-  {k:"refresh",l:"Automatisch aktualisieren",o:["Bei jedem Start","Täglich","Alle 3 Tage","Alle 7 Tage","Nur manuell"],rec:2,h:["Immer aktuell, startet etwas langsamer","Einmal pro Tag beim ersten Start","Guter Mittelweg – der EPG reicht 3 Tage","Für Playlists, die sich selten ändern","Nur über die Playlist"]}]},
- {sec:"Darstellung",items:[
-  {k:"lang",l:"Sprache / Language",o:["Deutsch","English"],h:["Alle Menüs und Texte auf Deutsch","All menus and texts in English"]},
-  {k:"theme",l:"Erscheinungsbild",o:["Dunkel","Hell","Wie Apple TV"],h:["Ideal für abends und im Heimkino","Helle Flächen, ideal bei Tageslicht","Folgt der Einstellung des Apple TV"]},
-  {k:"start",l:"Startbereich",o:["Start","Live TV","TV-Guide","Filme","Favoriten"]},
-  {k:"lock",l:"Kindersicherung",o:["Aus","PIN für Gruppen"]}]}
+   rec:0}]},
+ {sec:"Playlist",hide:1,items:[
+  {k:"refresh",l:"Automatisch aktualisieren",o:["Bei jedem Start","Täglich","Alle 3 Tage","Alle 7 Tage","Nur manuell"],rec:2,h:["Immer aktuell, startet etwas langsamer","Einmal pro Tag beim ersten Start","Guter Mittelweg – der EPG reicht 3 Tage","Für Playlists, die sich selten ändern","Nur über die Playlist"]},
+  {k:"shift",l:"TV-Guide-Zeitversatz",o:SHIFTS.map(shiftTxt),h:"Nur nötig, wenn die Sendezeiten deines Anbieters verschoben sind"}]}
 ];
 const S={
   tab:"live",group:LS.get("group","ch"),
   favCh:new Set(LS.get("favCh",REAL?[]:[1,2,16,31])),favVod:new Set(LS.get("favVod",REAL?[]:["m6","s0"])),
   reminders:new Set(LS.get("rem",[])),recent:LS.get("recent",REAL?[]:[1,16]),previewCh:null,prog:LS.get("prog2",{}),chLimit:300,
   set:Object.assign({refresh:2},LS.get("set",{})),
-  playlists:LS.get("pl",[{name:"Mein Anbieter",type:"Xtream Codes",info:CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien",active:true},{name:"Testliste",type:"M3U-URL",info:"nicht geladen",active:false}]),
-  formType:"qr",query:"",detail:null,mseg:"m",trendAll:false,qrCode:"",dstack:[],
+  playlists:LS.get("pl",[{name:"Mein Anbieter",type:"Anbieter-Login",info:CH.length+" Kanäle · "+MOVIES.length+" Filme · "+SERIES.length+" Serien",active:true},{name:"Testliste",type:"M3U-URL",info:"nicht geladen",active:false}]),
+  lock:Object.assign({on:false,pin:"",groups:[]},LS.get("lock",{})),unl:false,formType:"qr",query:"",detail:null,mseg:"m",trendAll:false,qrCode:"",dstack:[],
   hidG:new Set(LS.get("hidG",[])),hidC:new Set(LS.get("hidC",[])),gOrder:LS.get("gOrder",[]),cOrder:LS.get("cOrder",{}),edG:null,moving:null,onlyAvail:LS.get("onlyAvail",false),watch:new Set(LS.get("watch",[]))
 };
+S.playlists.forEach(p=>{if(p.type==="Xtream Codes"||p.type==="Anbieter-Login (Xtream-API)")p.type="Anbieter-Login"});
 const itOf=k=>SETTINGS.flatMap(s=>s.items).find(i=>i.k===k);
 const sv=k=>{const v=S.set[k]||0,it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===k);return it&&v>=it.o.length?0:v};
 const hv=it=>Array.isArray(it.h)?(it.h[sv(it.k)]||it.h[0]):it.h;
-const persist=()=>{LS.set("group",S.group);LS.set("favCh",[...S.favCh]);LS.set("favVod",[...S.favVod]);LS.set("recent",S.recent);LS.set("set",S.set);LS.set("pl",S.playlists);LS.set("watch",[...S.watch]);LS.set("onlyAvail",S.onlyAvail);LS.set("rem",[...S.reminders]);LS.set("hidG",[...S.hidG]);LS.set("hidC",[...S.hidC]);LS.set("gOrder",S.gOrder);LS.set("cOrder",S.cOrder)};
+const persist=()=>{LS.set("group",S.group);LS.set("favCh",[...S.favCh]);LS.set("favVod",[...S.favVod]);LS.set("recent",S.recent);LS.set("set",S.set);LS.set("pl",S.playlists);LS.set("watch",[...S.watch]);LS.set("onlyAvail",S.onlyAvail);LS.set("rem",[...S.reminders]);LS.set("hidG",[...S.hidG]);LS.set("hidC",[...S.hidC]);LS.set("gOrder",S.gOrder);LS.set("cOrder",S.cOrder);LS.set("lock",S.lock)};
+const activePl=()=>S.playlists.find(p=>p.active)||S.playlists[0]||{};
+const PLDEF={refresh:2,shift:6};
+const plv=(k,p)=>{p=p||activePl();const v=p[k];return v==null?PLDEF[k]:v};
+const plShiftMs=()=>(SHIFTS[plv("shift")]||0)*36e5;
+const isLockedG=g=>S.lock.on&&!S.unl&&S.lock.groups.includes(g);
 
 
 /* ---------- Sprache & Erscheinungsbild ----------
    Prototyp: Texte werden beim Anzeigen übersetzt. In Swift: String Catalog (Localizable.xcstrings). */
-const EN={
+const EN={"Über Onda & Rechtliches":"About Onda & legal","Über Onda & Rechtliches ›":"About Onda & legal ›","Impressum":"Legal notice","Datenschutzerklärung":"Privacy policy","Nutzungsbedingungen":"Terms of use","Hinweise für Rechteinhaber":"Notice for rights holders","Quellenangaben und Marken":"Credits and trademarks","Rechtstexte liegen als Entwurf auf Deutsch vor.":"Legal texts are currently available as a German draft only. English versions will follow before launch.","Anbieter der App":"App provider","Kontakt":"Contact","Register und Steuer":"Registration and tax","Inhalte":"Content","Komponenten":"Components","Quellcode":"Source code","Marken":"Trademarks","Trailer-Vorschau":"Trailer preview","Lädt Videos von YouTube (Google). Ohne Vorschau startet ein Trailer nur nach Tippen auf «Trailer».":"Loads videos from YouTube (Google). Without the preview, a trailer only starts after tapping “Trailer”.","Ein Hilfsmittel, kein vollständiger Schutz – ersetzt nicht die Bildschirmzeit von Apple.":"An aid, not complete protection – does not replace Apple’s Screen Time.","Anbieter-Login":"Provider login","◀ Senderliste":"◀ Channel list","▶ Menü":"▶ Menu","Ähnliches in deiner Playlist":"More like this in your playlist","Aktualisierung":"Refresh","erforderlich":"required","Standard":"Default","TV-Guide (EPG)":"TV guide (EPG)","Einrichten":"Set up","Player-Engine (Ergebnis des Player-Tests) – LGPL 2.1":"Player engine (result of the player test) – LGPL 2.1","QR-Code-Erzeugung – MIT":"QR code generation – MIT","Deutsch":"German","Englisch":"English","Diese Gruppe ist gesperrt. In Live TV mit der PIN entsperren.":"This group is locked. Unlock it with the PIN in Live TV.","Keine Sender in dieser Gruppe":"No channels in this group","Playlist":"Playlist","Dritte Quelle, nur wenn Anbieter und TheTVDB nichts liefern. Für den Verkauf braucht es eine kommerzielle TMDB-Lizenz – der private Schlüssel ist nur zum Testen im Prototyp.":"Third source, only if the provider and TheTVDB have nothing. Selling the app requires a commercial TMDB licence – the private key is only for testing in the prototype.","1 · Anbieter":"1 · Provider","2 · TheTVDB":"2 · TheTVDB","3 · TMDB":"3 · TMDB","Aktiv":"Active","aktiv":"active","Alle 3 Tage":"Every 3 days","Alle 7 Tage":"Every 7 days","Alle Filme":"All movies","Alle Serien":"All series","Allgemein":"General","Automatisch aktualisieren":"Refresh automatically","Bei jedem Start":"Every launch","Täglich":"Daily","Nur manuell":"Manual only","Beim Start öffnen":"Open at launch","Bevorzugte Tonsprache":"Preferred audio language","Bildwiederholrate und Dynamikbereich wirken nur, wenn am Apple TV unter «Video und Audio» die Option «Inhalt anpassen» aktiv ist.":"Match frame rate and dynamic range only work if “Match Content” is turned on in the Apple TV’s Video and Audio settings.","Cover & Infos":"Artwork & info","Cover & Infos (Prototyp)":"Artwork & info (prototype)","Cover und Infos kommen zuerst von deinem Anbieter, ergänzt durch TheTVDB und TMDB.":"Artwork and info come from your provider first, supplemented by TheTVDB and TMDB.","Datei":"File","Datenschutz":"Privacy","Der Schlüssel bleibt nur auf diesem Gerät gespeichert.":"The key is only stored on this device.","Der Schlüssel bleibt nur auf diesem Gerät.":"The key stays on this device only.","Dritte Quelle, nur wenn Anbieter und TheTVDB nichts liefern. Für den Verkauf braucht es eine kommerzielle TMDB-Lizenz – der private Schlüssel ist nur zum Testen":"Third source, only if the provider and TheTVDB have nothing. Selling the app requires a commercial TMDB licence – the private key is for testing only","Eigene URL":"Custom URL","Ein Player für deine eigenen TV-Abos und Playlists.":"A player for your own TV subscriptions and playlists.","Einstellungen › API › Schlüssel anfordern (privat, kostenlos)":"Settings › API › request a key (personal, free)","Entfernen":"Remove","Entwurf – endgültiger Text nach rechtlicher Prüfung.":"Draft – final text after legal review.","Ergänzt Cover, Hintergrund, Handlung und Besetzung, wo dein Anbieter nichts liefert. Die fertige App bringt den Projekt-Schlüssel mit – hier nur für den Test.":"Adds artwork, backdrop, plot and cast where your provider has nothing. The finished app includes the project key – here for testing only.","Ergänzt fehlende Cover und Infos":"Fills in missing artwork and info","Erweitert":"Advanced","Filme und Serien zeigen beide Knöpfe":"Movies and series show both buttons","Fortsetzen":"Resume","Fortsetzen oder von vorne":"Resume or start over","Französisch":"French","Italienisch":"Italian","Originalton":"Original audio","Für Cover und Infos fragt Onda nur Titel und IDs ab, nie Playlist- oder Stream-Adressen. Keine Werbung, kein Tracking.":"For artwork and info, Onda only looks up titles and IDs, never playlist or stream addresses. No ads, no tracking.","Für Titel ohne Anbieter-Infos. Kommerziell gratis bis 50'000 USD Jahresumsatz, mit Quellenangabe.":"For titles without provider info. Free for commercial use up to USD 50,000 annual revenue, with attribution.","Ganzes Bild, mit Balken falls nötig":"Whole picture, with bars if needed","Füllt den Bildschirm, schneidet Ränder ab":"Fills the screen, crops the edges","Vergrössert 4:3-Sendungen ohne Verzerrung":"Enlarges 4:3 programmes without distortion","Gespeicherte Infos neu laden":"Reload saved info","Gilt nur für diese Wiedergabe. Standard: Einstellungen › Video & Audio.":"Applies to this playback only. Default: Settings › Video & Audio.","Gilt nur für diese Wiedergabe. Standard: Einstellungen › Bild.":"Applies to this playback only. Default: Settings › Picture.","Gruppe":"Group","Gruppe wählen":"Choose group","Guter Mittelweg – der EPG reicht 3 Tage":"Good balance – the guide covers 3 days","Immer aktuell, startet etwas langsamer":"Always current, launches a little slower","Einmal pro Tag beim ersten Start":"Once a day at first launch","Für Playlists, die sich selten ändern":"For playlists that rarely change","Nur über die Playlist":"Only from the playlist","Hinweise von Rechteinhabern: über die Kontaktadresse im App Store (wird vor dem Start festgelegt).":"Notices from rights holders: via the contact address in the App Store (to be set before launch).","Im Vollbild wechselt ▲ ▼ den Sender":"In full screen, ▲ ▼ changes the channel","▲ ▼ blendet nur die Info-Leiste ein":"▲ ▼ only shows the info bar","Immer fortsetzen":"Always resume","Immer von vorne":"Always start over","Startet direkt an der letzten Stelle":"Starts right where you left off","Startet immer am Anfang":"Always starts at the beginning","In der fertigen App sind die Quellen fest eingebaut, hier ist nichts einzustellen.":"In the finished app the sources are built in; there is nothing to set here.","Kategorie ›":"Category ›","Kategorien":"Categories","Keine Untertitel":"No subtitles","Konto auf thetvdb.com anlegen":"Create an account on thetvdb.com","Kostenlos, ohne Lizenz. Xtream liefert Cover, Hintergrund, Handlung, Besetzung, Bewertung, Trailer und Folgen. Mit eigener Xtream-Playlist aktiv.":"Free, no licence. Xtream provides artwork, backdrop, plot, cast, rating, trailer and episodes. Active with your own Xtream playlist.","Kostenloses Konto auf themoviedb.org anlegen":"Create a free account on themoviedb.org","Laden":"Load","Nur speichern":"Save only","Sprache / Language":"Language / Sprache","Letzter Sender":"Last channel","M3U-Datei auswählen":"Choose M3U file","Mit eigener Xtream-Playlist aktiv":"Active with your own Xtream playlist","Mit iCloud-Sync werden Favoriten, Einstellungen und Fortschritt über deinen iCloud-Account abgeglichen.":"With iCloud sync, favourites, settings and progress are synced via your iCloud account.","Neue PIN festlegen":"Set a new PIN","PIN bestätigen":"Confirm PIN","PIN eingeben":"Enter PIN","PIN ändern":"Change PIN","Gruppe entsperren":"Unlock group","PIN der Kindersicherung":"Parental control PIN","Vier Ziffern":"Four digits","Vier Ziffern, mit der Fernbedienung oder den Zifferntasten":"Four digits, with the remote or the number keys","Zur Bestätigung nochmals eingeben":"Enter again to confirm","Die PINs stimmen nicht überein. Bitte neu eingeben.":"The PINs don’t match. Please try again.","Falsche PIN. Bitte nochmals versuchen.":"Wrong PIN. Please try again.","Abbrechen":"Cancel","Fertig":"Done","Kindersicherung":"Parental control","Gesperrte Gruppen":"Locked groups","Sperrt Sendergruppen mit einer vierstelligen PIN.":"Locks channel groups with a four-digit PIN.","Gesperrte Gruppen sind ohne PIN unsichtbar, auch in Suche, TV-Guide und auf der Startseite.":"Locked groups are hidden without the PIN, including in search, the TV guide and the home screen.","Gesperrte Gruppen erscheinen erst nach Eingabe der PIN, bis Onda beendet wird.":"Locked groups only appear after entering the PIN, until Onda is closed.","🔒 Gesperrt":"🔒 Locked","Frei":"Unlocked","Diese Gruppe ist gesperrt.":"This group is locked.","Entsperrt bis zum Beenden von Onda":"Unlocked until Onda is closed","Kindersicherung ein":"Parental control on","Kindersicherung aus":"Parental control off","Kindersicherung ein · jetzt Gruppen wählen":"Parental control on · now choose groups","PIN geändert":"PIN changed","Neueste":"Newest","Neueste Filme":"Newest movies","Neueste Serien":"Newest series","Nur im Prototyp: M3U-Datei vom Computer wählen. Die echte Apple-TV-App bekommt die Playlist per QR-Code oder vom iPhone.":"Prototype only: choose an M3U file from your computer. The real Apple TV app gets the playlist via QR code or from the iPhone.","Nur mit kommerzieller Lizenz":"Commercial licence required","Nur mit kommerzieller Lizenz. Im Prototyp zum Testen.":"Commercial licence required. In the prototype for testing.","Nur ändern, wenn ein Sender nicht sauber läuft. «Automatisch» wählt für jeden Stream die passende Einstellung.":"Only change this if a channel doesn’t play properly. “Automatic” picks the right setting for every stream.","Nutze nur Inhalte, für die du ein Nutzungsrecht hast.":"Only use content you have the rights to.","Onda fragt die Quellen der Reihe nach und füllt nur, was noch fehlt.":"Onda asks the sources in order and only fills in what is missing.","Onda ist ein Player für deine eigenen TV-Abos und Playlists. Onda liefert keine Sender, Filme oder Serien und vermittelt keine Anbieter.":"Onda is a player for your own TV subscriptions and playlists. Onda provides no channels, movies or series and does not broker providers.","Onda nimmt die EPG-Adresse aus der Playlist bzw. aus den Xtream-Zugangsdaten.":"Onda takes the guide address from the playlist or from the Xtream login.","Onda nutzt Open-Source-Komponenten. Die vollständigen Lizenztexte und der Hinweis auf den Quellcode stehen hier in der fertigen App.":"Onda uses open-source components. The full licence texts and the source-code notice appear here in the finished app.","Open-Source-Lizenzen":"Open-source licences","Quellenangaben":"Acknowledgements","Onda enthält keine Inhalte":"Onda contains no content","Version":"Version","Über Onda":"About Onda","Schlüssel oder Token einfügen":"Paste key or token","TheTVDB-API-Schlüssel":"TheTVDB API key","Schlüssel hier einfügen":"Paste key here","Serien-Infos: TheTVDB.":"Series info: TheTVDB.","Speichern und Cover laden":"Save and load artwork","Speichern und testen":"Save and test","Playlist wählen, um Zugangsdaten, TV-Guide und Aktualisierung zu ändern.":"Choose a playlist to change its login, TV guide and refresh.","Playlist antippen, um Zugangsdaten, TV-Guide und Aktualisierung zu ändern.":"Tap a playlist to change its login, TV guide and refresh.","Playlists, Zugangsdaten und Einstellungen bleiben auf deinen Geräten. Zugangsdaten liegen im Schlüsselbund.":"Playlists, logins and settings stay on your devices. Logins are stored in the keychain.","Sprache des Apple TV, sonst die erste Tonspur":"Apple TV language, otherwise the first audio track","Sprache des iPhone, sonst die erste Tonspur":"iPhone language, otherwise the first audio track","Wie Apple TV":"Same as Apple TV","Wie iPhone":"Same as iPhone","Deutsche Tonspur, wenn vorhanden":"German audio, if available","Englische Tonspur, wenn vorhanden":"English audio, if available","Französische Tonspur, wenn vorhanden":"French audio, if available","Italienische Tonspur, wenn vorhanden":"Italian audio, if available","Immer die erste Tonspur des Streams":"Always the stream’s first audio track","Nur erzwungene":"Forced only","Nur Einblendungen für fremdsprachige Stellen":"Only for foreign-language parts","Deutsche Untertitel, wenn vorhanden":"German subtitles, if available","Englische Untertitel, wenn vorhanden":"English subtitles, if available","Französische Untertitel, wenn vorhanden":"French subtitles, if available","Italienische Untertitel, wenn vorhanden":"Italian subtitles, if available","TV-Guide-Quelle":"TV guide source","TV-Guide-Zeitversatz":"TV guide time offset","Zeitversatz":"Time offset","Nur nötig, wenn die Sendezeiten deines Anbieters verschoben sind":"Only needed if your provider’s programme times are offset","Nur nötig, wenn die Sendezeiten verschoben sind":"Only needed if programme times are offset","Testdaten (simuliert)":"Test data (simulated)","Ton und Untertitel lassen sich im Player für die laufende Wiedergabe ändern.":"Audio and subtitles can be changed in the player for the current playback.","Unter «API Information» einen Projekt-Schlüssel beantragen":"Request a project key under “API Information”","XMLTV-URL (.xml oder .xml.gz)":"XMLTV URL (.xml or .xml.gz)","Zugangsdaten und Einstellungen dieser Playlist werden von diesem Gerät gelöscht.":"Login and settings of this playlist will be deleted from this device.","Playlist entfernen":"Remove playlist","«API-Lesezugriffstoken» oder «API-Schlüssel» kopieren und hier einfügen":"Copy the “API read access token” or “API key” and paste it here","Übersicht mit Live, Weiterschauen und Beliebtem":"Overview with live, continue watching and popular","Senderliste mit Vorschau":"Channel list with preview","Senderliste":"Channel list","Programm der nächsten Stunden":"Programmes for the next few hours","Filme und Serien":"Movies and series","Spielt sofort den zuletzt gesehenen Sender":"Immediately plays the last channel you watched","z. B. 1080p50 · HEVC · 5.1 – erscheint mit der Info-Leiste":"e.g. 1080p50 · HEVC · 5.1 – shown with the info bar","Bleibt dauerhaft oben links sichtbar":"Stays visible at the top left","Keine Qualitäts-Etiketten im Player":"No quality labels in the player","◀ Senderliste · ▶ Menü":"◀ Channel list · ▶ Menu","2× OK: vorheriger Sender":"2× OK: previous channel","Vorheriger Sender":"Previous channel","★ Favoriten":"★ Favourites","Spielfilm":"Feature film","Aus Playlist bzw. Xtream-Zugang":"From playlist or Xtream login","Aus «Weiterschauen» entfernen":"Remove from “Continue watching”","Zu «Meine Liste»":"Add to “My list”","Aus «Meine Liste» entfernen":"Remove from “My list”","Meine Liste":"My list","Bild-in-Bild automatisch":"Automatic picture in picture","Eine XMLTV-Adresse selbst eintragen (.xml oder .xml.gz)":"Enter an XMLTV address yourself (.xml or .xml.gz)","Eine heruntergeladene XMLTV-Datei aus «Dateien» wählen":"Choose a downloaded XMLTV file from Files","Onda nimmt die Adresse aus der Playlist oder aus den Xtream-Zugangsdaten (empfohlen)":"Onda takes the address from the playlist or the Xtream login (recommended)","Favoriten, Einstellungen und Weiterschauen auf iPhone, iPad und Apple TV. Das Backup enthält deine Zugangsdaten – sicher aufbewahren.":"Favourites, settings and continue watching on iPhone, iPad and Apple TV. The backup contains your logins – keep it safe.","Im Player nach links oder rechts wischen wechselt den Sender.":"Swipe left or right in the player to change channel.","Xtream: Lade die Datei einmal über den Link":"Xtream: download the file once via the link","in «Dateien».":"to Files.","Backup sichern":"Back up","Backup wiederherstellen":"Restore backup","iCloud & Backup":"iCloud & backup","Bild":"Picture","Video & Audio":"Video & audio","Live TV":"Live TV","Wiedergabe":"Playback","Darstellung":"Display","Untertitel":"Subtitles","Hilfe: Playlist einrichten":"Help: set up a playlist","An Apple TV senden":"Send to Apple TV","Senderliste bearbeiten":"Edit channel list","Senderwechsel mit ▲ ▼":"Change channel with ▲ ▼","Senderwechsel durch Wischen":"Swipe to change channel","Mediathek":"Library","Onda · Prototyp 1.6":"Onda · prototype 1.5","Prototyp 1.5 · Testdaten":"Prototype 1.5 · test data","Prototyp 1.3 · Testdaten":"Prototype 1.3 · test data","Gesehen":"Watched","Als Nächstes":"Up next","Weiterschauen":"Continue watching","Info":"Info","Mehr":"More","Ton & Untertitel":"Audio & subtitles","Ein":"On","Aus":"Off","Quelle":"Source","URL":"URL","Name":"Name","Server":"Server","Benutzername":"Username","Passwort":"Password","Playlist-URL (.m3u / .m3u8)":"Playlist URL (.m3u / .m3u8)","Speichern":"Save","Diese Playlist verwenden":"Use this playlist","Playlist prüfen":"Check playlist","Noch nichts in «Meine Liste». Bei einem Film oder einer Serie ☆ wählen.":"Nothing in “My list” yet. Select ☆ on a movie or series.","Noch nichts in «Meine Liste». Bei einem Film oder einer Serie auf ＋ tippen oder das Cover gedrückt halten.":"Nothing in “My list” yet. Tap ＋ on a movie or series, or press and hold the cover.","Bitte Playlist-URL eingeben":"Please enter the playlist URL","Bitte Server, Benutzername und Passwort eingeben":"Please enter server, username and password","„Wohnzimmer“ ist eingerichtet und aktiv":"“Wohnzimmer” is set up and active","Gespeichert":"Saved","Erweitert · HTTP-Header":"Advanced · HTTP headers","Automatisch":"Automatic","Nur zur Fehlersuche":"For troubleshooting only","Was du brauchst":"What you need","Eine M3U-Adresse (endet oft auf .m3u oder .m3u8) oder die Login-Daten deines Anbieters: Server, Benutzername und Passwort. Optional eine Adresse für den TV-Guide (XMLTV).":"An M3U address (often ending in .m3u or .m3u8) or your provider's login: server, username and password. Optionally an address for the TV guide (XMLTV).","Woher die Playlist kommt":"Where to get a playlist","Von deinem TV- oder Internetanbieter, wenn er sie im Kundenkonto anbietet.":"From your TV or internet provider, if they offer it in your customer account.","Von einem Gerät in deinem Heimnetz, das Sender über Kabel, Satellit oder Antenne empfängt und als Playlist bereitstellt (z. B. Router oder Empfänger mit Netzwerk-TV-Funktion).":"From a device in your home network that receives channels via cable, satellite or antenna and provides them as a playlist (e.g. a router or receiver with network TV).","Von deinem eigenen Medienserver mit eigenen Aufnahmen und Videos.":"From your own media server with your own recordings and videos.","So fügst du sie hinzu":"How to add it","Einstellungen › Playlist hinzufügen. Am einfachsten per QR-Code: iPhone-Kamera auf den Code richten und die Daten auf dem iPhone eingeben. Alternativ M3U-Adresse oder Anbieter-Login direkt mit der Fernbedienung eingeben.":"Settings › Add playlist. Easiest via QR code: point your iPhone camera at the code and enter the details on your iPhone. Alternatively, enter the M3U address or provider login directly with the remote.","Einstellungen › Playlist hinzufügen: M3U-Adresse, Anbieter-Login oder Datei. Mit «An Apple TV senden» überträgst du die Playlist danach ohne Abtippen auf dein Apple TV.":"Settings › Add playlist: M3U address, provider login or file. With «Send to Apple TV» you can then transfer the playlist to your Apple TV without typing.","Wenn etwas nicht klappt":"Troubleshooting","Playlist lädt nicht:":"Playlist won't load:","Adresse und Zugangsdaten prüfen. Manche Anbieter verlangen einen bestimmten User-Agent (Erweitert › HTTP-Header).":"Check the address and login. Some providers require a specific user agent (Advanced › HTTP headers).","Keine Sendungsdaten:":"No programme data:","In der Playlist die TV-Guide-Quelle einstellen (Automatisch, eigene Adresse oder Datei).":"Set the TV guide source in the playlist (Automatic, custom address or file).","Bild ruckelt oder flimmert:":"Picture stutters or flickers:","Player-Engine und Deinterlacing auf «Automatisch» stellen.":"Set player engine and deinterlacing to «Automatic».","Gut zu wissen":"Good to know","Onda enthält keine Sender und empfiehlt keine Anbieter. Nutze nur Inhalte, für die du ein Nutzungsrecht hast. Bei Fragen zu Sendern oder Zugangsdaten hilft der Kundendienst deines Anbieters.":"Onda contains no channels and recommends no providers. Only use content you have the rights to. For questions about channels or logins, contact your provider's customer service.","Playlist einrichten":"Set up a playlist","Was du brauchst, woher sie kommt, wenn etwas nicht klappt":"What you need, where to get it, troubleshooting","Hilfe":"Help","Wo bekomme ich eine Playlist? ›":"Where do I get a playlist? ›","＋ Playlist hinzufügen":"＋ Add playlist","QR · M3U · Login":"QR · M3U · Login","Onda ist ein Player. Sender, Filme und Serien kommen aus der Playlist deines Anbieters – Onda selbst liefert keine Inhalte.":"Onda is a player. Channels, movies and series come from your provider's playlist – Onda itself provides no content.",
 "Start":"Home","Live TV":"Live TV","TV-Guide":"TV Guide","Filme":"Movies","Serien":"Series","Favoriten":"Favourites","Suche":"Search","Einstellungen":"Settings","Prototyp":"Prototype",
 "Gruppen":"Groups","Alle Kanäle":"All channels","Schweiz":"Switzerland","Deutschland":"Germany","Sport":"Sports","Nachrichten":"News","Dokumentation":"Documentary","Kinder":"Kids","Musik":"Music",
 "▶ Abspielen":"▶ Play","★ Favorit":"★ Favourite","☆ Favorit":"☆ Favourite","▶ Live ansehen":"▶ Watch live","Jetzt live":"Live now","Live auf deinen Favoriten":"Live on your favourites","Weiterschauen":"Continue watching","Im Trend und in deiner Playlist":"Trending and in your playlist",
@@ -839,16 +880,16 @@ const EN={
 "Heute":"Today","Morgen":"Tomorrow","Gestern":"Yesterday","Jetzt":"Now","Live":"Live","Demnächst":"Upcoming","Bereits gelaufen":"Already aired","⏰ Erinnerung":"⏰ Reminder","OK: Erinnerung setzen oder entfernen":"OK: set or remove reminder","OK: Live ansehen":"OK: watch live","Diese Sendung ist bereits gelaufen":"This programme has already aired","Erinnerung entfernt":"Reminder removed",
 "Aktuell im Trend":"Trending now","Nur verfügbare":"Available only","✓ Nur verfügbare":"✓ Available only","Top 10 Filme heute":"Top 10 movies today","Top 10 Serien heute":"Top 10 series today","Aus deiner Playlist":"From your playlist",
 "✓ Verfügbar":"✓ Available","Nicht in Playlist":"Not in playlist","✓ In deiner Playlist":"✓ In your playlist","Nicht in deiner Playlist":"Not in your playlist","In deiner Playlist verfügbar":"Available in your playlist","Gefunden als":"Found as",
-"▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes","＋ Merken und benachrichtigen":"＋ Save and notify me","✓ In «Meine Liste»":"✓ On your watchlist","Stattdessen neu in deiner Playlist":"New in your playlist instead",
+"▶ Abspielen":"▶ Play","Zum Film in der Playlist":"Go to movie in playlist","Staffeln & Folgen":"Seasons & episodes",
 "Neu hinzugefügt":"Recently added","Action":"Action","Science-Fiction":"Science fiction","Drama & Thriller":"Drama & thriller","Komödie & Animation":"Comedy & animation","Alle Serien":"All series","Krimi & Thriller":"Crime & thriller","Drama":"Drama","Sci-Fi, Fantasy & Komödie":"Sci-fi, fantasy & comedy",
 "Film":"Movie","Serie":"Series","Komödie":"Comedy","Krimi":"Crime","Abenteuer":"Adventure","Doku":"Documentary","Kauf & Leihe":"Buy & rent","Film · Im Trend":"Movie · Trending","Serie · Im Trend":"Series · Trending","Im Trend":"Trending",
 "Handlung, Besetzung und Bewertung lädt die echte App automatisch aus einer Film-Datenbank (z. B. TMDB).":"Plot, cast and rating are loaded automatically from a film database (e.g. TMDB) in the real app.",
 "▶ Fortsetzen":"▶ Resume","Von vorne":"From the beginning","★ In Favoriten":"★ In favourites","☆ Zu Favoriten":"☆ Add to favourites","Zu Favoriten hinzugefügt":"Added to favourites","Aus Favoriten entfernt":"Removed from favourites",
-"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Saved. Onda will let you know once the title shows up in your playlist.","Aus «Meine Liste» entfernt":"Removed from watchlist",
+"Aus «Meine Liste» entfernt":"Removed from watchlist",
 "Lieblingskanäle":"Favourite channels","Zuletzt gesehen":"Recently watched","Filme & Serien":"Movies & series","Noch keine Kanäle markiert. In Live TV einen Kanal wählen und „Favorit“ drücken.":"No channels marked yet. Pick a channel in Live TV and press “Favourite”.",
 "Vorschläge":"Suggestions","Thriller":"Thriller","Bundesliga":"Bundesliga",
 "Playlists":"Playlists","＋ Playlist hinzufügen":"＋ Add playlist","M3U · Xtream":"M3U · Xtream","Über Onda":"About Onda","App-Symbol-Entwurf für den Apple-TV-Homescreen":"App icon draft for the Apple TV home screen","Version":"Version","Testdaten":"Test data","nicht geladen":"not loaded","Mein Anbieter":"My provider","Testliste":"Test list",
-"Player":"Player","Bild":"Picture","Ton & Anzeige":"Sound & display","Wiedergabe":"Playback","Darstellung":"Appearance",
+"Player":"Player","Bild":"Picture","Ton & Anzeige":"Sound & display","Wiedergabe":"Playback","Darstellung":"Display",
 "Player-Engine":"Player engine","Automatisch":"Automatic","AVPlayer (Apple)":"AVPlayer (Apple)","VLC (VLCKit)":"VLC (VLCKit)","MPEG-TS und Dateien über VLC, HLS über AVPlayer":"MPEG-TS and files via VLC, HLS via AVPlayer","Apple-Systemplayer: nur HLS und MP4, kein MPEG-TS":"Apple system player: HLS and MP4 only, no MPEG-TS","Spielt MPEG-TS, MKV und fast alles, mit Deinterlacing":"Plays MPEG-TS, MKV and almost everything, with deinterlacing",
 "Hardware-Decoding":"Hardware decoding","Ein":"On","Aus":"Off","VideoToolbox: schont den Prozessor":"VideoToolbox: easy on the processor","Software: nur zur Fehlersuche":"Software: for troubleshooting only",
 "Puffer":"Buffer","Normal (3 s)":"Normal (3 s)","Gross (8 s)":"Large (8 s)","Sehr gross (15 s)":"Very large (15 s)",
@@ -876,13 +917,16 @@ const EN={
 "Tastatur: Pfeile · Enter · Esc (Menu) · P (Play/Pause)":"Keyboard: arrows · Enter · Esc (Menu) · P (play/pause)","▶ Zurück zu Live":"▶ Back to live","Senderwechsel":"Channel switch",
 "Player-Menü":"Player menu","Untertitel":"Subtitles","Sleep-Timer":"Sleep timer","Info":"Info","Tonspur":"Audio track","Bild & Format":"Picture & format","Schliessen":"Close","Vorheriger Sender":"Previous channel",
 "Kanalliste":"Channel list","Mit iPhone (QR-Code)":"With iPhone (QR code)","iPhone-Kamera auf den Code richten":"Point your iPhone camera at the code","Playlist-URL oder Xtream-Zugang auf dem iPhone eingeben":"Enter the playlist URL or Xtream login on your iPhone","Senden – Onda richtet alles automatisch ein":"Send – Onda sets everything up automatically","Warte auf dein iPhone …":"Waiting for your iPhone …","iPhone verbunden · Daten werden empfangen …":"iPhone connected · receiving data …","iPhone und Apple TV müssen im selben WLAN sein. Die Zugangsdaten gehen direkt ans Apple TV, nicht über einen Server.":"iPhone and Apple TV must be on the same Wi-Fi. Your login goes straight to the Apple TV, not through a server.","Simulieren: Eingabe vom iPhone":"Simulate: input from iPhone","Code":"Code","User-Agent (optional)":"User agent (optional)","Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt":"Default: Onda/1.0 – only change if your provider requires it","per iPhone eingerichtet":"set up via iPhone","QR · M3U · Xtream":"QR · M3U · Xtream","Senderliste":"Channel list","Live-Puffer":"Live buffer","Ausgewogen (1 s)":"Balanced (1 s)","Schnell (0,5 s)":"Fast (0.5 s)","Stabil (3 s)":"Stable (3 s)","Schneller Senderwechsel, selten Aussetzer":"Fast channel switching, rare dropouts","Schnellster Senderwechsel, anfälliger bei schwachem Netz":"Fastest switching, more sensitive to weak networks","Weniger Aussetzer, Senderwechsel dauert länger":"Fewer dropouts, slower channel switching","Fernseher wechselt auf 50 Hz, 23,976 Hz usw. Dafür muss am Apple TV unter Video und Audio „Inhalt anpassen“ aktiv sein":"The TV switches to 50 Hz, 23.976 Hz etc. Requires “Match Content” under Video and Audio on the Apple TV","HDR nur bei HDR-Inhalten, sonst SDR. Benötigt „Inhalt anpassen“ am Apple TV":"HDR only for HDR content, otherwise SDR. Requires “Match Content” on the Apple TV","Surround-Ton":"Surround sound","Immer als PCM":"Always as PCM","Dolby Digital wird weitergegeben, wenn Apple TV und Receiver es können. DTS wird in PCM umgewandelt":"Dolby Digital is passed through if Apple TV and receiver support it. DTS is converted to PCM","Alles wird im Apple TV decodiert":"Everything is decoded by the Apple TV","Dolby Digital (Bitstream)":"Dolby Digital (bitstream)","Keine Programminformation":"No programme information","Kanal":"channel","Sender":"channels","Senderliste bearbeiten":"Edit channel list","Gruppen und Sender ausblenden oder sortieren":"Hide or reorder groups and channels","Sichtbar":"Visible","Ausgeblendet":"Hidden","OK: ein-/ausblenden · ⏯: verschieben · Menu: fertig":"OK: show/hide · ⏯: move · Menu: done","Verschieben:":"Move:","▲ ▼ bewegen · OK ablegen":"▲ ▼ move · OK drop","Alles zurücksetzen":"Reset all","Fertig":"Done","Senderliste zurückgesetzt":"Channel list reset","Deutsch (Teletext)":"German (Teletext)","Deutsch für Hörgeschädigte":"German (SDH)","Deutsch (erzwungen)":"German (forced)","Englisch":"English","Ende der Sendung":"End of programme","Sleep-Timer aus":"Sleep timer off","Sleep-Timer: Wiedergabe beendet":"Sleep timer: playback stopped","Bild & Format":"Picture & format","Tonspur":"Audio","Untertitel":"Subtitles",
-"Mediathek":"Library","Meine Liste":"My list","Meine Liste":"Watchlist","Meine Sender":"My channels","Alle anzeigen":"Show all","Ton & Untertitel":"Audio & subtitles","Mehr":"More","＋ Merken":"＋ Save","✓ Gemerkt":"✓ Saved","Vorheriger Sender · zuletzt gesehen":"Previous channel · recently watched"
+"Mediathek":"Library","Meine Liste":"My list","Meine Liste":"Watchlist","Meine Sender":"My channels","Alle anzeigen":"Show all","Ton & Untertitel":"Audio & subtitles","Mehr":"More","Vorheriger Sender · zuletzt gesehen":"Previous channel · recently watched",
+"Beliebte Filme":"Popular movies","Beliebte Serien":"Popular series","Beliebt in deiner Mediathek":"Popular in your library","Sortiert nach Beliebtheit laut Film-Datenbank. Es erscheinen nur Titel aus deiner eigenen Playlist.":"Sorted by popularity from a film database. Only titles from your own playlist are shown.",
+"Anbieter-Login":"Provider login","Anbieter-Login (Xtream-API)":"Provider login","Erweitert (HTTP-Header) ›":"Advanced (HTTP headers) ›","Erweitert · HTTP-Header":"Advanced · HTTP headers","Playlist-URL oder Anbieter-Login auf dem iPhone eingeben":"Enter the playlist URL or provider login on your iPhone",
+"Füge die Playlist deines TV-Anbieters hinzu. Zugangsdaten bleiben auf diesem Gerät. Im Prototyp klappt direktes Laden nur bei https-Anbietern, sonst über «Datei».":"Add the playlist from your TV provider. Your login stays on this device. In the prototype, direct loading only works with https providers, otherwise use “File”.",
+"Onda enthält keine Inhalte":"Onda contains no content","Ein Player für deine eigenen TV-Abos und Playlists. Nutze nur Inhalte, für die du die Rechte hast.":"A player for your own TV subscriptions and playlists. Only use content you have the rights to."
 };
-const ENRX=[
+const ENRX=[[/^([+−]\d+),5 h$/,"$1.5 h"],[/^„(.+)“ an Wohnzimmer gesendet$/,"“$1” sent to Living room"],[/^Alle (\d+) ›$/,"All $1 ›"],[/^Alle ›$/,"All ›"],[/^bis (\d\d:\d\d)$/,"until $1"],[/^(\d+) Std\.$/,"$1 h"],[/^(\d+) Std\. (\d+) Min\.$/,"$1 h $2 min"],[/^noch (\d+) Std\. (\d+) Min\.$/,"$1 h $2 min left"],[/^noch (\d+) Std\.$/,"$1 h left"],[/^(\d+) Serien ·$/,"$1 series ·"],[/^F(\d+)$/,"E$1"],[/^S(\d+) · F(\d+)$/,"S$1 · E$2"],[/^▶ Fortsetzen · S(\d+) F(\d+)$/,"▶ Resume · S$1 E$2"],[/^▶ Weiter · S(\d+) F(\d+)$/,"▶ Continue · S$1 E$2"],[/^Fortsetzen · S(\d+) F(\d+)$/,"Resume · S$1 E$2"],[/^Weiter · S(\d+) F(\d+)$/,"Continue · S$1 E$2"],[/^▶ S(\d+) F(\d+) abspielen$/,"▶ Play S$1 E$2"],[/^S(\d+) · F(\d+) abspielen$/,"Play S$1 · E$2"],[/^„(.+)“ entfernen\?$/,"Remove “$1”?"],[/^„(.+)“ entfernt$/,"“$1” removed"],[/^(\d+) Gruppen$/,"$1 groups"],[/^1 Gruppe$/,"1 group"],[/^Gesehen · Folge (\d+) · (\d+) Min\.$/,"Watched · Episode $1 · $2 min"],[/^Weiterschauen · Folge (\d+) · (\d+) Min\.$/,"Continue · Episode $1 · $2 min"],[/^Als Nächstes · Folge (\d+) · (\d+) Min\.$/,"Up next · Episode $1 · $2 min"],[/^Folge (\d+) · (\d+) Min\.$/,"Episode $1 · $2 min"],[/^Gesehen · (\d+) Min\.$/,"Watched · $1 min"],[/^Weiterschauen · (\d+) Min\.$/,"Continue · $1 min"],[/^Als Nächstes · (\d+) Min\.$/,"Up next · $1 min"],
 [/^noch (\d+) Min\.$/,"$1 min left"],[/^(\d+) Min\.$/,"$1 min"],[/^Danach (\d\d:\d\d)$/,"Next $1"],
 [/^(\d+) Kanäle$/,"$1 channels"],[/^(\d+) Filme$/,"$1 movies"],[/^(\d+) Serien$/,"$1 series"],[/^(\d+) Staffeln$/,"$1 seasons"],[/^1 Staffel$/,"1 season"],
 [/^Staffel (\d+)$/,"Season $1"],[/^Folge (\d+)$/,"Episode $1"],[/^seit (\d{4})$/,"since $1"],[/^Platz (\d+) weltweit$/,"#$1 worldwide"],[/^Platz (\d+)$/,"#$1"],
-[/^Weltweit auf Platz (\d+) der meistgesehenen Filme bei (.+?)\. /,"#$1 most-watched movie worldwide on $2. "],[/^Weltweit auf Platz (\d+) der meistgesehenen Serien bei (.+?)\. /,"#$1 most-watched series worldwide on $2. "],
 [/^Kein passender Eintrag in „(.+)“ gefunden\.$/,"No matching entry found in “$1”."],[/^Erinnerung für „(.+)“ um (.+) gesetzt$/,"Reminder set for “$1” at $2"],
 [/^„(.+)“ ist jetzt aktiv \(Prototyp: Testdaten bleiben gleich\)$/,"“$1” is now active (prototype: test data stays the same)"],[/^Playlist „(.+)“ angelegt$/,"Playlist “$1” created"],
 [/^(.+) zu Favoriten hinzugefügt$/,"$1 added to favourites"],[/^(.+) aus Favoriten entfernt$/,"$1 removed from favourites"],[/^Zeitversetzt um (.+)$/,"Time-shifted by $1"],
@@ -891,7 +935,6 @@ const ENRX=[
 [/^(\d+) Vollbilder \((\d+) Halbbilder\) →$/,"$1 frames ($2 fields) →"],[/^Frames verworfen$/,"dropped frames"],[/^von (\d+) s$/,"of $1 s"],
 [/ \(automatisch gewählt\)$/," (auto-selected)"],[/ \(angepasst\)$/," (matched)"],[/ \(fest\)$/," (fixed)"],[/\(automatisch\)$/,"(automatic)"],
 [/^(.+) fps auf 60 Hz: ungleichmässige Bewegungen\. „Bildwiederholrate anpassen“ einschalten\.$/,"$1 fps on 60 Hz: uneven motion. Turn on “Match frame rate”."],
-[/^„Im Trend“: Netflix weltweit, (.+) · „Top 10“: alle Streaming-Dienste weltweit, (.+) \(Quelle: FlixPatrol\)\. Im Prototyp fest hinterlegt, in der echten App täglich aktualisiert und mit deiner Playlist abgeglichen\.$/,"“Trending”: Netflix worldwide, $1 · “Top 10”: all streaming services worldwide, $2 (source: FlixPatrol). Fixed in the prototype; updated daily and matched with your playlist in the real app."],
 [/^Prototyp (.+)$/,"Prototype $1"],[/^Staffel (\d+), Folge (\d+)$/,"Season $1, episode $2"],[/^1 Kanal$/,"1 channel"],[/^Fernseher wechselt auf (.+) Hz$/,"TV switches to $1 Hz"],[/^Gleich: „(.+)“ auf (.+) um (.+)$/,"Starting soon: “$1” on $2 at $3"],[/^Empfangen: „(.+)“ · (.+)$/,"Received: “$1” · $2"],[/^(\d+) von (\d+)$/,"$1 of $2"],[/^User-Agent: (.+)$/,"User agent: $1"],[/^Deutsch · AAC Stereo · Audiodeskription$/,"German · AAC Stereo · Audio description"],[/^Deutsch · (.+)$/,"German · $1"],[/^Englisch · (.+)$/,"English · $1"],[/^Wiedergabe stoppt um (.+)$/,"Playback stops at $1"],[/^Tonspur: Deutsch · (.+)$/,"Audio: German · $1"],[/^Tonspur: Englisch · (.+)$/,"Audio: English · $1"],[/^Von Anfang an$/,"From the beginning"],[/^Aktuell im Trend$/,"Trending now"]
 ];
 const isEN=()=>sv("lang")===1;
@@ -907,7 +950,6 @@ function tr(raw){
   const m=raw.match(/^(\s*)([\s\S]*?)(\s*)$/),t=m[2];if(!t)return raw;
   let r=trOne(t);
   if(r==null&&t.includes(" · ")){const parts=t.split(" · ");let ch=false;const out=parts.map(p=>{const x=trOne(p);if(x!=null){ch=true;return x}return p});if(ch)r=out.join(" · ")}
-  if(r==null&&/^Weltweit auf Platz/.test(t)){r=trOne(t)}
   return r==null?raw:m[1]+r+m[3];
 }
 /* Inhalte des Anbieters (Titel, Sendernamen, Playlist-Namen) werden nie übersetzt */
@@ -974,14 +1016,25 @@ function secEntry(sec){
 function refocus(sel,root){const el=(root||document).querySelector(sel);if(el&&visible(el))setFocus(el,true);else{const r=roots(),c=$$(".f",r[r.length-1]).filter(visible);const f=c[0]||cands()[0];if(f)setFocus(f,true)}}
 function move(dir){
   const list=cands();
-  if(!cur||!list.includes(cur)){const lf=lastFocus[S.tab];setFocus(lf&&list.includes(lf)?lf:list[0]);return}
-  if(!OV.length&&cur.closest("#tabs")&&dir==="down"){const lf=lastFocus[S.tab];if(lf&&document.contains(lf)&&visible(lf))return setFocus(lf)}
+  if(!cur||!list.includes(cur)){const lf=lastFocus[S.tab];const pool=list.filter(e=>!e.closest("#tabs"));setFocus(lf&&list.includes(lf)?lf:(pool[0]||list[0]),true);return}
+  const inTabs=!OV.length&&!!cur.closest("#tabs");
+  if(inTabs){if(dir==="up")return;if(dir==="down"){flushFx();const lf=lastFocus[S.tab];if(lf&&document.contains(lf)&&visible(lf))return setFocus(lf);const en=viewEntry();if(en)return setFocus(en)}}
+  if(!OV.length){const keep=inTabs;for(let i=list.length-1;i>=0;i--)if(!!list[i].closest("#tabs")!==keep)list.splice(i,1)}
+  if(!OV.length&&cur.closest("#preview")&&(dir==="up"||dir==="down")){for(let i=list.length-1;i>=0;i--)if(!list[i].closest("#preview"))list.splice(i,1)}
+  if(cur.classList.contains("cell")){
+    const row=cur.closest(".erow");
+    if(dir==="left"||dir==="right"){const cs=$$(".cell",row).filter(visible),i=cs.indexOf(cur),n=cs[i+(dir==="right"?1:-1)];EPGX=null;if(n){setFocus(n);return}epgPage(dir);return}
+    const rows=$$("#epgBody .erow"),ri=rows.indexOf(row),tr=rows[ri+(dir==="down"?1:-1)];
+    if(tr){const ca=cur.getBoundingClientRect(),tl=$(".etrack",row).getBoundingClientRect().left;const xx=EPGX!=null?EPGX:Math.max(ca.left,tl)+14*SC;let b=null,bd=Infinity;
+      $$(".cell",tr).forEach(c=>{const r=c.getBoundingClientRect(),d=xx<r.left?r.left-xx:xx>r.right?xx-r.right:0;if(d<bd){bd=d;b=c}});if(b){EPGX=xx;setFocus(b);return}}
+  }
   const a=cur.getBoundingClientRect(),acx=(a.left+a.right)/2,acy=(a.top+a.bottom)/2;
   let best=null,bs=Infinity;
   for(const el of list){
     if(el===cur)continue;
     const r=el.getBoundingClientRect(),cx=(r.left+r.right)/2,cy=(r.top+r.bottom)/2;let p,s;
     const hGap=Math.max(0,r.left-a.right,a.left-r.right),vGap=Math.max(0,r.top-a.bottom,a.top-r.bottom);
+    if((dir==="right"||dir==="left")&&vGap>0&&!OV.includes("ov-edit")){const cs=cur.closest("[data-sec]"),es=el.closest("[data-sec]");if(!es||es===cs)continue}
     if(dir==="right"){if(cx<=acx+4||r.left<a.left+4)continue;p=Math.max(0,r.left-a.right);s=vGap*3+Math.abs(cy-acy)*.15}
     else if(dir==="left"){if(cx>=acx-4||r.right>a.right-4)continue;p=Math.max(0,a.left-r.right);s=vGap*3+Math.abs(cy-acy)*.15}
     else if(dir==="down"){if(cy<=acy+4||r.top<a.top+4)continue;p=Math.max(0,r.top-a.bottom);s=hGap*3+(a.width>r.width*1.8?Math.abs(r.left-a.left):Math.abs(cx-acx))*.08+r.left*1e-4}
@@ -1002,15 +1055,18 @@ function move(dir){
     const bSec=best.closest("[data-sec]");
     if(tSec&&(bSec||ts<bs)){const e=secEntry(tSec);if(e)best=e;else if(bSec!==tSec){let nb=null,nd=Infinity;$$(".f",tSec).filter(visible).forEach(el=>{const r=el.getBoundingClientRect(),d=Math.hypot((r.left+r.right)/2-acx,(r.top+r.bottom)/2-acy);if(d<nd){nd=d;nb=el}});if(nb)best=nb}}
   }
-  if(best&&best.closest("#tabs")&&!cur.closest("#tabs"))best=$("#tabs .tab.active")||best;
   if(best)setFocus(best);
-  else if(cur.classList.contains("cell")&&(dir==="right"||dir==="left"))epgPage(dir);
+  else if(!OV.length&&!inTabs&&dir==="up")setFocus($("#tabs .tab.active"));
 }
+let EPGX=null;
+function viewEntry(){const v=$("#v-"+S.tab);let e=$("[data-entry]",v);if(!e||!visible(e))e=S.tab==="live"?($("#chList .chrow.cur",v)||$("#grpList .grp.sel",v)):S.tab==="epg"?($("#epgBody .cell.live",v)||$("#epgBody .cell",v)):S.tab==="media"?$(".mseg .chip.sel",v):S.tab==="search"?$("#q",v):null;if(!e||!visible(e))e=$$(".f",v).find(visible)||null;return e}
 function openOverlay(id){OV.push(id);RET.push({el:cur,act:cur&&cur.dataset.act});document.getElementById(id).hidden=false}
 function closeOverlay(){
   const id=OV.pop();if(!id)return;document.getElementById(id).hidden=true;
   if(id==="ov-player")stopPlayer();
   const r=RET.pop();
+  if(id==="ov-player"&&OV[OV.length-1]==="ov-detail"){renderDetail();refocus("#ov-detail .btn.primary");return}
+  if((id==="ov-player"||id==="ov-detail")&&!OV.length&&(S.tab==="home"||S.tab==="media"))R[S.tab]();
   if(id==="ov-player"&&P.type==="live"&&!OV.length&&S.tab==="live"){
     if(!chOf(S.group).some(c=>c.id===P.ch)&&chOf("all").some(c=>c.id===P.ch))S.group="all";
     S.previewCh=P.ch;renderLive();const row=$(`#chList [data-act="play:${P.ch}"]`);if(row){setFocus(row,true);return}}
@@ -1052,8 +1108,7 @@ function renderHome(){
   const favs=CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));
   const VIS=CH.filter(chVisible),hc=S.recent.map(chById).find(c=>c&&chVisible(c))||(REAL?favs.find(c=>c.epg)||VIS.find(c=>c.epg):favs[0])||VIS.find(c=>c.genre==="sport")||VIS[0]||CH[0],hp=nowP(hc),sp=splitT(hp.title);
   const mine=[...favs,...S.recent.map(chById).filter(c=>c&&chVisible(c)&&!S.favCh.has(c.id))],pool=mine.length?mine:VIS.slice(0,8);
-  const tr=k=>trendList(k).map(ix=>TREND[k][ix]).filter(t=>t.avail).slice(0,30).map(t=>tposter(t,"trend:"+t.k+":"+t.i)).join("");
-  const tsh=(title,k)=>{const h=tr(k);return h?row(title,h+`<div class="tmore f" data-act="trendlist:${k}">Alle anzeigen</div>`):""};
+  const tsh=(title,k)=>{const l=popList(k).slice(0,20);return l.length?row(title,l.map((o,i)=>poster(o,(k==="m"?"movie:":"series:")+o.i,i+1)).join("")+`<div class="tmore f" data-act="poplist:${k}">Alle anzeigen</div>`):""};
   const cont=contList();
   $("#v-home").innerHTML=`<div class="vod sy home">
    ${REAL&&S.refreshHint&&S.refreshHint.length?`<div class="rhint f" data-act="pl:${Math.max(0,S.playlists.findIndex(p=>p.real))}"><span>${(()=>{const e=S.refreshHint.includes("epg"),ts=e?(EPGINFO&&EPGINFO.ts):PLTS;return ts?(e?"TV-Guide":"Playlist")+" zuletzt "+ageTxt(ts)+" aktualisiert":(e?"TV-Guide noch nicht geladen":"Playlist noch nicht aktualisiert")})()}</span><b>Aktualisieren ›</b></div>`:""}
@@ -1061,12 +1116,12 @@ function renderHome(){
      <div class="hh-txt"><div class="eyebrow">Jetzt live${sp.k&&!noEpg(hc)?" · "+esc(sp.k):""}</div><h1>${esc(noEpg(hc)?hc.name:sp.t)}</h1>
        <div class="th-meta">${logo(hc)}<span>${esc(noEpg(hc)?"Keine Sendungsdaten":hc.name)}</span>${noEpg(hc)?"":`<span>${fmt(hp.start)} – ${fmt(hp.end)}</span>`}</div>
        ${noEpg(hc)?"":`<div class="bar hh-bar"><i style="width:${pct(hp)}%"></i></div>`}
-       <div class="btns"><button tabindex="-1" class="btn primary f" data-act="play:${hc.id}">▶ Live ansehen</button></div></div>
+       <div class="btns"><button tabindex="-1" class="btn primary f" data-entry data-act="play:${hc.id}">▶ Live ansehen</button></div></div>
      <div class="pv-screen hh-screen" style="--h:${hc.hue}"><div class="pv-anim"></div><span class="livebadge">LIVE</span>${logo(hc)}</div>
    </div>
    <div class="shelf"><h3>Meine Sender</h3><div class="shelfrow sx">${pool.map(chCard).join("")}</div></div>
-   ${cont.length?row("Weiterschauen",cont.map(o=>poster(o,(o.seasons?"series:":"movie:")+o.i)).join("")):""}
-   ${tsh("Trendfilme","m")}${tsh("Trendserien","s")}
+   ${cont.length?row("Weiterschauen",cont.map(o=>poster(o,contAct(o))).join("")):""}
+   ${tsh("Beliebte Filme","m")}${tsh("Beliebte Serien","s")}
    ${REAL?shelf("Neu in deiner Playlist",MOVIES.filter(m=>m.y).sort((a,b)=>b.y-a.y).slice(0,30),o=>"movie:"+o.i):""}
   </div>`;
 }
@@ -1075,13 +1130,13 @@ function renderHome(){
 const orderedGroups=()=>{const o=S.gOrder;return GROUPS.slice().sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?99:x)-(y<0?99:y)})};
 const liveGroups=()=>[{id:"fav",name:"Favoriten"},{id:"all",name:"Alle Kanäle"},...orderedGroups().filter(g=>!S.hidG.has(g.id))];
 function chOrdered(g){const list=CH.filter(c=>c.group===g),o=S.cOrder[g]||[];return list.sort((a,b)=>{const x=o.indexOf(a.id),y=o.indexOf(b.id);return(x<0?999+a.id:x)-(y<0?999+b.id:y)})}
-const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group);
+const chVisible=c=>!S.hidC.has(c.id)&&!S.hidG.has(c.group)&&!isLockedG(c.group);
 function chOf(g){if(g==="fav")return CH.filter(c=>S.favCh.has(c.id)&&chVisible(c));if(g==="all")return orderedGroups().flatMap(x=>chOrdered(x.id)).filter(chVisible);return chOrdered(g).filter(chVisible)}
 const gName=g=>(liveGroups().find(x=>x.id===g)||{}).name||"";
 function renderLive(){
   if(!liveGroups().some(g=>g.id===S.group))S.group="fav";
   $("#v-live").innerHTML=`<div class="livegrid">
-   <div class="col"><div class="list sy" id="grpList" data-sec="grp">${liveGroups().map(g=>`<div class="grp f ${g.id===S.group?"sel":""}" data-fx="group:${g.id}" data-act="group:${g.id}"><span>${esc(g.name)}</span></div>`).join("")}</div></div>
+   <div class="col"><div class="list sy" id="grpList" data-sec="grp">${liveGroups().map(g=>`<div class="grp f ${g.id===S.group?"sel":""}" data-fx="group:${g.id}" data-act="group:${g.id}"><span>${S.lock.on&&!S.unl&&S.lock.groups.includes(g.id)?'<span class="lk">🔒</span> ':""}${esc(g.name)}</span></div>`).join("")}</div></div>
    <div class="col"><div class="list sy" id="chList" data-sec="ch"></div></div>
    <div class="preview" id="preview" data-sec="pv"></div></div>`;
   renderChList();
@@ -1096,7 +1151,7 @@ function chRow(c){
 function renderChList(){
   const list=chOf(S.group);
   if(!list.find(c=>c.id===S.previewCh))S.previewCh=list[0]?list[0].id:null;
-  $("#chList").innerHTML=list.length?list.slice(0,S.chLimit).map(chRow).join("")+(list.length>S.chLimit?`<div class="chrow f" data-act="chmore"><div class="chtxt"><div class="chname">Weitere ${Math.min(300,list.length-S.chLimit)} von ${list.length-S.chLimit} laden</div></div></div>`:""):`<div class="empty">Noch keine Favoriten.<br>Wähle einen Kanal und drücke „Favorit“.</div>`;
+  $("#chList").innerHTML=list.length?list.slice(0,S.chLimit).map(chRow).join("")+(list.length>S.chLimit?`<div class="chrow f" data-act="chmore"><div class="chtxt"><div class="chname">Weitere ${Math.min(300,list.length-S.chLimit)} von ${list.length-S.chLimit} laden</div></div></div>`:""):isLockedG(S.group)?`<div class="empty">Diese Gruppe ist gesperrt.</div><div class="btns" style="padding:0 22px"><button tabindex="-1" class="btn primary f" data-act="unlock">PIN eingeben</button></div>`:S.group==="fav"?`<div class="empty">Noch keine Favoriten.<br>Wähle einen Kanal und drücke „Favorit“.</div>`:`<div class="empty">Keine Kanäle in dieser Gruppe.</div>`;
   $("#chList").scrollTop=0;
   renderPreview();
 }
@@ -1131,11 +1186,13 @@ function renderEPG(){
 }
 
 function epgPage(dir){
-  const row=cur.closest(".erow"),ri=$$("#epgBody .erow").indexOf(row);
-  let w=W0+(dir==="right"?60:-60)*MIN;const min=DAY0+((S.epgDay||0)===0?0:-1)*0;
+  const row=cur.closest(".erow"),ri=$$("#epgBody .erow").indexOf(row),cs0=+cur.dataset.act.split(":")[2];
+  let w=W0+(dir==="right"?60:-60)*MIN;
   const d=Math.floor((w-DAY0)/864e5);if(d<0||d>1||w<Math.floor(Date.now()/(30*MIN))*30*MIN-120*MIN&&d===0&&dir==="left")return;
   S.epgDay=d;S.epgSlot=(w-DAY0-d*864e5)/36e5;W0=epgW0();refreshEpgHead();renderEpgGrid();
-  const cells=$$(".cell",$$("#epgBody .erow")[ri]||document.createElement("div"));const t=dir==="right"?cells[0]:cells[cells.length-1];if(t)setFocus(t);
+  EPGX=null;const cells=$$(".cell",$$("#epgBody .erow")[ri]||document.createElement("div")),st=c=>+c.dataset.act.split(":")[2];
+  const t=dir==="right"?cells.find(c=>st(c)>cs0):cells.slice().reverse().find(c=>st(c)<cs0);
+  const same=cells.find(c=>st(c)===cs0);setFocus(t||same||cells[0]);
 }
 function refreshEpgHead(){
   const d=S.epgDay||0,dl=$("#epgDayLbl");if(dl)dl.textContent=dayLabel(d);
@@ -1154,7 +1211,7 @@ function renderEpgGrid(){
     return `<div class="erow"><div class="ech">${logo(c)}<span>${esc(c.name)}</span></div><div class="etrack">${cells}</div></div>`;
   }).join("");
   const nl=now>=W0&&now<W1?`<div class="nowline" style="left:${300+(now-W0)/MIN*PPM}px"></div>`:"";
-  $("#epgBody").innerHTML=list.length?`<div class="egrid">${rows}${nl}</div>`:`<div class="empty">Keine Kanäle in dieser Gruppe.</div>`;
+  $("#epgBody").innerHTML=list.length?`<div class="egrid">${rows}${nl}</div>`:isLockedG(S.group)?`<div class="empty">Diese Gruppe ist gesperrt. In Live TV mit der PIN entsperren.</div>`:`<div class="empty">Keine Kanäle in dieser Gruppe.</div>`;
   const first=list[0],X=Math.max(W0,Math.min(now,W1-1)),fp=first&&(sched(first).find(p=>p.start<=X&&p.end>X)||sched(first).find(p=>p.end>W0));
   renderEpgDetail(fp?first.id+":"+fp.start:null);
 }
@@ -1172,7 +1229,7 @@ function renderEpgDetail(key){
 const qOf=o=>o.raw&&/4K/i.test(o.raw)?"4K":"";
 const pcap=(o,sub)=>`<div class="pcap"><b>${esc(o.t)}</b><small>${esc(sub)}</small></div>`;
 const pSub=o=>{const p=S.prog[o.key];return p&&p.se?`S${p.se} · F${p.e}`:[o.y,o.g].filter(Boolean).join(" · ")};
-const poster=(o,act)=>`<div class="pwrap"><div class="poster f" style="--h:${o.hue}" data-mk="${o.key}" data-act="${act}">${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)?'<span class="pstar">★</span>':""}${(()=>{const p=S.prog[o.key];return p&&p.dur?`<div class="pprog"><i style="width:${Math.min(100,p.pos/p.dur*100)}%"></i></div>`:""})()}</div>${pcap(o,pSub(o))}</div>`;
+const poster=(o,act,rk)=>`<div class="pwrap"><div class="poster f" style="--h:${o.hue}" data-mk="${o.key}" data-act="${act}">${rk?`<span class="rk">${rk}</span>`:""}${qOf(o)?`<span class="qtag ${qOf(o)==="4K"?"k4":""}">${qOf(o)}</span>`:""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y} · ${esc(o.g)}</div>${S.favVod.has(o.key)&&!rk?'<span class="pstar">★</span>':""}${(()=>{const p=S.prog[o.key];return p&&p.dur?`<div class="pprog"><i style="width:${Math.min(100,p.pos/p.dur*100)}%"></i></div>`:""})()}</div>${pcap(o,pSub(o))}</div>`;
 
 /* ---------- Cover: Anbieter-Cover, Cover des Playlist-Treffers, Beispiel-Cover ---------- */
 /* ---------- Metadaten: Cover, Hintergrund, Handlung, Besetzung, Folgen ----------
@@ -1377,10 +1434,12 @@ function saveProg(){
   else if(P.pos>=v.dur*.95){if(v.ep){const s=SERIES[v.si],n=v.e+1<=s.seasons[v.se-1]?{se:v.se,e:v.e+1}:v.se<s.seasons.length?{se:v.se+1,e:1}:null;if(n)S.prog[v.key]={...n,pos:0,dur:0,ts:Date.now()};else delete S.prog[v.key]}else delete S.prog[v.key]}
   LS.set("prog2",S.prog);applyProg();
 }
+const contAct=o=>{const pr=S.prog[o.key];return o.seasons?(pr&&pr.se?`eplay:${o.i}:${pr.se}:${pr.e}:r`:"series:"+o.i):`mplay:${o.i}:r`};
 const contList=()=>Object.entries(S.prog).sort((a,b)=>b[1].ts-a[1].ts).map(([k])=>[...MOVIES,...SERIES].find(o=>o.key===k)).filter(Boolean).slice(0,20);
 const row=(t,html,more)=>`<div class="shelf"><h3>${t}${more||""}</h3><div class="shelfrow sx">${html}</div></div>`;
 const shelf=(title,items,actFn)=>items.length?`<div class="shelf"><h3>${esc(title)}</h3><div class="shelfrow sx">${items.map(o=>poster(o,actFn(o))).join("")}</div></div>`:"";
-/* ---------- Trends (Beispieldaten; echte App: TMDB/Trakt) ---------- */
+/* ---------- Beliebtheit (Beispieldaten). Echte App: Popularitätswert aus TMDB/TheTVDB, nur für Titel der eigenen Playlist.
+   Keine Charts fremder Dienste, kein Hinweis „verfügbar/nicht verfügbar“ (Bauplan 2c). ---------- */
 const TPOOL={
  m:[["Project Hail Mary", 2026, null], ["The Super Mario Galaxy Movie", 2026, null], ["Michael", 2026, null], ["The Devil Wears Prada 2", 2026, null], ["The Mandalorian and Grogu", 2026, null], ["Toy Story 5", 2026, null], ["Supergirl", 2026, null], ["Minions 3", 2026, null], ["The Odyssey", 2026, null], ["Spider-Man: Brand New Day", 2026, null], ["28 Years Later: The Bone Temple", 2026, null], ["Send Help", 2026, null], ["Avatar: Fire and Ash", 2025, null], ["Zootopia 2", 2025, null], ["Wicked: For Good", 2025, null], ["Now You See Me: Now You Don't", 2025, null], ["The Running Man", 2025, null], ["Predator: Badlands", 2025, null], ["Tron: Ares", 2025, null], ["One Battle After Another", 2025, null], ["Frankenstein", 2025, null], ["Bugonia", 2025, null], ["Black Phone 2", 2025, null], ["The Conjuring: Last Rites", 2025, null], ["Weapons", 2025, null], ["Freakier Friday", 2025, null], ["The Naked Gun", 2025, null], ["The Fantastic Four: First Steps", 2025, null], ["Superman", 2025, null], ["Jurassic World Rebirth", 2025, null], ["F1", 2025, null], ["KPop Demon Hunters", 2025, null], ["Happy Gilmore 2", 2025, null], ["28 Years Later", 2025, null], ["How to Train Your Dragon", 2025, null], ["Ballerina", 2025, null], ["Lilo & Stitch", 2025, null], ["Mission: Impossible – The Final Reckoning", 2025, null], ["Final Destination Bloodlines", 2025, null], ["Thunderbolts*", 2025, null], ["Sinners", 2025, null], ["A Minecraft Movie", 2025, null], ["Mickey 17", 2025, null], ["Captain America: Brave New World", 2025, null], ["The Gorge", 2025, null], ["Das Kanu des Manitu", 2025, null], ["Conclave", 2024, null], ["Anora", 2024, null], ["The Substance", 2024, null], ["Gladiator II", 2024, null], ["Wicked", 2024, null], ["Moana 2", 2024, null], ["Dune: Part Two", 2024, null], ["Deadpool & Wolverine", 2024, null], ["Inside Out 2", 2024, null], ["Alien: Romulus", 2024, null], ["Twisters", 2024, null], ["Venom: The Last Dance", 2024, null], ["Sonic the Hedgehog 3", 2024, null], ["Mufasa: The Lion King", 2024, null], ["Nosferatu", 2024, null], ["Heretic", 2024, null], ["The Wild Robot", 2024, null], ["Civil War", 2024, null], ["Oppenheimer", 2023, null], ["Barbie", 2023, null], ["Dune", 2021, null], ["Top Gun: Maverick", 2022, null], ["John Wick: Chapter 4", 2023, null], ["Past Lives", 2023, null], ["Elemental", 2023, null], ["Guardians of the Galaxy Vol. 3", 2023, null], ["Spider-Man: Across the Spider-Verse", 2023, null], ["The Super Mario Bros. Movie", 2023, null], ["Black Adam", 2022, null]],
  s:[["Stranger Things", 2016, null], ["Wednesday", 2022, null], ["Squid Game", 2021, null], ["The Last of Us", 2023, null], ["The White Lotus", 2021, null], ["Severance", 2022, null], ["Adolescence", 2025, null], ["The Pitt", 2025, null], ["Alien: Earth", 2025, null], ["Task", 2025, null], ["The Studio", 2025, null], ["Andor", 2022, null], ["The Bear", 2022, null], ["Shōgun", 2024, null], ["Fallout", 2024, null], ["House of the Dragon", 2022, null], ["The Penguin", 2024, null], ["Slow Horses", 2022, null], ["Ted Lasso", 2020, null], ["Silo", 2023, null], ["Reacher", 2022, null], ["The Boys", 2019, null], ["Daredevil: Born Again", 2025, null], ["Paradise", 2025, null], ["Dexter: Resurrection", 2025, null], ["Peacemaker", 2022, null], ["Only Murders in the Building", 2021, null], ["The Diplomat", 2023, null], ["Black Mirror", 2011, null], ["The Night Agent", 2023, null], ["Landman", 2024, null], ["Tulsa King", 2022, null], ["Yellowstone", 2018, null], ["MobLand", 2025, null], ["The Gentlemen", 2024, null], ["Bridgerton", 2020, null], ["Emily in Paris", 2020, null], ["The Witcher", 2019, null], ["One Piece", 2023, null], ["Ginny & Georgia", 2021, null], ["You", 2018, null], ["The Crown", 2016, null], ["Breaking Bad", 2008, null], ["Game of Thrones", 2011, null], ["Dark", 2017, null], ["Babylon Berlin", 2017, null], ["Money Heist", 2017, null], ["Tschugger", 2021, null], ["Der Schwarm", 2023, null], ["Die Kaiserin", 2022, null], ["Loki", 2021, null]]
@@ -1414,19 +1473,15 @@ function findInPlaylist(t){
 
 /* Vorab-Abgleich: einmal beim Laden der Playlist berechnet und zwischengespeichert */
 const AVAIL={};["m","s"].forEach(k=>TREND[k].forEach(t=>{const r=findInPlaylist(t);t.avail=r;AVAIL[t.key]=!!r}));
-const abadge=t=>t.avail?'<span class="avail ok">✓ Verfügbar</span>':'<span class="avail no">Nicht in Playlist</span>';
 
 /* Darstellung */
-const tposter=(o,act,extra="",rk=0)=>`<div class="pwrap"><div class="poster f ${o.avail?"":"dim"}" style="--h:${o.hue}" data-mk="${o.key}" data-act="${act}" ${extra}>${act&&!o.avail?abadge(o):""}<div class="pt ${o.ff}${lw(o.t)}">${esc(o.t)}</div><div class="py">${o.y?o.y+" · ":""}${esc(o.g||"")}</div></div>${pcap(o,[o.y,o.g].filter(Boolean).join(" · "))}</div>`;
 const GEN_RE=/^(serien|series|serie|filme?|movies?|vod|kino)$/i;
 const tmeta=t=>(t.y?t.y+" · ":"")+(t.k==="m"?"Film":"Serie")+(t.g?" · "+esc(t.g):"");
-function heroInner(t,pos){
-  return `<div class="th-art" style="--h:${t.hue}"><div class="pt ${t.ff}${lw(t.t)}">${esc(t.t)}</div></div>
-   <div class="th-txt"><div class="eyebrow">Im Trend · Platz ${pos}</div><h1 class="${t.ff}">${esc(t.t)}</h1>
-   <div class="th-meta">${tmeta(t)}${t.avail?'<span class="hchip ok">✓ In deiner Playlist</span>':'<span class="hchip">Nicht in deiner Playlist</span>'}</div></div>`;
-}
-/* Eine Trend-Liste: Top 10 aller Dienste, ergänzt um Netflix-Trends; Rang = Position */
-function trendList(k){const o=TORDER[k],seen=new Set(),l=[];[...o.top,...o.trend].forEach(ix=>{if(!seen.has(ix)){seen.add(ix);l.push(ix)}});return l}
+/* Beliebt in deiner Mediathek: nur eigene Titel, sortiert nach Beliebtheit */
+function popList(k){const pool=k==="m"?MOVIES:SERIES,seen=new Set(),l=[];
+  TREND[k].forEach(t=>{const o=t.avail&&t.avail.o;if(o&&!seen.has(o.key)){seen.add(o.key);l.push(o)}});
+  pool.filter(o=>!seen.has(o.key)).map(o=>[o,hash(o.t+"pop")%1000+(o.y||0)]).sort((a,b)=>b[1]-a[1]).forEach(([o])=>l.push(o));
+  return l}
 function catsOf(k){const pool=k==="m"?MOVIES:SERIES,m=new Map();pool.forEach(o=>{const g=o.g||"Ohne Kategorie";if(!m.has(g))m.set(g,[]);m.get(g).push(o)});return[...m.entries()].sort((a,b)=>b[1].length-a[1].length)}
 function vodHTML(k){
   const a=o=>(k==="m"?"movie:":"series:")+o.i,cats=catsOf(k),pool=k==="m"?MOVIES:SERIES;
@@ -1438,11 +1493,11 @@ function vodHTML(k){
    ${cats.slice(0,12).map(([g,l],ci)=>row(esc(g),l.slice(0,30).map(o=>poster(o,a(o))).join("")+(l.length>30?`<div class="tmore f" data-act="cat:${k}:${ci}">Alle ${l.length.toLocaleString("de-CH")}</div>`:""))).join("")}`;
 }
 let CATV=null;
-function openCat(k,ci){CATV={k,ci,n:60,sort:0,trend:null};renderCat();openOverlay("ov-cat");refocus("#ov-cat .pgrid .poster")}
-function openTrendList(k){CATV={trend:k};renderCat();openOverlay("ov-cat");refocus("#ov-cat .pgrid .poster")}
+function openCat(k,ci){CATV={k,ci,n:60,sort:0,pop:null};renderCat();openOverlay("ov-cat");refocus("#ov-cat .pgrid .poster")}
+function openPopList(k){CATV={pop:k};renderCat();openOverlay("ov-cat");refocus("#ov-cat .pgrid .poster")}
 function renderCat(){
-  const el=$("#ov-cat");if(CATV.trend){const k=CATV.trend,T=TREND[k],l=trendList(k).map(ix=>T[ix]);
-    el.innerHTML=`<div class="catv sy"><h1>${k==="m"?"Trendfilme":"Trendserien"}</h1><p class="cat-note">Mit Häkchen: in deiner Playlist. Den Rest kannst du dir merken.</p><div class="pgrid">${l.map(t=>tposter(t,"trend:"+k+":"+t.i)).join("")}</div></div>`;return}
+  const el=$("#ov-cat");if(CATV.pop){const k=CATV.pop,l=popList(k).slice(0,60);
+    el.innerHTML=`<div class="catv sy"><h1>${k==="m"?"Beliebte Filme":"Beliebte Serien"}</h1><p class="cat-note">Sortiert nach Beliebtheit laut Film-Datenbank. Es erscheinen nur Titel aus deiner eigenen Playlist.</p><div class="pgrid">${l.map((o,i)=>poster(o,(k==="m"?"movie:":"series:")+o.i,i+1)).join("")}</div></div>`;return}
   const{k,ci,n,sort}=CATV,cats=catsOf(k),pool=k==="m"?MOVIES:SERIES;let title,list;
   if(ci<0){title=k==="m"?"Alle Filme":"Alle Serien";list=pool.slice()}else{title=cats[ci][0];list=cats[ci][1].slice()}
   if(sort===0)list.sort((a,b)=>(b.y||0)-(a.y||0));else list.sort((a,b)=>a.t.localeCompare(b.t,"de"));
@@ -1455,44 +1510,21 @@ function renderCat(){
 function openCatList(k){const cats=catsOf(k);openSheet(`<h2 class="sh-t">Kategorien</h2><div class="glist2"><button class="grow" data-act="catpick:${k}:-1"><b>${k==="m"?"Alle Filme":"Alle Serien"}</b><span class="gcnt">${(k==="m"?MOVIES:SERIES).length}</span></button>${cats.map(([g,l],i)=>`<button class="grow" data-act="catpick:${k}:${i}"><b>${esc(g)}</b><span class="gcnt">${l.length}</span></button>`).join("")}</div>`)}
 
 function favsHTML(){
-  const fc=CH.filter(c=>S.favCh.has(c.id)&&chVisible(c)),fv=[...MOVIES,...SERIES].filter(o=>S.favVod.has(o.key)),wl=[...TREND.m,...TREND.s].filter(t=>S.watch.has(t.key));
+  const fv=[...MOVIES,...SERIES].filter(o=>S.favVod.has(o.key));
   const row=(t,html)=>`<div class="shelf"><h3>${t}</h3><div class="shelfrow sx">${html}</div></div>`;
-  return `${fc.length?row("Lieblingskanäle",fc.map(chCard).join("")):`<div class="shelf"><h3>Lieblingskanäle</h3><div class="empty" style="padding:20px 64px">Noch keine Kanäle markiert. In Live TV einen Kanal wählen und „Favorit“ drücken.</div></div>`}
-   ${fv.length?row("Filme & Serien",fv.map(o=>poster(o,(o.key[0]==="m"?"movie:":"series:")+o.i)).join("")):""}
-   ${wl.length?row("Meine Liste",wl.map(t=>tposter(t,"trend:"+t.k+":"+t.i)).join("")):""}`;
+  const fm=fv.filter(o=>o.key[0]==="m"),fs=fv.filter(o=>o.key[0]==="s");
+  return fv.length?(fm.length?row("Filme",fm.map(o=>poster(o,"movie:"+o.i)).join("")):"")+(fs.length?row("Serien",fs.map(o=>poster(o,"series:"+o.i)).join("")):""):`<div class="empty" style="padding:20px 64px">Noch nichts in «Meine Liste». Bei einem Film oder einer Serie ☆ wählen.</div>`;
 }
 function renderMedia(){
-  $("#v-media").innerHTML=`<div class="vod sy" id="mScroll"><div class="chips mseg" data-sec="mseg">${[["m","Filme"],["s","Serien"],["fav","Meine Liste"]].map(([k,l])=>`<button tabindex="-1" class="chip f ${S.mseg===k?"sel":""}" data-fx="mseg:${k}" data-act="mseg:${k}">${l}</button>`).join("")}</div><div id="mbody"></div></div>`;
+  $("#v-media").innerHTML=`<div class="vod sy" id="mScroll"><div class="chips mseg" data-sec="mseg">${[["m","Filme"],["s","Serien"],["fav","Meine Liste"]].map(([k,l])=>`<button tabindex="-1" class="chip f ${S.mseg===k?"sel":""}" ${S.mseg===k?"data-entry":""} data-fx="mseg:${k}" data-act="mseg:${k}">${l}</button>`).join("")}</div><div id="mbody"></div></div>`;
   renderMBody();
 }
 function renderMBody(){const b=$("#mbody");if(b)b.innerHTML=S.mseg==="fav"?favsHTML():vodHTML(S.mseg)}
-function openTrend(k,ix){
-  const r=TREND[k][ix].avail;S.detail={type:"t",k,ix,state:r?"found":"none",match:r};renderDetail();openOverlay("ov-detail");refocus("#ov-detail .btn.primary");
-}
 function openMovie(i){if(OV[OV.length-1]==="ov-detail"){S.dstack.push(S.detail);S.detail={type:"m",i};renderDetail();refocus('#ov-detail .btn');return}S.detail={type:"m",i};renderDetail();openOverlay("ov-detail");refocus('#ov-detail .btn')}
-function openSeries(i){if(OV[OV.length-1]==="ov-detail"){S.dstack.push(S.detail);S.detail={type:"s",i,season:1};renderDetail();refocus('#ov-detail .btn');return}S.detail={type:"s",i,season:1};renderDetail();openOverlay("ov-detail");refocus('#ov-detail .btn')}
+function openSeries(i){const se0=(S.prog[SERIES[i].key]||{}).se||1;if(OV[OV.length-1]==="ov-detail"){S.dstack.push(S.detail);S.detail={type:"s",i,season:se0};renderDetail();refocus('#ov-detail .btn');return}S.detail={type:"s",i,season:se0};renderDetail();openOverlay("ov-detail");refocus('#ov-detail .btn')}
 function detailBg(){const d=S.detail,o=d.type==="t"?TREND[d.k][d.ix]:d.type==="m"?MOVIES[d.i]:SERIES[d.i],u=coverList(o).find(x=>SIMG[x]!=="bad"),bg=$("#ov-detail .d-bg");if(bg&&u){bg.style.setProperty("--cv",`url("${u}")`);bg.classList.add("cv")}}
-function renderTrendDetail(){
-  const d=S.detail,t=TREND[d.k][d.ix],el=$("#ov-detail"),watch=S.watch.has(t.key);
-  let btns,extra="",chip;
-  if(d.match){const o=d.match.o,fav=S.favVod.has(o.key);
-    chip='<span class="hchip ok">✓ In deiner Playlist</span>';
-    btns=d.k==="m"?`<button tabindex="-1" class="btn primary f" data-act="mplay:${o.i}">▶ Abspielen</button><button tabindex="-1" class="btn icon f" data-act="vfav:${o.key}" aria-label="Favorit">${fav?"★":"☆"}</button>`
-      :`<button tabindex="-1" class="btn primary f" data-act="eplay:${o.i}:1:1">▶ S1 E1 abspielen</button><button tabindex="-1" class="btn f" data-act="series:${o.i}">Staffeln & Folgen</button><button tabindex="-1" class="btn icon f" data-act="vfav:${o.key}" aria-label="Favorit">${fav?"★":"☆"}</button>`;
-  }else{
-    chip='<span class="hchip">Nicht in deiner Playlist</span>';
-    btns=`<button tabindex="-1" class="btn primary f" data-act="watch:${t.key}">${watch?"✓ Gemerkt":"＋ Merken"}</button>`;
-    const pool=d.k==="m"?MOVIES:SERIES,sim=pool.slice().sort((a,b)=>b.y-a.y).slice(0,8);
-    extra=`<div class="shelf d-sim"><h3>Stattdessen neu in deiner Playlist</h3><div class="shelfrow sx">${sim.map(o=>poster(o,(d.k==="m"?"movie:":"series:")+o.i)).join("")}</div></div>`;
-  }
-  el.innerHTML=`<div class="detail sy" style="--h:${t.hue}"><div class="d-bg"></div><div class="d-body">${tposter(t,"").replace(" f ",' ')}
-   <div class="d-info"><h1>${esc(t.t)}</h1>
-   <div class="d-meta"><span>${tmeta(t)}</span>${chip}</div><p class="d-desc"></p>
-   <div class="btns">${btns}</div></div></div>${extra}</div>`;
-}
 function renderDetail(){
   const d=S.detail,el=$("#ov-detail");
-  if(d.type==="t"){renderTrendDetail();detailBg();setTimeout(detMeta,0);return}
   setTimeout(()=>{detailBg();detMeta()},0);
   const favB=k=>`<button tabindex="-1" class="btn icon f" data-act="vfav:${k}" aria-label="Favorit">${S.favVod.has(k)?"★":"☆"}</button>`;
   if(d.type==="m"){
@@ -1508,12 +1540,12 @@ function renderDetail(){
      <div class="d-info"><h1>${esc(s.t)}</h1>
      <div class="d-meta">${[s.y?"seit "+s.y:"",GEN_RE.test(s.g||"")?"":s.g,s.seasons.length+" "+(s.seasons.length>1?"Staffeln":"Staffel")].filter(Boolean).map(x=>`<span>${esc(String(x))}</span>`).join("")}</div>
      <p class="d-desc"></p>
-     <div class="btns">${(()=>{const pr=S.prog[s.key];return pr&&sv("resume")!==2?`<button tabindex="-1" class="btn primary f" data-act="eplay:${s.i}:${pr.se}:${pr.e}:r">▶ ${pr.pos?"Fortsetzen":"Weiter"} · S${pr.se} F${pr.e}</button>`:`<button tabindex="-1" class="btn primary f" data-act="eplay:${s.i}:1:1">▶ S1 E1 abspielen</button>`})()}${favB(s.key)}</div></div></div>
+     <div class="btns">${(()=>{const pr=S.prog[s.key];return pr&&sv("resume")===2?`<button tabindex="-1" class="btn primary f" data-act="eplay:${s.i}:${pr.se}:${pr.e}">▶ S${pr.se} F${pr.e} abspielen</button>`:pr?`<button tabindex="-1" class="btn primary f" data-act="eplay:${s.i}:${pr.se}:${pr.e}:r">▶ ${pr.pos?"Fortsetzen":"Weiter"} · S${pr.se} F${pr.e}</button>`:`<button tabindex="-1" class="btn primary f" data-act="eplay:${s.i}:1:1">▶ S1 F1 abspielen</button>`})()}${favB(s.key)}</div></div></div>
      <div class="seasons" data-sec="seasons">${s.seasons.map((_,k)=>`<button tabindex="-1" class="chip f ${k+1===se?"sel":""}" data-fx="season:${k+1}" data-act="season:${k+1}">Staffel ${k+1}</button>`).join("")}</div>
      <div class="eps sx" id="eps">${epsHTML(s,se,eps)}</div></div>`;
   }
 }
-function epsHTML(s,se,eps){let h="";for(let e=1;e<=eps;e++)h+=`<div class="ep f" data-act="eplay:${s.i}:${se}:${e}"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">E${e}</div><div class="ep-t">${esc(epTitle(s,se,e))}</div><div class="ep-m">${epDur(s,se,e)} Min.</div></div>`;return h}
+function epsHTML(s,se,eps){const pr=S.prog[s.key];let h="";for(let e=1;e<=eps;e++){const w=pr&&(se<pr.se||se===pr.se&&e<pr.e),c=pr&&se===pr.se&&e===pr.e;h+=`<div class="ep f ${w?"seen":""}" data-act="eplay:${s.i}:${se}:${e}${c&&pr.pos&&sv("resume")!==2?":r":""}"><div class="ep-thumb" style="--h:${(s.hue+e*9)%360}">F${e}${w?'<span class="ep-ok">✓</span>':""}${c&&pr.pos&&pr.dur?`<div class="pprog"><i style="width:${Math.min(100,pr.pos/pr.dur*100)}%"></i></div>`:""}</div><div class="ep-t">${esc(epTitle(s,se,e))}</div><div class="ep-m">${c?(pr.pos?"Weiterschauen · ":"Als Nächstes · "):w?"Gesehen · ":""}${epDur(s,se,e)} Min.</div></div>`}return h}
 
 /* ---------- Favoriten ---------- */
 const chCard=c=>{const p=nowP(c),ep=!noEpg(c);return `<div class="chcard f" data-act="playf:${c.id}"><div class="cc-top">${logo(c)}<div style="min-width:0"><div class="cc-name">${esc(c.name)}</div><div class="cc-now ${ep?"":"na"}">${esc(ep?splitT(p.title).t:"Keine Sendungsdaten")}</div></div></div>${ep?`<div class="bar"><i style="width:${pct(p)}%"></i></div>`:""}</div>`};
@@ -1534,23 +1566,64 @@ function renderSResults(){
    ||`<p class="sres-note">Keine Treffer für „${esc(S.query)}“. Gesucht wird in Kanalnamen, laufenden Sendungen, Filmen und Serien.</p>`;
 }
 
+/* ---------- Hilfe: Playlist einrichten (neutral, ohne Links, Bauplan 2c/5) ---------- */
+const HELP=[["Was du brauchst", "p", ["Eine M3U-Adresse (endet oft auf .m3u oder .m3u8) oder die Login-Daten deines Anbieters: Server, Benutzername und Passwort. Optional eine Adresse für den TV-Guide (XMLTV)."]], ["Woher die Playlist kommt", "ul", ["Von deinem TV- oder Internetanbieter, wenn er sie im Kundenkonto anbietet.", "Von einem Gerät in deinem Heimnetz, das Sender über Kabel, Satellit oder Antenne empfängt und als Playlist bereitstellt (z. B. Router oder Empfänger mit Netzwerk-TV-Funktion).", "Von deinem eigenen Medienserver mit eigenen Aufnahmen und Videos."]], ["So fügst du sie hinzu", "p", ["Einstellungen › Playlist hinzufügen. Am einfachsten per QR-Code: iPhone-Kamera auf den Code richten und die Daten auf dem iPhone eingeben. Alternativ M3U-Adresse oder Anbieter-Login direkt mit der Fernbedienung eingeben."]], ["Wenn etwas nicht klappt", "ul2", [["Playlist lädt nicht:", "Adresse und Zugangsdaten prüfen. Manche Anbieter verlangen einen bestimmten User-Agent (Erweitert › HTTP-Header)."], ["Keine Sendungsdaten:", "In der Playlist die TV-Guide-Quelle einstellen (Automatisch, eigene Adresse oder Datei)."], ["Bild ruckelt oder flimmert:", "Player-Engine und Deinterlacing auf «Automatisch» stellen."]]], ["Gut zu wissen", "p", ["Onda enthält keine Sender und empfiehlt keine Anbieter. Nutze nur Inhalte, für die du ein Nutzungsrecht hast. Bei Fragen zu Sendern oder Zugangsdaten hilft der Kundendienst deines Anbieters."]]],HELP_INTRO="Onda ist ein Player. Sender, Filme und Serien kommen aus der Playlist deines Anbieters – Onda selbst liefert keine Inhalte.";
+function helpBody(s){if(s[1]==="p")return `<p>${esc(s[2][0])}</p>`;if(s[1]==="ul")return `<ul>${s[2].map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;return `<ul>${s[2].map(x=>`<li><b>${esc(x[0])}</b> ${esc(x[1])}</li>`).join("")}</ul>`}
+function renderHelp(){$("#ov-help").innerHTML=`<div class="mbox hbox"><h2>Playlist einrichten</h2><p class="qr-note" style="margin:0 0 18px">${esc(HELP_INTRO)}</p><div class="sy hsy">${HELP.map((h,i)=>`<div class="hcard f" data-act="hnop:${i}"><h3>${esc(h[0])}</h3>${helpBody(h)}</div>`).join("")}<div class="hact"><button tabindex="-1" class="btn primary f" data-act="helpadd">＋ Playlist hinzufügen</button></div></div></div>`}
 /* ---------- Einstellungen ---------- */
+const setRow=k=>{const it=itOf(k);return `<div class="srow f" data-act="set:${k}"><span>${esc(it.l)}</span><span class="val">${esc(it.o[sv(k)])}<i class="chev">›</i></span></div>`};
+const actRow=(act,l,val,hint)=>`<div class="srow f" data-act="${act}"><span>${esc(l)}${hint?`<span class="hint">${esc(hint)}</span>`:""}</span><span class="val">${val?esc(val):""}<i class="chev">›</i></span></div>`;
+const secH=(t,body,foot)=>`<div class="sec"><h4>${esc(t)}</h4>${body}${foot?`<p class="sfoot">${esc(foot)}</p>`:""}</div>`;
+const APPICON=`<div class="appicon"><div class="ai-in"><svg class="onda-logo" width="96" height="96" viewBox="2 4 44 44" aria-hidden="true"><defs><linearGradient id="owv5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv5)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv5)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda<span class="wm-tv">TV</span></span></div></div>`;
 function renderSettings(){
-  {const ap=S.playlists.find(p=>p.active);S.set.epgsrc=ap&&ap.epgMode?ap.epgMode:0}
-  $("#v-settings").innerHTML=`<div class="settings">
-   <div class="sy" data-sec="setL"><div class="sec"><h4>Playlists</h4>${S.playlists.map((p,i)=>`<div class="srow plrow f" data-act="pl:${i}"><span><span class="pl-name">${esc(p.name)}</span><span class="pl-info">${esc(p.type)} · ${esc(p.info)}</span></span><span class="dot ${p.active?"":"off"}"></span></div>`).join("")}
-    <div class="srow f" data-act="addpl"><span>＋ Playlist hinzufügen</span><span class="val">QR · M3U · Xtream</span></div>${REAL?`<div class="srow f" data-act="set:refresh"><span>Automatisch aktualisieren<span class="hint">Playlist und TV-Guide · zuletzt ${ageTxt(PLTS)}</span></span><span class="val">${esc(itOf("refresh").o[sv("refresh")])}<i class="chev">›</i></span></div>`:""}</div>
-    <div class="sec"><h4>Cover &amp; Infos</h4>${metaRowsTV()}</div>
-    <div class="sec"><h4>Senderliste</h4><div class="srow f" data-act="editlist"><span>Senderliste bearbeiten<span class="hint">Gruppen und Sender ausblenden oder sortieren</span></span><span class="val">${CH.filter(chVisible).length} von ${CH.length}<i class="chev">›</i></span></div></div>
-    <div class="sec"><h4>Über Onda</h4><div class="about"><div class="appicon"><div class="ai-in"><svg class="onda-logo" width="96" height="96" viewBox="2 4 44 44" aria-hidden="true"><defs><linearGradient id="owv5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9fd4ff"/><stop offset="1" stop-color="#3b6cff"/></linearGradient></defs><path d="M5 20c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv5)" stroke-width="5.5" stroke-linecap="round"/><path d="M5 32c6-8 13-8 19 0s13 8 19 0" fill="none" stroke="url(#owv5)" stroke-width="5.5" stroke-linecap="round" opacity=".55"/></svg><span class="wordmark">onda<span class="wm-tv">TV</span></span></div></div><div class="about-txt"><b>Onda – IPTV Player</b>App-Symbol-Entwurf für den Apple-TV-Homescreen</div></div><div class="srow"><span>Version</span><span class="val">Prototyp 1.2 · Testdaten</span></div></div></div>
-   <div class="sy">${SETTINGS.filter(sec=>!sec.hide).map(sec=>`<div class="sec"><h4>${sec.sec}</h4>${sec.items.map(it=>`<div class="srow f" data-act="set:${it.k}"><span>${esc(it.l)}${it.h?`<span class="hint">${esc(hv(it))}</span>`:""}</span><span class="val">${esc(it.o[sv(it.k)])}<i class="chev">›</i></span></div>`).join("")}</div>`).join("")}</div></div>`;
+  const L=S.lock,ng=L.groups.length;
+  const pls=S.playlists.map((p,i)=>`<div class="srow plrow f" data-act="pl:${i}" ${i===0?"data-entry":""}><span><span class="pl-name">${esc(p.name)}</span><span class="pl-info">${esc(p.type)} · ${esc(p.info)}</span></span><span class="val">${p.active?'<span class="pl-on">Aktiv</span>':""}<i class="chev">›</i></span></div>`).join("");
+  $("#v-settings").innerHTML=`<div class="settings"><div class="set-side">${APPICON}<div class="set-ver">Onda · Prototyp 1.6</div><button tabindex="-1" class="btn f set-legal" data-act="aboutmenu" data-sec="setS">Über Onda &amp; Rechtliches ›</button></div>
+   <div class="set-list sy" data-sec="setL">
+    ${secH("Playlists",pls+actRow("addpl","＋ Playlist hinzufügen","QR · M3U · Login")+actRow("help","Hilfe: Playlist einrichten"),"Playlist wählen, um Zugangsdaten, TV-Guide und Aktualisierung zu ändern.")}
+    ${secH("Live TV",actRow("editlist","Senderliste bearbeiten",CH.filter(chVisible).length+" von "+CH.length)+setRow("zap")+setRow("start"))}
+    ${secH("Wiedergabe",setRow("resume")+setRow("alang")+setRow("slang"),"Ton und Untertitel lassen sich im Player für die laufende Wiedergabe ändern.")}
+    ${secH("Video & Audio",setRow("matchfps")+setRow("matchdr")+setRow("aspect")+setRow("passthru"),"Bildwiederholrate und Dynamikbereich wirken nur, wenn am Apple TV unter «Video und Audio» die Option «Inhalt anpassen» aktiv ist.")}
+    ${secH("Darstellung",setRow("theme")+setRow("lang")+setRow("osd"))}
+    ${secH("Kindersicherung",`<div class="srow f" data-act="lockt"><span>Kindersicherung</span><span class="val">${L.on?"Ein":"Aus"}<i class="chev">›</i></span></div>${L.on?actRow("lockg","Gesperrte Gruppen",ng===1?"1 Gruppe":ng+" Gruppen")+actRow("lockpin","PIN ändern"):""}`,L.on?"Gesperrte Gruppen sind ohne PIN unsichtbar, auch in Suche, TV-Guide und auf der Startseite.":"Sperrt Sendergruppen mit einer vierstelligen PIN. Ein Hilfsmittel, kein vollständiger Schutz – ersetzt nicht die Bildschirmzeit von Apple.")}
+    ${secH("Erweitert",setRow("engine")+setRow("hwdec")+setRow("buffer")+setRow("deint"),"Nur ändern, wenn ein Sender nicht sauber läuft. «Automatisch» wählt für jeden Stream die passende Einstellung.")}
+    ${secH("Cover & Infos (Prototyp)",metaRowsTV(),"In der fertigen App sind die Quellen fest eingebaut, hier ist nichts einzustellen.")}
+    ${secH("Über Onda & Rechtliches",actRow("about:info","Onda enthält keine Inhalte")+actRow("about:imprint","Impressum")+actRow("about:privacy","Datenschutzerklärung")+actRow("about:terms","Nutzungsbedingungen")+actRow("about:rights","Hinweise für Rechteinhaber")+actRow("about:oss","Open-Source-Lizenzen")+actRow("about:credits","Quellenangaben und Marken")+`<div class="srow f" data-act="noop"><span>Version</span><span class="val">Prototyp 1.6 · Testdaten</span></div>`)}
+   </div></div>`;
 }
+const ABOUT={"info": ["Onda enthält keine Inhalte", ["Onda ist ein Player für deine eigenen TV-Abos und Playlists. Onda liefert keine Sender, Filme oder Serien, vermittelt keine Anbieter und ist mit keinem Sender oder Anbieter verbunden.", "Nutze Onda nur mit Inhalten, für die du ein Nutzungsrecht hast, zum Beispiel mit der Playlist deines TV-Anbieters."]], "imprint": ["Impressum", [["h", "Anbieter der App"], "[Vorname Nachname] · [Einzelunternehmen bzw. Firma, falls eingetragen]", "[Strasse Nr.] · [PLZ Ort] · Schweiz", ["h", "Kontakt"], "E-Mail: [kontakt@…] · Telefon: [+41 …]", ["h", "Register und Steuer"], "UID/MWST-Nr.: [CHE-… oder «keine»] · Handelsregister: [Eintrag oder «nicht eingetragen»]", ["h", "Inhalte"], "Onda enthält keine redaktionellen Inhalte. Sender, Sendungen, Filme und Serien stammen vom Anbieter, den du selbst einrichtest.", "Dieselben Angaben stehen im App Store (Händlerangaben nach dem EU-Gesetz über digitale Dienste)."]], "privacy": ["Datenschutzerklärung", ["Entwurf, Stand [Datum]. Gilt für die Apps Onda für Apple TV, iPhone und iPad.", ["h", "1. Verantwortlich"], "Verantwortlich ist der im Impressum genannte Anbieter. Datenschutz-Anfragen: [datenschutz@…].", ["h", "2. Was auf deinem Gerät bleibt"], "Onda hat kein Benutzerkonto. Playlists, Zugangsdaten, Senderliste, Favoriten, Wiedergabe-Fortschritt, Einstellungen und die PIN der Kindersicherung werden nur auf deinem Gerät gespeichert, Zugangsdaten und PIN im Schlüsselbund. Wir haben darauf keinen Zugriff.", ["h", "3. Dein TV-Anbieter"], "Onda lädt Playlist, TV-Guide und Streams direkt von dem Anbieter, den du einrichtest. Dabei erhält dieser deine IP-Adresse und deine Zugangsdaten. Für diese Bearbeitung ist dein Anbieter verantwortlich.", ["h", "4. Cover und Infos"], "Für Titel deiner Playlist fragt Onda Cover, Handlung und Besetzung über einen Server von Onda ab ([Hoster], [Standort]). Übermittelt werden Titel, Erscheinungsjahr und Datenbank-IDs sowie technisch bedingt deine IP-Adresse. Playlist- und Stream-Adressen, Zugangsdaten und Sendernamen werden nie übermittelt. Der Server legt keine Profile an; technische Protokolle werden nach höchstens [7] Tagen gelöscht.", "Bilder werden direkt von TMDB und TheTVDB geladen. Dabei erhalten diese deine IP-Adresse.", ["h", "5. Trailer"], "Trailer werden nur auf deinen Wunsch von YouTube (Google) im erweiterten Datenschutzmodus geladen, entweder nach Tippen auf «Trailer» oder wenn du die Trailer-Vorschau einschaltest. Dabei erhält Google deine IP-Adresse; es gelten die Bestimmungen von Google.", ["h", "6. iCloud"], "Wenn du iCloud-Sync einschaltest, werden Favoriten, Einstellungen, Senderliste und Fortschritt in deinem iCloud-Account bei Apple gespeichert. Es gelten die Bestimmungen von Apple.", ["h", "7. App Store, Käufe, Absturzberichte"], "Kauf und Abo laufen über Apple; wir erhalten keine Zahlungsdaten. Absturz- und Nutzungsstatistiken erhalten wir nur, wenn du das Teilen mit App-Entwicklern in den Systemeinstellungen erlaubt hast, und dann ohne Personenbezug.", ["h", "8. Keine Werbung, kein Tracking"], "Onda enthält keine Werbung, kein Tracking und keine Analyse-Werkzeuge von Dritten.", ["h", "9. Bekanntgabe ins Ausland"], "TMDB, TheTVDB, Google und Apple können Daten auch in den USA bearbeiten. [Grundlage je Empfänger vor dem Start ergänzen: Angemessenheitsentscheid bzw. Data Privacy Framework oder Standardvertragsklauseln.]", ["h", "10. Rechtsgrundlagen (EU)"], "Für Personen in der EU: Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO) für die Funktionen der App, berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO) für Betrieb und Sicherheit des Servers, Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) für die Trailer-Vorschau.", ["h", "11. Deine Rechte"], "Du kannst Auskunft, Berichtigung, Löschung, Einschränkung und Datenherausgabe verlangen und der Bearbeitung widersprechen. Beschwerden: beim Eidgenössischen Datenschutz- und Öffentlichkeitsbeauftragten (EDÖB) oder bei der Datenschutzbehörde deines Wohnsitzstaates. Da wir zu dir kaum Daten haben, lautet die Antwort oft, dass keine Daten vorliegen.", ["h", "12. Änderungen"], "Wir passen diese Erklärung an, wenn sich die App ändert. Massgebend ist die Fassung in der jeweils installierten Version."]], "terms": ["Nutzungsbedingungen", ["Entwurf, Stand [Datum]. Ergänzt die Standard-Lizenzvereinbarung (EULA) von Apple.", ["h", "1. Was Onda ist"], "Onda ist ein Wiedergabeprogramm. Onda enthält, vermittelt oder empfiehlt keine Inhalte, Sender oder Anbieter.", ["h", "2. Deine Verantwortung"], "Du darfst Onda nur mit Inhalten nutzen, für die du die nötigen Rechte hast, zum Beispiel über ein Abo deines Anbieters. Für die Rechtmässigkeit der Quellen, die du einrichtest, bist du selbst verantwortlich.", ["h", "3. Inhalte Dritter"], "Programm, Verfügbarkeit, Qualität und Programmdaten stammen von deinem Anbieter. Onda hat darauf keinen Einfluss.", ["h", "4. Kindersicherung"], "Die Kindersicherung ist eine Hilfe, kein vollständiger Schutz. Sie ersetzt weder die Bildschirmzeit von Apple noch die Aufsicht.", ["h", "5. Haftung"], "Die Haftung ist ausgeschlossen, soweit das Gesetz dies zulässt. Unberührt bleiben die Haftung für Vorsatz und grobe Fahrlässigkeit, für Personenschäden sowie zwingende Rechte von Konsumentinnen und Konsumenten.", ["h", "6. Kauf und Abo"], "Kauf, Abo, Kündigung und Erstattung laufen über Apple und richten sich nach deren Bedingungen.", ["h", "7. Anwendbares Recht"], "Es gilt Schweizer Recht. Zwingende Verbraucherschutzvorschriften deines Wohnsitzstaates bleiben vorbehalten."]], "rights": ["Hinweise für Rechteinhaber", ["Onda speichert, verbreitet und verlinkt keine Inhalte. Streams werden nur auf dem Gerät der Nutzerin oder des Nutzers abgespielt, aus der Quelle, die sie selbst eingeben. Onda kennt diese Quellen nicht.", "Hinweise, etwa auf Werbung Dritter mit Onda für unerlaubte Angebote oder auf Nachahmungen der App, bitte an: [rechte@…].", "Bitte angeben: Rechteinhaber, betroffenes Werk oder Kennzeichen, Beschreibung und Fundstelle, Kontakt. Wir antworten innert [5] Arbeitstagen."]], "oss": ["Open-Source-Lizenzen", ["Onda nutzt Open-Source-Software. Die vollständigen Lizenztexte stehen in der fertigen App hier.", ["h", "Komponenten"], "FFmpeg – GNU LGPL 2.1 oder später", "[Player-Engine gemäss Player-Test, z. B. MPVKit oder VLCKit] – GNU LGPL 2.1", "QR-Code-Erzeugung – MIT-Lizenz", ["h", "Quellcode"], "Die LGPL-Bibliotheken sind als eigene Frameworks eingebunden. Ihren Quellcode sowie die Objektdateien von Onda, die zum erneuten Verlinken mit geänderten Bibliotheken nötig sind, erhältst du auf Anfrage an [oss@…]. Dieses Angebot gilt mindestens drei Jahre ab der letzten Auslieferung der jeweiligen Version."]], "credits": ["Quellenangaben und Marken", [["logo", "TMDB"], "This product uses the TMDB API but is not endorsed or certified by TMDB.", "Serien-Infos: TheTVDB. [Vorgaben zur Quellenangabe von TheTVDB vor dem Start prüfen.]", "Cover und Infos kommen zuerst von deinem Anbieter, ergänzt durch TheTVDB und TMDB.", ["h", "Marken"], "Apple, Apple TV, iPhone, iPad, iCloud und AirPlay sind Marken der Apple Inc. Dolby, Dolby Digital und Dolby Vision sind Marken von Dolby Laboratories. YouTube ist eine Marke von Google LLC.", "Onda ist mit diesen Unternehmen nicht verbunden und wird von ihnen nicht unterstützt."]]};
+const ABOUT_ORDER=[["info","Onda enthält keine Inhalte"],["imprint","Impressum"],["privacy","Datenschutzerklärung"],["terms","Nutzungsbedingungen"],["rights","Hinweise für Rechteinhaber"],["oss","Open-Source-Lizenzen"],["credits","Quellenangaben und Marken"]];
+const ABOUT_EN_NOTE="Rechtstexte liegen als Entwurf auf Deutsch vor.";
+function aboutBody(ps){return ps.map(p=>Array.isArray(p)?(p[0]==="h"?`<h3 class="ab-h">${esc(p[1])}</h3>`:`<div class="ab-logo">${esc(p[1])}</div>`):`<p class="foot ab-p" data-act="noop">${esc(p)}</p>`).join("")}
+function openAbout(k){const[t,ps]=ABOUT[k];openSheet(`<h2 class="sh-t">${esc(t)}</h2>${isEN()&&k!=="info"?`<p class="foot ab-p" data-act="noop">${esc(ABOUT_EN_NOTE)}</p>`:""}${aboutBody(ps)}<div class="btns"><button class="btn primary" data-act="sclose">Fertig</button></div>`,"","about");refocus("#ov-sheet .ab-p")}
+/* ---------- Kindersicherung: PIN ---------- */
+let PIN={buf:"",cb:null,mode:"",first:"",title:"",msg:""};
+function openPin(mode,cb,title){PIN={buf:"",cb,mode,first:"",title:title||(mode==="set"?"Neue PIN festlegen":"PIN eingeben"),msg:mode==="set"?"Vier Ziffern, mit der Fernbedienung oder den Zifferntasten":"PIN der Kindersicherung"};
+  $("#ov-pin").innerHTML=`<div class="mbox pinbox"><h2 id="pinT"></h2><p class="qr-note" id="pinM"></p><div class="pin-dots" id="pinD"></div><div class="pin-pad">${["1","2","3","4","5","6","7","8","9","del","0","x"].map(k=>`<button tabindex="-1" class="pin-k f ${k==="x"?"pin-x":""}" data-act="pin:${k}">${k==="del"?"⌫":k==="x"?"Abbrechen":k}</button>`).join("")}</div></div>`;
+  updPin();openOverlay("ov-pin");refocus('#ov-pin [data-act="pin:5"]')}
+function updPin(){$("#pinT").textContent=PIN.title;$("#pinM").textContent=PIN.msg;$("#pinD").innerHTML=[0,1,2,3].map(i=>`<i class="${i<PIN.buf.length?"on":""}"></i>`).join("");trNode($("#ov-pin"))}
+function pinKey(k){
+  if(k==="x"){closeOverlay();return}
+  if(k==="del"){PIN.buf=PIN.buf.slice(0,-1);updPin();return}
+  if(PIN.buf.length>=4)return;PIN.buf+=k;updPin();if(PIN.buf.length<4)return;
+  const v=PIN.buf;
+  setTimeout(()=>{
+    if(PIN.mode==="set"){
+      if(!PIN.first){PIN.first=v;PIN.buf="";PIN.title="PIN bestätigen";PIN.msg="Zur Bestätigung nochmals eingeben";updPin();return}
+      if(PIN.first!==v){PIN.first="";PIN.buf="";PIN.title="Neue PIN festlegen";PIN.msg="Die PINs stimmen nicht überein. Bitte neu eingeben.";updPin();return}
+    }else if(v!==S.lock.pin){PIN.buf="";PIN.msg="Falsche PIN. Bitte nochmals versuchen.";updPin();return}
+    const cb=PIN.cb;closeOverlay();if(cb)cb(v)},180);
+}
+const askPin=cb=>{if(!S.lock.pin)return cb();openPin("check",cb)};
+function openLockGroups(){const gs=orderedGroups(),L=S.lock;
+  openSheet(`<h2 class="sh-t">Gesperrte Gruppen</h2><p class="foot" style="margin-top:0">Gesperrte Gruppen erscheinen erst nach Eingabe der PIN, bis Onda beendet wird.</p><div class="glist2">${gs.map(g=>`<button class="grow" data-act="lgt:${g.id}"><b>${esc(g.name)}</b><span class="gcnt">${L.groups.includes(g.id)?"🔒 Gesperrt":"Frei"}</span></button>`).join("")}</div><div class="btns"><button class="btn primary" data-act="lgdone">Fertig</button></div>`,"","lockg")}
+function unlockGroup(){openPin("check",()=>{S.unl=true;toast("Entsperrt bis zum Beenden von Onda");R[S.tab]();refocus(`#v-${S.tab} [data-act="group:${S.group}"]`)},"Gruppe entsperren")}
 function renderForm(){
-  const t=S.formType,seg=(k,l)=>`<button tabindex="-1" class="chip f ${t===k?"sel":""}" data-act="seg:${k}">${l}</button>`;
+  const t=S.formType,seg=(k,l)=>`<button tabindex="-1" class="chip f ${t===k?"sel":""}" data-fx="seg:${k}" data-act="seg:${k}">${l}</button>`;
   let body;
   if(t==="qr"){
     body=`<div class="qr-wrap"><div class="qr-box" id="qrBox"></div>
-     <div class="qr-txt"><ol class="qr-steps"><li>iPhone-Kamera auf den Code richten</li><li>Playlist-URL oder Xtream-Zugang auf dem iPhone eingeben</li><li>Senden – Onda richtet alles automatisch ein</li></ol>
+     <div class="qr-txt"><ol class="qr-steps"><li>iPhone-Kamera auf den Code richten</li><li>Playlist-URL oder Anbieter-Login auf dem iPhone eingeben</li><li>Senden – Onda richtet alles automatisch ein</li></ol>
       <div class="qr-code">Code <b>${S.qrCode}</b></div>
       <div class="qr-status" id="qrStatus"><span class="spin sm"></span><span>Warte auf dein iPhone …</span></div>
       <p class="qr-note">iPhone und Apple TV müssen im selben WLAN sein. Die Zugangsdaten gehen direkt ans Apple TV, nicht über einen Server.</p></div></div>
@@ -1565,11 +1638,12 @@ function renderForm(){
    ${x?`<div class="field"><label for="fServer">Server</label><input id="fServer" class="finput f" placeholder="http://anbieter.example:8080"></div>
    <div class="field"><label for="fUser">Benutzername</label><input id="fUser" class="finput f"></div><div class="field"><label for="fPass">Passwort</label><input id="fPass" type="password" class="finput f"></div>`
    :`<div class="field"><label for="fUrl">Playlist-URL (.m3u / .m3u8)</label><input id="fUrl" class="finput f" placeholder="https://…/playlist.m3u"></div><div class="field"><label for="fEpg">EPG-URL (XMLTV, optional)</label><input id="fEpg" class="finput f" placeholder="https://…/epg.xml.gz"></div>`}
-   <div class="field"><label for="fUa">User-Agent (optional)</label><input id="fUa" class="finput f" placeholder="Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt"></div>
+   <div class="btns" style="margin:4px 0 12px"><button tabindex="-1" class="btn f" data-act="fadv">Erweitert (HTTP-Header) ›</button></div>
+   <div id="fAdv" hidden><div class="field"><label for="fUa">User-Agent (optional)</label><input id="fUa" class="finput f" placeholder="Standard: Onda/1.0 – nur ändern, wenn der Anbieter es verlangt"></div></div>
    <div class="btns"><button tabindex="-1" class="btn primary f" data-act="loadpl">Laden</button><button tabindex="-1" class="btn f" data-act="savepl">Nur speichern</button><button tabindex="-1" class="btn f" data-act="close">Abbrechen</button></div>`;
   }
-  $("#ov-form").innerHTML=`<div class="mbox"><h2>Playlist hinzufügen</h2><p class="qr-note" style="margin:0 0 18px">Zugangsdaten bleiben auf diesem Gerät. Im Prototyp klappt direktes Laden nur bei https-Anbietern, sonst über «Datei».</p>
-   <div class="seg">${seg("qr","Mit iPhone (QR-Code)")}${seg("m3u","M3U-URL")}${seg("xtream","Xtream Codes")}${seg("file","Datei")}</div>${body}</div>`;
+  $("#ov-form").innerHTML=`<div class="mbox"><h2>Playlist hinzufügen</h2><p class="qr-note" style="margin:0 0 18px">Füge die Playlist deines TV-Anbieters hinzu. Zugangsdaten bleiben auf diesem Gerät. Im Prototyp klappt direktes Laden nur bei https-Anbietern, sonst über «Datei».</p><div class="helplnk"><button tabindex="-1" class="chip f" data-act="help">Wo bekomme ich eine Playlist? ›</button></div>
+   <div class="seg">${seg("qr","Mit iPhone (QR-Code)")}${seg("m3u","M3U-URL")}${seg("xtream","Anbieter-Login")}${seg("file","Datei")}</div>${body}</div>`;
   if(t==="qr")drawQR($("#qrBox"),"http://192.168.1.42:8080/setup?code="+S.qrCode);
 }
 function drawQR(el,text){
@@ -1603,7 +1677,7 @@ const fpsTxt=f=>Number.isInteger(f)?String(f):dec(f.toFixed(3));
 function analyse(){
   const s=srcOf(),eSet=sv("engine"),engine=eSet===0?(s.hls?"AVPlayer":"VLC"):ENG[eSet];
   const unsupported=engine==="AVPlayer"&&!s.hls&&!/MP4/.test(s.cont);
-  const dSet=sv("deint");let deint="—",outFps=s.fps,scanOut=s.scan;
+  const dSet=pv("deint");let deint="—",outFps=s.fps,scanOut=s.scan;
   if(s.scan==="i"){
     if(engine==="AVPlayer"){deint="System (nicht einstellbar)";outFps=s.fps*2;scanOut="p"}
     else{deint=["Yadif 2x (automatisch)","Aus","Verwerfen","Überblenden","Bob","Yadif","Yadif 2x"][dSet];
@@ -1637,7 +1711,7 @@ function statsHTML(){
   <div class="ps-sec"><h5>Fernseher</h5>
    ${row("Bildwiederholrate",`${fpsTxt(a.hz)} Hz${a.match?" (angepasst)":" (fest)"}`,a.judder?"bad":"good")}
    ${a.judder?`<p class="ps-warn">${fpsTxt(a.outFps)} fps auf 60 Hz: ungleichmässige Bewegungen. „Bildwiederholrate anpassen“ einschalten.</p>`:""}
-   ${row("Bildformat",["Original","Füllen","Zoom"][sv("aspect")])}</div>
+   ${row("Bildformat",["Original","Füllen","Zoom"][pv("aspect")])}</div>
   <div class="ps-sec"><h5>Audio</h5>
    ${row("Format",a.audio)}
    ${row("Ausgabe",/AC-3/.test(a.audio)?(sv("passthru")?"Decodiert (PCM)":"Dolby Digital (Bitstream)"):"PCM")}</div>
@@ -1671,13 +1745,13 @@ function pkDescHTML(it,i){
   if(it.pc)return `<span class="pk-pro">+ ${esc(it.pc[i][0])}</span><span class="pk-con">− ${esc(it.pc[i][1])}</span>`;
   const h=Array.isArray(it.h)?it.h[i]:"";return h?`<span>${esc(h)}</span>`:"";
 }
-function openPicker(k){
-  const it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===k),cur=sv(k),sec=SETTINGS.find(s=>s.items.includes(it)).sec,hasDesc=it.pc||Array.isArray(it.h);
+function openPicker(k,po){
+  po=po||{};const it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===k),cur=po.cur!=null?po.cur:sv(k),pa=po.act||"pick",sec=SETTINGS.find(s=>s.items.includes(it)).sec,hasDesc=it.pc||Array.isArray(it.h);
   $("#ov-pick").innerHTML=`<div class="pk-box"><div class="eyebrow">${esc(sec)}</div><h2>${esc(it.l)}</h2>
-   <div class="pk-list">${it.o.map((o,i)=>`<div class="pk-opt f" data-fx="pkd:${k}:${i}" data-act="pick:${k}:${i}"><span class="pk-check">${i===cur?"✓":""}</span><b>${esc(o)}</b>${it.rec===i?'<em class="pk-rec">Empfohlen</em>':""}${it.q&&it.q[i]?`<span class="pk-q">${[1,2,3,4,5].map(n=>`<i class="${n<=it.q[i]?"on":""}"></i>`).join("")}</span>`:""}</div>`).join("")}</div>
+   <div class="pk-list sy">${it.o.map((o,i)=>`<div class="pk-opt f" data-fx="pkd:${k}:${i}" data-act="${pa}:${k}:${i}"><span class="pk-check">${i===cur?"✓":""}</span><b>${esc(o)}</b>${it.rec===i?'<em class="pk-rec">Empfohlen</em>':""}${it.q&&it.q[i]?`<span class="pk-q">${[1,2,3,4,5].map(n=>`<i class="${n<=it.q[i]?"on":""}"></i>`).join("")}</span>`:""}</div>`).join("")}</div>
    ${hasDesc?`<div class="pk-desc" id="pkDesc">${pkDescHTML(it,cur)}</div>`:""}
    ${it.pc?'<div class="pk-legend">Von schlecht nach gut · nur für Sender mit Halbbildern (1080i, 576i)</div>':""}</div>`;
-  openOverlay("ov-pick");refocus(`#ov-pick [data-act="pick:${k}:${cur}"]`);
+  openOverlay("ov-pick");refocus(`#ov-pick [data-act="${pa}:${k}:${cur}"]`);
 }
 
 /* ---------- Senderliste bearbeiten ---------- */
@@ -1716,11 +1790,13 @@ function closeEditor(){persist();closeOverlay();renderSettings();refocus('[data-
 /* ---------- Player ---------- */
 const P={type:null,ch:null,list:[],vod:null,pos:0,paused:false,hue:210,raf:0,iv:0,hideT:0,shift:0};
 function openLive(id,list){
-  P.keepFrame=false;P.type="live";P.list=list&&list.find(c=>c.id===+id)?list:chOf("all");P.ch=+id;P.paused=false;P.shift=0;
+  if(P.ch&&P.ch!==+id)P.prevCh=P.ch;P.keepFrame=false;P.type="live";P.list=list&&list.find(c=>c.id===+id)?list:chOf("all");P.ch=+id;P.paused=false;P.shift=0;
   S.recent=[+id,...S.recent.filter(x=>x!==+id)].slice(0,8);persistSoon();
-  startPlayer();startTune();
+  prefAV();startPlayer();startTune();
 }
-function openVod(v){P.type="vod";P.vod=v;P.pos=v.pos||0;P.paused=false;startPlayer()}
+function openVod(v){P.type="vod";P.vod=v;P.pos=v.pos||0;P.paused=false;prefAV();startPlayer()}
+function prefAV(){P.ov={};const a=sv("alang");P.aPref=a===0?(isEN()?"en":"de"):["","de","en","fr","it","orig"][a];P.sPref=[null,"forced","de","en","fr","it"][sv("slang")]}
+const pv=k=>P.ov&&P.ov[k]!=null?P.ov[k]:sv(k);
 function startPlayer(){
   if(!OV.includes("ov-player"))openOverlay("ov-player");
   ST.drop=0;ST.buf=0;updPlayer();showInfo();anim();toggleStats(false);updOsd();
@@ -1735,7 +1811,7 @@ function updPlayer(){
     info.innerHTML=`<div class="pi-row">${logo(c,"lg")}<div class="pi-main"><div class="pi-ch">${P.shift||P.paused?`<span class="livebadge ts"><span id="tsBadge">−${mmss(P.shift)}</span></span>${P.paused?'<span class="pz">❚❚ Pausiert</span>':""}`:""}${false?c.num+" · ":""}${esc(c.name)}${S.favCh.has(c.id)?'<span class="star">★</span>':""}</div>
      <div class="pi-title">${esc(p.title)}</div><div class="pi-time"><span>${fmt(p.start)}</span><span>${fmt(p.end)}</span></div><div class="bar"><i style="width:${pct(p)}%"></i></div>
      ${nx?`<div class="pi-next">Danach ${fmt(nx.start)} <b>${esc(nx.title)}</b></div>`:""}
-     <div class="pi-q">${sv("osd")!==2?qBadges(analyse()):""}${P.shift&&!P.paused?'<span class="qb golive">▶ Zurück zu Live</span>':""}${P.sleep?`<span class="qb">☾ ${esc(pmData().sleep.o[P.sleep])}</span>`:""}${pmData().sub.cur()?'<span class="qb">CC</span>':""}</div></div></div>`;
+     <div class="pi-q">${sv("osd")!==2?qBadges(analyse()):""}${P.shift&&!P.paused?'<span class="qb golive">▶ Zurück zu Live</span>':""}${P.sleep?`<span class="qb">☾ ${esc(pmData().sleep.o[P.sleep])}</span>`:""}${pmData().sub.cur()?'<span class="qb">CC</span>':""}</div><div class="pi-hints">◀ Senderliste · ▶ Menü${P.prevCh&&P.prevCh!==P.ch?" · 2× OK: vorheriger Sender":""}</div></div></div>`;
   }else{
     const v=P.vod;P.hue=v.hue;$("#p-markname").textContent=v.title;num.textContent="";
     info.innerHTML=`<div class="pi-row"><div class="p-pause" id="pPause">${P.paused?"▶":"❚❚"}</div><div class="pi-main"><div class="pi-ch">${esc(v.sub)}</div><div class="pi-title">${esc(v.title)}</div>
@@ -1772,7 +1848,7 @@ function pmData(){
     sub:(()=>{const k=live?[null,"de","sdh"]:[null,"de","en","forced"],o=live?["Aus","Deutsch (Teletext)","Deutsch für Hörgeschädigte"]:["Aus","Deutsch","Englisch","Deutsch (erzwungen)"];
       return{l:"Untertitel",o,cur:()=>Math.max(0,k.indexOf(P.sPref)),set:i=>{P.sPref=k[i]}}})(),
     pic:{l:"Bild",groups:[["Bildformat","aspect"],["Deinterlacing","deint"]]},
-    av:{l:"Ton & Untertitel"},more:{l:"Mehr"},
+    av:{l:"Ton & Untertitel"},more:{l:"Mehr"},info:{l:"Info"},
     sleep:{l:"Sleep-Timer",o:["Aus","15 Min.","30 Min.","60 Min.","90 Min.",...(live?["Ende der Sendung"]:[])],cur:()=>P.sleep,set:i=>{P.sleep=i;setSleep(i)}},
     info:{l:"Info"}
   };
@@ -1787,14 +1863,16 @@ function setSleep(i){
 function openPMenu(tab){P.mtab=tab||P.mtab||"av";renderPMenu();openOverlay("p-menu");$("#p-info").classList.add("hide");refocus(`#p-menu [data-act="pmt:${P.mtab}"]`)}
 function renderPMenu(){
   const D=pmData(),t=P.mtab,el=$("#p-menu");
-  const tabs=["av","pic","more"].map(k=>`<button tabindex="-1" class="chip f ${k===t?"sel":""}" data-fx="pmt:${k}" data-act="pmt:${k}">${esc(D[k].l)}</button>`).join("");
+  const tabs=["av","pic","more","info"].map(k=>`<button tabindex="-1" class="chip f ${k===t?"sel":""}" data-fx="pmt:${k}" data-act="pmt:${k}">${esc(D[k].l)}</button>`).join("");
   const opts=k=>{const d=D[k];return d.o.map((o,i)=>`<div class="pk-opt f" data-act="pmo:${k}:${i}"><span class="pk-check">${d.cur()===i?"✓":""}</span><b>${esc(o)}</b></div>`).join("")};
   let body="";ST.open=false;
   if(t==="av")body=`<div class="pm-h">Tonspur</div>${opts("audio")}<div class="pm-h">Untertitel</div>${opts("sub")}`;
-  else if(t==="pic"){body=D.pic.groups.map(([lab,k])=>{const it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===k);return `<div class="pm-h">${esc(lab)}</div>`+it.o.map((o,i)=>`<div class="pk-opt f" data-act="pms:${k}:${i}"><span class="pk-check">${sv(k)===i?"✓":""}</span><b>${esc(o)}</b>${it.rec===i?'<em class="pk-rec">Empfohlen</em>':""}</div>`).join("")}).join("")}
+  else if(t==="pic"){body='<p class="pm-note">Gilt nur für diese Wiedergabe. Standard: Einstellungen › Video & Audio.</p>'+D.pic.groups.map(([lab,k])=>{const it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===k);return `<div class="pm-h">${esc(lab)}</div>`+it.o.map((o,i)=>`<div class="pk-opt f" data-act="pms:${k}:${i}"><span class="pk-check">${pv(k)===i?"✓":""}</span><b>${esc(o)}</b>${it.rec===i?'<em class="pk-rec">Empfohlen</em>':""}</div>`).join("")}).join("")}
   else{ST.open=true;const pv=P.type==="live"&&P.prevCh&&P.prevCh!==P.ch?chById(P.prevCh):null;
-    body=`${pv?`<div class="pm-h">Vorheriger Sender</div><div class="pk-opt f" data-act="zapm:${pv.id}"><span class="pk-check">↩</span><b>${esc(pv.name)}</b></div>`:""}<div class="pm-h">Sleep-Timer</div>${opts("sleep")}<div class="pm-h">Stream-Details</div><div class="pm-info">${statsHTML()}</div>`}
+    body=`${pv?`<div class="pm-h">Vorheriger Sender</div><div class="pk-opt f" data-act="zapm:${pv.id}"><span class="pk-check">↩</span><b>${esc(pv.name)}</b></div>`:""}<div class="pm-h">Sleep-Timer</div>${opts("sleep")}`;ST.open=false}
+  if(t==="info"){ST.open=true;body=`<div class="pm-info">${statsHTML()}</div>`}
   el.innerHTML=`<div class="pm-tabs" data-sec="pmt">${tabs}</div><div class="pm-body sy" data-sec="pmb">${body}</div>`;
+  if(t==="info")el.querySelectorAll(".pm-info .ps-sec").forEach(x=>{x.classList.add("f");x.dataset.act="noop"});
 }
 function saveVodProgress(){saveProg()}
 
@@ -1828,7 +1906,7 @@ function openPanel(){
   const rec=S.recent.filter(id=>id!==P.ch).slice(0,3).map(chById).filter(Boolean);
   el.innerHTML=`<div class="list sy">${rec.length?`<div class="colhead">${P.prevCh&&rec[0]&&rec[0].id===P.prevCh?"Vorheriger Sender · zuletzt gesehen":"Zuletzt gesehen"}</div>${fix(rec.map(chRow).join(""))}<div class="colhead ph-gap">${esc(P.list===CH?"Alle Kanäle":gName(S.group))}</div>`:`<div class="colhead">${esc(P.list===CH?"Alle Kanäle":gName(S.group))}</div>`}${fix(P.list.map(chRow).join(""))}</div>`;
   openOverlay("p-panel");$("#p-info").classList.add("hide");
-  refocus(`#p-panel [data-act="zap:${P.ch}"]`);
+  refocus(`#p-panel [data-act="zap:${P.prevCh&&P.prevCh!==P.ch&&rec.some(c=>c.id===P.prevCh)?P.prevCh:P.ch}"]`);
 }
 function playerKey(k){
   if(P.type==="live"&&k==="right"){if(P.shift&&!P.paused){P.shift=0;updPlayer();showInfo();toast("Zurück zu Live");return}return openPMenu()}
@@ -1839,7 +1917,9 @@ function playerKey(k){
     if(k==="back")return closeOverlay();
     if((k==="up"||k==="down")&&sv("zap")===0)return zap(k==="up"?-1:1);
     if(k==="left")return openPanel();
-    if(k==="ok"||k==="up"||k==="down"){const h=$("#p-info").classList.contains("hide");if(h)showInfo();else{$("#p-info").classList.add("hide");$("#p-num").classList.add("hide")}}
+    const tog=()=>{const h=$("#p-info").classList.contains("hide");if(h)showInfo();else{$("#p-info").classList.add("hide");$("#p-num").classList.add("hide")}};
+    if(k==="ok"){const t=performance.now();if(P.okT&&t-P.okT<450&&P.prevCh&&P.prevCh!==P.ch){P.okT=0;clearTimeout(P.okTm);tuneTo(P.prevCh);toast("Vorheriger Sender");return}P.okT=t;clearTimeout(P.okTm);P.okTm=setTimeout(()=>{P.okT=0;tog()},320);return}
+    if(k==="up"||k==="down")tog();
   }else{
     if(k==="back")return closeOverlay();
     if(k==="ok"||k==="play"){P.paused=!P.paused;const pp=$("#pPause");if(pp)pp.textContent=P.paused?"▶":"❚❚";showInfo();return}
@@ -1857,9 +1937,9 @@ function onFx(fx,el){
   else if(t==="cell")renderEpgDetail(fx.slice(5));
   else if(t==="edgs"&&S.edG!==a&&!S.moving){S.edG=a;const keep=cur.dataset.act;renderEditor();refocus(`#ov-edit [data-act="${keep}"]`)}
   else if(t==="pmt"&&P.mtab!==a){P.mtab=a;const keep=cur;renderPMenu();refocus(`#p-menu [data-act="pmt:${a}"]`)}
+  else if(t==="seg"&&S.formType!==a){S.formType=a;renderForm();refocus(`#ov-form [data-act="seg:${a}"]`)}
   else if(t==="pkd"){const[,k,i]=fx.split(":"),it=SETTINGS.flatMap(s=>s.items).find(x=>x.k===k),d=$("#pkDesc");if(d)d.innerHTML=pkDescHTML(it,+i)}
   else if(t==="mseg"&&S.mseg!==a){S.mseg=a;$$("#v-media .mseg .chip").forEach(c=>c.classList.toggle("sel",c===el));renderMBody()}
-  else if(t==="hero"){const[,k,ix,pos]=fx.split(":"),h=$("#thero-"+k),tr=TREND[k][+ix];if(h&&h.dataset.ix!==ix){h.dataset.ix=ix;h.style.setProperty("--h",tr.hue);h.innerHTML=heroInner(tr,pos)}}
   else if(t==="eday"&&(S.epgDay||0)!==+a){S.epgDay=+a;if(S.epgDay!==0&&S.epgSlot==null)S.epgSlot=18;W0=epgW0();refreshEpgHead();renderEpgGrid();$("#epgBody").scrollTop=0}
   else if(t==="eslot"){const v=a==="null"?null:+a;if(S.epgSlot!==v||(v==null&&S.epgDay)){S.epgSlot=v;if(v==null)S.epgDay=0;W0=epgW0();refreshEpgHead();renderEpgGrid()}}
   else if(t==="egrp"&&S.group!==a){S.group=a;persist();$$('#epgChips [data-act^="egrp:"]').forEach(g=>g.classList.toggle("sel",g===el));renderEpgGrid();$("#epgBody").scrollTop=0}
@@ -1872,9 +1952,10 @@ function activate(el){
   const[t,...x]=el.dataset.act.split(":");
   switch(t){
     case"tab":if(el.closest("#tabs"))move("down");else{showTab(x[0]);setFocus($("#tabs .tab.active"),true)}break;
-    case"group":{const f=$("#chList .chrow");if(f)setFocus(f);break}
+    case"group":{if(isLockedG(S.group)){unlockGroup();break}const f=$("#chList .chrow");if(f)setFocus(f);break}
+    case"unlock":unlockGroup();break;
     case"eday":case"eslot":{const c=$$("#epgBody .cell.live")[0]||$$("#epgBody .cell")[0];if(c)setFocus(c);break}
-    case"edayt":{S.epgDay=(S.epgDay||0)?0:1;if(S.epgDay&&S.epgSlot==null)S.epgSlot=18;if(!S.epgDay&&S.epgSlot===18)S.epgSlot=null;W0=epgW0();refreshEpgHead();renderEpgGrid();$("#epgBody").scrollTop=0;break}
+    case"edayt":{S.epgDay=(S.epgDay||0)?0:1;if(S.epgDay&&S.epgSlot==null)S.epgSlot=Math.max(0,new Date().getHours()-1);if(!S.epgDay&&S.epgSlot!==20.25)S.epgSlot=null;W0=epgW0();refreshEpgHead();renderEpgGrid();$("#epgBody").scrollTop=0;break}
     case"egrp":{const c=$$("#epgBody .cell.live")[0];if(c)setFocus(c);break}
     case"play":openLive(x[0],chOf(S.group));break;
     case"playf":{const fl=chOf("fav");openLive(x[0],fl.length?fl:chOf("all"));break}
@@ -1885,8 +1966,6 @@ function activate(el){
     case"mseg":{const f=$("#mbody .f");if(f)setFocus(f);break}
     case"trendall":S.trendAll=!S.trendAll;renderMBody();refocus('#mbody [data-act="trendall"]');break;
     case"onlyavail":S.onlyAvail=!S.onlyAvail;persist();R[S.tab]();refocus(`#v-${S.tab} [data-act="onlyavail:${x[0]}"]`);break;
-    case"trend":openTrend(x[0],+x[1]);break;
-    case"watch":{const k=x[0];S.watch.has(k)?S.watch.delete(k):S.watch.add(k);persist();renderDetail();refocus('#ov-detail [data-act="watch:'+k+'"]');toast(S.watch.has(k)?"Gemerkt. Onda meldet sich, sobald der Titel in deiner Playlist auftaucht.":"Aus «Meine Liste» entfernt");break}
     case"movie":openMovie(+x[0]);break;
     case"series":openSeries(+x[0]);break;
     case"mplay":{const m=MOVIES[+x[0]],pr=S.prog[m.key];openVod({key:m.key,title:m.t,sub:"Film · "+(m.y?m.y+" · ":"")+m.g,dur:pr&&pr.dur?pr.dur:(m.d||120)*60,pos:x[1]&&pr?pr.pos:0,hue:m.hue,raw:m.raw,mi:m.i});break}
@@ -1907,26 +1986,52 @@ function activate(el){
       else if(p.start<=now)openLive(c.id,chOf(S.group));
       else{S.reminders.has(key)?S.reminders.delete(key):S.reminders.add(key);el.classList.toggle("rem",S.reminders.has(key));renderEpgDetail(key);toast(S.reminders.has(key)?"Erinnerung für „"+p.title+"“ um "+fmt(p.start)+" gesetzt":"Erinnerung entfernt")}
       break}
-    case"editlist":openEditor();break;
+    case"editlist":if(S.lock.on&&!S.unl)askPin(openEditor);else openEditor();break;
     case"edg":{const id=x[0];S.hidG.has(id)?S.hidG.delete(id):S.hidG.add(id);persist();renderEditor();refocus(`#ov-edit [data-act="edg:${id}"]`);break}
     case"edc":{const id=+x[0];S.hidC.has(id)?S.hidC.delete(id):S.hidC.add(id);persist();renderEditor();refocus(`#ov-edit [data-act="edc:${id}"]`);break}
     case"edreset":S.hidG.clear();S.hidC.clear();S.gOrder=[];S.cOrder={};persist();renderEditor();refocus('#ov-edit [data-act="edreset"]');toast("Senderliste zurückgesetzt");break;
     case"pmt":{const f=$("#p-menu .pm-body .f");if(f)setFocus(f);break}
     case"pmo":{const d=pmData()[x[0]];d.set(+x[1]);renderPMenu();refocus(`#p-menu [data-act="pmo:${x[0]}:${x[1]}"]`);if(x[0]!=="sleep")toast(d.l+": "+d.o[+x[1]]);updPlayer();break}
-    case"pms":{S.set[x[0]]=+x[1];persist();renderPMenu();refocus(`#p-menu [data-act="pms:${x[0]}:${x[1]}"]`);updOsd();updPlayer();break}
+    case"pms":{P.ov[x[0]]=+x[1];renderPMenu();refocus(`#p-menu [data-act="pms:${x[0]}:${x[1]}"]`);updOsd();updPlayer();break}
     case"zap":closeOverlay();tuneTo(+x[0]);break;
     case"zapm":closeOverlay();tuneTo(+x[0]);break;
     case"set":{if(x[0]==="epgsrc"){openPlEdit(Math.max(0,S.playlists.findIndex(p=>p.active)));break}openPicker(x[0]);break}
     case"pick":{const it=SETTINGS.flatMap(s=>s.items).find(i=>i.k===x[0]);S.set[it.k]=+x[1];persist();closeOverlay();if(it.k==="shift")CH.forEach(c=>c._s=null);
-      const row=$(`#v-settings [data-act="set:${it.k}"]`);if(row){row.querySelector(".val").textContent=it.o[sv(it.k)];const hn=row.querySelector(".hint");if(hn)hn.textContent=hv(it)}
+      const row=$(`#v-settings [data-act="set:${it.k}"]`);if(row){row.querySelector(".val").innerHTML=esc(it.o[sv(it.k)])+'<i class="chev">›</i>'}
       if(it.k==="lang"||it.k==="theme"){applyLook(true);refocus(`#v-settings [data-act="set:${it.k}"]`)}if(it.k==="start")0;toast(it.l+": "+it.o[sv(it.k)]);break}
     case"pl":openPlEdit(+x[0]);break;
+    case"about":openAbout(x[0]);break;
+    case"aboutmenu":openSheet(`<h2 class="sh-t">Über Onda &amp; Rechtliches</h2><div class="glist2">${ABOUT_ORDER.map(([k,l])=>`<button class="grow" data-act="about:${k}"><b>${esc(l)}</b><span class="gcnt">›</span></button>`).join("")}</div><p class="foot">Version: Prototyp 1.6 · Testdaten</p>`,"","aboutmenu");break;
+    case"pin":pinKey(x[0]);break;
+    case"lockt":{const L=S.lock;
+      if(L.on)askPin(()=>{L.on=false;S.unl=false;persist();renderSettings();refocus('#v-settings [data-act="lockt"]');toast("Kindersicherung aus")});
+      else if(!L.pin)openPin("set",pin=>{L.pin=pin;L.on=true;S.unl=false;persist();renderSettings();refocus('#v-settings [data-act="lockt"]');toast("Kindersicherung ein · jetzt Gruppen wählen");setTimeout(openLockGroups,400)});
+      else askPin(()=>{L.on=true;S.unl=false;persist();renderSettings();refocus('#v-settings [data-act="lockt"]');toast("Kindersicherung ein")});break}
+    case"lockg":askPin(openLockGroups);break;
+    case"lockpin":askPin(()=>openPin("set",pin=>{S.lock.pin=pin;persist();toast("PIN geändert")}));break;
+    case"lgt":{const g=x[0],L=S.lock;L.groups=L.groups.includes(g)?L.groups.filter(y=>y!==g):[...L.groups,g];persist();renderSettings();openLockGroups();refocus(`#ov-sheet [data-act="lgt:${g}"]`);break}
+    case"lgdone":closeSheet();renderSettings();refocus('#v-settings [data-act="lockg"]');break;
+    case"ppick":openPicker(x[0],{cur:plv(x[0],S.playlists[PLE]),act:"ppk"});break;
+    case"ppk":{const k=x[0],v=+x[1],it=itOf(k);peCollect();S.playlists[PLE][k]=v;if(k==="shift")CH.forEach(c=>c._s=null);persist();closeOverlay();openPlEdit(PLE);refocus(`#ov-sheet [data-act="ppick:${k}"]`);toast(it.l+": "+it.o[v]);break}
+    case"pedelok":{const p=S.playlists[PLE];closeSheet();
+      if(p.real){IDB.set("m3u",null).catch(()=>{});IDB.set("epg",null).catch(()=>{});S.playlists.splice(PLE,1);if(!S.playlists.some(q=>q.active)&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);if(REAL){backToTest();break}}
+      else{const wasA=p.active;S.playlists.splice(PLE,1);if(wasA&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists)}
+      renderSettings();refocus('#v-settings [data-act="addpl"]');toast("„"+p.name+"“ entfernt");break}
+    case"help":renderHelp();openOverlay("ov-help");refocus("#ov-help .hcard");break;
+    case"hnop":break;
+    case"helpadd":closeOverlay();if(OV.includes("ov-form"))break;
     case"addpl":S.formType="qr";S.qrCode=Array.from({length:8},(_,i)=>(i===4?"-":"")+"ABCDEFGHJKLMNPQRSTUVWXYZ23456789"[Math.random()*32|0]).join("");renderForm();openOverlay("ov-form");refocus('#ov-form [data-act="qrsim"]');break;
     case"qrsim":{const st=$("#qrStatus");if(!st)break;st.innerHTML='<span class="spin sm"></span><span>iPhone verbunden · Daten werden empfangen …</span>';
-      setTimeout(()=>{if(!OV.includes("ov-form"))return;const st2=$("#qrStatus");if(st2)st2.innerHTML='<span class="mi okc">✓</span><span>Empfangen: „Wohnzimmer“ · Xtream Codes</span>';
-        setTimeout(()=>{if(!OV.includes("ov-form"))return;S.playlists.push({name:"Wohnzimmer",type:"Xtream Codes",info:"per iPhone eingerichtet",active:false,ua:""});persist();closeOverlay();renderSettings();refocus('[data-act="addpl"]',$("#v-settings"));toast("Playlist „Wohnzimmer“ angelegt")},900)},1100);break}
-    case"seg":S.formType=x[0];renderForm();refocus(`#ov-form [data-act="seg:${x[0]}"]`);break;
-    case"savepl":{const name=($("#fName").value||"").trim()||"Neue Playlist";const ua=(($("#fUa")||{}).value||"").trim();S.playlists.push({name,type:S.formType==="xtream"?"Xtream Codes":"M3U-URL",info:ua?"User-Agent: "+ua:"nicht geladen",active:false,ua});persist();closeOverlay();renderSettings();refocus('[data-act="addpl"]',$("#v-settings"));toast("Playlist „"+name+"“ angelegt");break}
+      setTimeout(()=>{if(!OV.includes("ov-form"))return;const st2=$("#qrStatus");if(st2)st2.innerHTML='<span class="mi okc">✓</span><span>Empfangen: „Wohnzimmer“ · Anbieter-Login</span>';
+        setTimeout(()=>{if(!OV.includes("ov-form"))return;S.playlists.forEach(p=>p.active=false);S.playlists.push({name:"Wohnzimmer",type:"Anbieter-Login",info:"per iPhone eingerichtet",active:true,ua:"",server:"http://anbieter.example:8080",user:"wohnzimmer",pass:"••••",refresh:2,shift:6});persist();closeOverlay();renderSettings();refocus(`#v-settings [data-act="pl:${S.playlists.length-1}"]`);toast("„Wohnzimmer“ ist eingerichtet und aktiv")},900)},1100);break}
+    case"fadv":{const a=$("#fAdv");if(a){a.hidden=false;el.parentElement.remove();refocus("#fUa")}break}
+    case"seg":{if(S.formType!==x[0]){S.formType=x[0];renderForm();refocus(`#ov-form [data-act="seg:${x[0]}"]`)}const f=$("#ov-form .finput,#ov-form .btn.primary");if(f)setFocus(f,true);break}
+    case"savepl":{const v=id=>(($("#"+id)||{}).value||"").trim(),x2=S.formType==="xtream",name=v("fName")||"Neue Playlist",ua=v("fUa");
+      if(x2&&(!v("fServer")||!v("fUser")||!v("fPass"))){toast("Bitte Server, Benutzername und Passwort eingeben");break}
+      if(!x2&&!v("fUrl")){toast("Bitte Playlist-URL eingeben");break}
+      const np={name,type:x2?"Anbieter-Login":"M3U-URL",info:"nicht geladen",active:false,ua,refresh:2,shift:6};
+      if(x2){np.server=v("fServer");np.user=v("fUser");np.pass=v("fPass")}else{np.url=v("fUrl");if(v("fEpg")){np.epgMode=1;np.epgUrl=v("fEpg")}}
+      S.playlists.push(np);persist();closeOverlay();renderSettings();refocus(`#v-settings [data-act="pl:${S.playlists.length-1}"]`);toast("Playlist „"+name+"“ angelegt");break}
 
     case"loadpl":{const x=S.formType==="xtream",nm=($("#fName").value||"").trim();let url;
       if(x){const sv=$("#fServer").value,u=$("#fUser").value,p=$("#fPass").value;if(!sv.trim()||!u.trim()||!p.trim()){toast("Bitte Server, Benutzername und Passwort eingeben");break}url=xtreamUrl(sv,u,p)}
@@ -1939,30 +2044,31 @@ function activate(el){
     case"epgurl":{closeSheet();toast("Lade EPG …");const u=epgUrlEff();if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Der Anbieter liefert über http – bitte über die Datei laden");setTimeout(openEPGSheet,1500);break}
       fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1500)});break}
     case"pldiag":plDiag();break;
-    case"pem":{peCollect();S.playlists[PLE].epgMode=+x[0];LS.set("pl",S.playlists);persist();openPlEdit(PLE);break}
-    case"pesave":{peCollect();closeSheet();toast("Gespeichert");const pg=topPage();if(pg)pg._r();if(S.tab!=="epg")rerenderTab();break}
+    case"pem":{peCollect();S.playlists[PLE].epgMode=+x[0];LS.set("pl",S.playlists);persist();openPlEdit(PLE);refocus(`#ov-sheet [data-act="pem:${x[0]}"]`);break}
+    case"pesave":{const fv=id=>(($("#"+id)||{}).value||"").trim(),pp=S.playlists[PLE];
+      if($("#peServer")&&[fv("peServer"),fv("peUser"),fv("pePass")].some(Boolean)&&![fv("peServer"),fv("peUser"),fv("pePass")].every(Boolean)){toast("Bitte Server, Benutzername und Passwort eingeben");break}
+      if($("#peUrl")&&pp.url&&!fv("peUrl")){toast("Bitte Playlist-URL eingeben");break}
+      peCollect();closeSheet();renderSettings();refocus(`#v-settings [data-act="pl:${PLE}"]`);toast("Gespeichert");break}
     case"pesaveepg":{const p=peCollect();closeSheet();const u=p.epgMode===1?p.epgUrl:EPGURL;if(!u){toast("Keine EPG-Adresse bekannt – bitte «Eigene URL» oder «Datei» wählen");break}
       if(location.protocol==="https:"&&/^http:/i.test(u)){toast("Die Adresse nutzt http – im Browser nur über die Datei möglich");setTimeout(openEPGSheet,1400);break}
       toast("Lade EPG …");fetch(u).then(r=>{if(!r.ok)throw new Error(r.status);return r.blob()}).then(b=>importEPGBlob(b,u)).catch(()=>{toast("Direkt laden ging nicht – bitte über die Datei");setTimeout(openEPGSheet,1400)});break}
-    case"pedel":{const p=S.playlists[PLE];if(!confirm("„"+p.name+"“ entfernen?"))break;closeSheet();
-      if(p.real){IDB.set("m3u",null).catch(()=>{});IDB.set("epg",null).catch(()=>{});S.playlists.splice(PLE,1);if(!S.playlists.some(q=>q.active)&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);if(REAL){backToTest()}else{const pg=topPage();if(pg)pg._r()}}
-      else{const wasA=p.active;S.playlists.splice(PLE,1);if(wasA&&S.playlists[0])S.playlists[0].active=true;LS.set("pl",S.playlists);const pg=topPage();if(pg)pg._r()}
-      toast("Entfernt");break}
-    case"plact":{closeSheet();const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
+    case"pedel":{peCollect();const p=S.playlists[PLE];openSheet(`<h2 class="sh-t">„${esc(p.name)}“ entfernen?</h2><p class="foot" style="margin-top:0">Zugangsdaten und Einstellungen dieser Playlist werden von diesem Gerät gelöscht.</p><div class="btns"><button class="btn" data-act="pecancel">Abbrechen</button><button class="btn danger" data-act="pedelok">Entfernen</button></div>`,"","confirm");refocus(`#ov-sheet [data-act="pecancel"]`);break}
+    case"pecancel":openPlEdit(PLE);refocus('#ov-sheet [data-act="pedel"]');break;
+    case"plact":{if(OV[OV.length-1]==="ov-sheet"&&$("#peName"))peCollect();closeSheet();const pp=S.playlists[+x[0]];if(pp.real&&!REAL){try{localStorage.setItem("onda.ios.src","real")}catch(e){}S.playlists.forEach(p=>p.active=p===pp);LS.set("pl",S.playlists);toast("Lade „"+pp.name+"“ …");setTimeout(()=>location.reload(),600);break}
       if(!pp.real&&REAL){backToTest();break}
-      S.playlists.forEach((p,i)=>p.active=i===+x[0]);persist();refreshTop();toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
+      S.playlists.forEach((p,i)=>p.active=i===+x[0]);CH.forEach(c=>c._s=null);persist();renderSettings();refocus(`#v-settings [data-act="pl:${x[0]}"]`);toast("„"+pp.name+"“ ist jetzt aktiv (Prototyp: Testdaten bleiben gleich)");break}
     case"sclose":closeSheet();break;
     case"chmore":S.chLimit+=300;renderChList();break;
     case"cat":openCat(x[0],+x[1]);break;
     case"catsort":CATV.sort=+x[0];renderCat();refocus(`#ov-cat [data-act="catsort:${x[0]}"]`);break;
     case"catmore":{const n0=CATV.n;CATV.n+=60;renderCat();const ps=$$("#ov-cat .pgrid .poster");if(ps[n0])setFocus(ps[n0]);break}
     case"catlist":openCatList(x[0]);break;
-    case"catpick":{closeSheet();if(OV.includes("ov-cat")){CATV={k:x[0],ci:+x[1],n:60,sort:0,trend:null};renderCat();refocus("#ov-cat .pgrid .poster")}else openCat(x[0],+x[1]);break}
-    case"trendlist":openTrendList(x[0]);break;
+    case"catpick":{closeSheet();if(OV.includes("ov-cat")){CATV={k:x[0],ci:+x[1],n:60,sort:0,pop:null};renderCat();refocus("#ov-cat .pgrid .poster")}else openCat(x[0],+x[1]);break}
+    case"poplist":openPopList(x[0]);break;
     case"egroups":{const gs=liveGroups().filter(g=>chOf(g.id).length);openSheet(`<h2 class="sh-t">Gruppe wählen</h2><div class="glist2">${gs.map(g=>`<button class="grow ${g.id===S.group?"on":""}" data-act="egsel:${g.id}"><b>${g.id==="fav"?"★ ":""}${esc(g.name)}</b><span class="gcnt">${chOf(g.id).length}</span></button>`).join("")}</div>`,"","egroups");break}
     case"egsel":closeSheet();S.group=x[0];persist();renderEPG();refocus('#v-epg [data-act="egroups"]');break;
     case"close":if(OV[OV.length-1]==="ov-edit")closeEditor();else closeOverlay();break;
-    case"q":{const v=x.join(":");S.query=v;$("#q").value=v;renderSResults();break}
+    case"q":{const v=x.join(":");S.query=v;$("#q").value=v;renderSResults();const f=$("#sres .f");if(f)setFocus(f,true);else refocus("#q");break}
   }
 }
 
@@ -1974,6 +2080,7 @@ function press(k){
   if(top==="ov-edit")return editorKey(k);
   if(top==="p-menu"){if(k==="back"){ST.open=false;closeOverlay();return showInfo()}if(k==="ok")return activate(cur);if(["up","down","left","right"].includes(k))return move(k);return}
   if(top==="p-panel"){if(k==="back"||k==="right"){closeOverlay();return showInfo()}if(k==="ok")return activate(cur);if(k==="up"||k==="down")return move(k);return}
+  if(top==="ov-sheet"&&k==="back"&&sheetKind==="confirm")return activate({dataset:{act:"pecancel"}});
   if(top==="ov-detail"&&k==="back"&&S.dstack.length){S.detail=S.dstack.pop();renderDetail();refocus("#ov-detail .btn");return}
   if(top==="ov-detail"&&k==="back")S.dstack=[];
   if(k==="ok"||k==="play")return activate(cur);
@@ -1989,6 +2096,7 @@ document.addEventListener("keydown",e=>{
     if(e.key==="ArrowUp"||e.key==="ArrowDown"||e.key==="Escape"||e.key==="Enter"){e.preventDefault();if(e.key==="Escape"){document.activeElement.blur();press("back")}else press(e.key==="ArrowUp"?"up":"down")}
     return;
   }
+  if(OV[OV.length-1]==="ov-pin"&&/^[0-9]$/.test(e.key)){e.preventDefault();pinKey(e.key);return}
   if(!k)return;e.preventDefault();press(k);
 });
 stage.addEventListener("click",e=>{
@@ -2071,7 +2179,7 @@ document.addEventListener("change",e=>{const inp=e.target;if(!inp||!/^m3uFile/.t
 /* ---------- EPG (XMLTV) stückweise lesen, auch gezippt; Zuordnung über tvg-id, sonst Name ---------- */
 let EPGURL="",EPGINFO=null,EPGDERIVED=false,PLTS=0;
 const REFDAYS=[0,1,3,7,Infinity];
-const isDue=ts=>{const r=sv("refresh");if(r===4)return false;if(!ts)return true;return Date.now()-ts>=REFDAYS[r]*864e5-6e4};
+const isDue=ts=>{const r=plv("refresh");if(r===4)return false;if(!ts)return true;return Date.now()-ts>=REFDAYS[r]*864e5-6e4};
 const ageTxt=ts=>{if(!ts)return"nie";const d=Math.floor((Date.now()-ts)/864e5);return d<1?"heute":d===1?"gestern":"vor "+d+" Tagen"};
 async function autoRefresh(){
   if(!REAL)return;const due=[];if(isDue(PLTS))due.push("pl");if(isDue(EPGINFO&&EPGINFO.ts))due.push("epg");if(!due.length)return;
@@ -2166,6 +2274,10 @@ function openPlEdit(i){
      <div class="srow"><span class="sl"><b>Playlist</b><small>Aktualisiert ${ageTxt(PLTS)}</small></span></div>
      <div class="srow ${miss&&EPGINFO?"tap":""}" ${miss&&EPGINFO?'data-act="epgmiss" role="button"':""}><span class="sl"><b>TV-Guide</b><small>${EPGINFO?`${CH.length-miss} von ${CH.length} Sendern · Stand ${stand(EPGINFO.ts)}`:"Noch keine Sendungsdaten"}</small></span>${miss&&EPGINFO?`<span class="val">${miss} ohne Daten</span><i class="chev">›</i>`:""}</div>
     </div>${EPGINFO&&EPGINFO.old?'<p class="foot">Tipp: TV-Guide einmal neu laden – die verbesserte Zuordnung erfasst auch doppelte Sender (HD/SD, mehrere Länder).</p>':""}`:`<p class="foot" style="margin-top:0">${p.real?"Nicht aktiv":"Testdaten (simuliert)"}</p>`}
+   <div class="grp-h" style="padding-left:2px">Quelle</div>
+   ${/Anbieter-Login/.test(p.type)?`<div class="field"><label for="peServer">Server</label><input id="peServer" class="finput" autocomplete="off" placeholder="http://anbieter.example:8080" value="${esc(p.server||"")}"></div><div class="field"><label for="peUser">Benutzername</label><input id="peUser" class="finput" autocomplete="off" value="${esc(p.user||"")}"></div><div class="field"><label for="pePass">Passwort</label><input id="pePass" type="password" class="finput" autocomplete="off" value="${esc(p.pass||"")}"></div>`
+     :`<div class="field"><label for="peUrl">Playlist-URL (.m3u / .m3u8)</label><input id="peUrl" class="finput" autocomplete="off" placeholder="https://…/playlist.m3u" value="${esc(p.url||"")}"></div>`}
+   <div class="srow" data-act="ppick:refresh"><span>Automatisch aktualisieren</span><span class="val">${esc(itOf("refresh").o[plv("refresh",p)])}<i class="chev">›</i></span></div>
    <div class="grp-h" style="padding-left:2px">TV-Guide-Quelle</div>
    <div class="segw form"><button class="${m===0?"on":""}" data-act="pem:0">Automatisch</button><button class="${m===1?"on":""}" data-act="pem:1">Eigene URL</button><button class="${m===2?"on":""}" data-act="pem:2">Datei</button></div>
    ${m===0?`<p class="foot">${live&&EPGURL?(EPGDERIVED?"Aus deinen Xtream-Zugangsdaten: ":"Aus der Playlist: ")+mask(EPGURL):"Onda nimmt die EPG-Adresse aus der Playlist bzw. aus den Xtream-Zugangsdaten."}</p>`
@@ -2173,11 +2285,13 @@ function openPlEdit(i){
    ${live&&(m===2||blocked||hint)?`<ol class="foot pe-steps">${u?`<li>Link kopieren, in Safari öffnen und in «Dateien» sichern (Teilen › In Dateien sichern).</li>`:`<li>XMLTV-Datei deines Anbieters in «Dateien» sichern.</li>`}<li>Hier die Datei wählen – auch .gz geht.</li></ol>${blocked?'<p class="foot" style="margin-top:0">Der Anbieter liefert über http. Das blockiert der Browser – die fertige App lädt direkt.</p>':""}`:""}
    ${live?`<div class="btns col">${m===2||blocked?`${u?'<button class="btn" data-act="epgcopy">Link kopieren</button>':""}${fileBtn(true)}`:`<button class="btn primary" data-act="pesaveepg">TV-Guide jetzt laden</button>${hint?fileBtn(false):""}`}</div>`:""}
    ${p.real?`<div class="grp-h" style="padding-left:2px">Playlist</div><div class="btns col"><label class="btn" style="cursor:pointer">Playlist neu laden (Datei)<input type="file" id="m3uFile3" accept=".m3u,.m3u8,.txt,audio/x-mpegurl,application/x-mpegurl,*/*" hidden></label></div>`:""}
+   <div class="srow" data-act="ppick:shift"><span>Zeitversatz</span><span class="val">${esc(shiftTxt(SHIFTS[plv("shift",p)]))}<i class="chev">›</i></span></div>
    <div class="grp-h" style="padding-left:2px">Allgemein</div>
    <div class="field"><label for="peName">Name</label><input id="peName" class="finput" value="${esc(p.name)}"></div>
+   <div class="grp-h" style="padding-left:2px">Erweitert · HTTP-Header</div>
    <div class="field"><label for="peUa">User-Agent (optional)</label><input id="peUa" class="finput" autocomplete="off" value="${esc(p.ua||"")}" placeholder="Standard: Onda/1.0"></div>
    <div class="btns col">
-    <button class="btn" data-act="pesave">Speichern</button>
+    <button class="btn primary" data-act="pesave">Speichern</button>
     ${cur?"":`<button class="btn" data-act="plact:${i}">Diese Playlist verwenden</button>`}
     ${p.real&&REAL?'<button class="btn" data-act="pldiag">Playlist prüfen</button>':""}
     ${S.playlists.length>1?`<button class="btn danger" data-act="pedel">Playlist entfernen</button>`:""}
@@ -2189,7 +2303,7 @@ function openEpgMiss(){const l=CH.filter(c=>!c.epg);
    <div class="glist">${l.slice(0,300).map(c=>`<div class="srow" data-act="noop"><span class="sl"><b>${esc(c.name)}</b><small>${esc(gName(c.group))} · tvg-id: ${esc(c.tid||"–")}</small></span></div>`).join("")}</div>
    ${l.length>300?`<p class="foot">… und ${l.length-300} weitere</p>`:""}
    <div class="btns col"><button class="btn" data-act="pl:${plIdx()}">Zurück</button></div>`,"","epgmiss")}
-function peCollect(){const p=S.playlists[PLE];const n=$("#peName");if(n&&n.value.trim())p.name=n.value.trim();const u=$("#peUa");if(u)p.ua=u.value.trim();const e=$("#peEpg");if(e)p.epgUrl=e.value.trim();LS.set("pl",S.playlists);return p}
+function peCollect(){const p=S.playlists[PLE];const n=$("#peName");if(n&&n.value.trim())p.name=n.value.trim();[["peUrl","url"],["peServer","server"],["peUser","user"],["pePass","pass"]].forEach(([id,k])=>{const e=$("#"+id);if(e)p[k]=e.value.trim()});const u=$("#peUa");if(u)p.ua=u.value.trim();const e=$("#peEpg");if(e)p.epgUrl=e.value.trim();LS.set("pl",S.playlists);return p}
 async function bootReal(){
   try{let pd=await IDB.get("tv.parsed");if(!pd||pd.v!==1){const d=await IDB.get("tv.m3u");if(!d||!d.text)throw 0;pd={v:1,p:parseM3U(d.text),name:d.name,ts:d.ts};IDB.set("tv.parsed",pd).catch(()=>{})}
     applyReal(pd.p,pd.name);PLTS=pd.ts||0;try{attachEPG(await IDB.get("tv.epg"))}catch(e){}}
@@ -2200,7 +2314,7 @@ function backToTest(){try{localStorage.setItem("onda.src","test")}catch(e){}S.pl
 
 /* ---------- tvOS: Blätter (Sheets) als fokussierbares Overlay ---------- */
 let sheetKind=null;
-function openSheet(html,cls,kind){const el=$("#ov-sheet");el.innerHTML=`<div class="mbox sheetbox">${html}</div>`;
+function openSheet(html,cls,kind){const el=$("#ov-sheet");el.innerHTML=`<div class="mbox sheetbox sy">${html}</div>`;
   el.querySelectorAll("[data-act],input,label.btn,button").forEach(x=>{if(x.matches("input[type=file]"))return;x.classList.add("f");x.setAttribute("tabindex","-1")});
   el.querySelectorAll(".sh-x").forEach(x=>x.remove());
   sheetKind=kind||"sheet";if(OV[OV.length-1]!=="ov-sheet")openOverlay("ov-sheet");const first=el.querySelector(".btn.primary.f,.grow.f,.f");if(first)setFocus(first,true)}
@@ -2213,12 +2327,14 @@ applyLook(false);
 renderTabs();
 function boot(){
   seedProg();applyProg();if(REAL)setTimeout(autoRefresh,1500);
-  S.mseg=sv("start")===4?"fav":"m";showTab(["home","live","epg","media","media"][sv("start")]||"home");
+  S.mseg="m";const st=sv("start");showTab(["home","live","epg","media","live"][st]||"home");
   setFocus($("#tabs .tab.active"),true);trNode(document.getElementById("app"));
+  if(st===4){const c=S.recent.map(chById).find(c=>c&&chVisible(c));if(c)openLive(c.id,chOf("all"))}
 }
 if(REAL)bootReal().then(ok=>{if(ok)boot()});else boot();
 requestAnimationFrame(fit);trNode(document.getElementById("app"));
-setTimeout(()=>{const sp=$("#splash");sp.classList.add("out");setTimeout(()=>sp.remove(),700)},1900);
+setTimeout(()=>{const sp=$("#splash");sp.classList.add("out");setTimeout(()=>sp.remove(),500)},1200);
 })();
 </script>
+
 </body></html>
