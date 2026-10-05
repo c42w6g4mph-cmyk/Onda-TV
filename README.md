@@ -2,7 +2,7 @@
 
 Premium-IPTV-Player für **Apple TV** und **iPhone/iPad**. Ein gemeinsamer Swift-Kern, zwei Apps, die parallel entwickelt werden.
 
-> Status: Prototypen fertig, Swift-Grundgerüst angelegt. Der vollständige Plan steht in [`docs/Bauplan.md`](docs/Bauplan.md).
+> Status (05.10.2026): Prototyp 1.6 (Apple TV) und 1.4 (iPhone) nach Gesamtprüfung und rechtlicher Prüfung; Swift-Grundgerüst angelegt. Plan: [`docs/Bauplan.md`](docs/Bauplan.md) · Rechtliches: [`docs/Rechtliches.md`](docs/Rechtliches.md)
 
 ## Aufbau
 
@@ -20,6 +20,7 @@ onda/
 │   └── OndaMobile/         iOS-App (Tab-Leiste unten, Touch, Bild-in-Bild)
 ├── project.yml             Xcode-Projekt als Text (XcodeGen)
 ├── docs/Bauplan.md         Entscheidungen, Architektur, Risiken, Meilensteine
+├── docs/Rechtliches.md     Rechtliche Prüfung «Über Onda», Pflichten vor dem Start
 └── .github/workflows/ci.yml  Tests und Builds für beide Apps bei jedem Push
 ```
 
@@ -44,7 +45,7 @@ Eine Funktion, die beide Apps betrifft (z. B. Favoriten), bekommt ein Issue mit 
 
 ## Prototypen ansehen
 
-`prototypes/tvos/index.html` bzw. `prototypes/ios/index.html` herunterladen und im Browser öffnen. Alle Daten sind Testdaten, es laufen keine echten Streams.
+Direkt im Browser über GitHub Pages: [Apple TV](https://c42w6g4mph-cmyk.github.io/Onda-TV/prototypes/tvos/) (Pfeiltasten, Enter, Esc) · [iPhone](https://c42w6g4mph-cmyk.github.io/Onda-TV/prototypes/ios/) (am besten auf dem iPhone, «Zum Home-Bildschirm»). Alternativ `prototypes/…/index.html` herunterladen und lokal öffnen. Alle Daten sind Testdaten, es laufen keine echten Streams.
 
 ## Bauen
 
