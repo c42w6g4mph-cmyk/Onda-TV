@@ -4,7 +4,7 @@ Stand: 05.10.2026 · Grundlage: Prototyp 1.7 (Apple TV) bzw. 1.6 (iPhone), aktua
 
 ## 0. Was wirklich nötig ist (06.10.2026)
 
-**Entscheid Sinan:** kein eigener Server. Cover und Infos fragt die App direkt bei TheTVDB/TMDB ab. Damit entfallen die heikelsten Datenschutzpunkte (Server-Protokolle, IP plus Playlist-Titel beim Anbieter von Onda).
+**Entscheid Sinan:** **kostenpflichtig** (06.10.2026) und kein eigener Server. Damit gelten alle Punkte der Zeile «Pflicht mit Einnahmen» unten. Cover und Infos fragt die App direkt bei TheTVDB/TMDB ab. Damit entfallen die heikelsten Datenschutzpunkte (Server-Protokolle, IP plus Playlist-Titel beim Anbieter von Onda).
 
 | Stufe | Was | Gilt |
 |---|---|---|
@@ -13,6 +13,14 @@ Stand: 05.10.2026 · Grundlage: Prototyp 1.7 (Apple TV) bzw. 1.6 (iPhone), aktua
 | **Unklar bei Gratis-App** | Impressum für ein reines Gratis-Hobbyprojekt (Grauzone); ob TMDB eine Gratis-App im App Store als nicht-kommerziell akzeptiert | bei TMDB nachfragen; Impressum vorsorglich drinlassen |
 | **Freiwillig** | eigene Nutzungsbedingungen (Apple-EULA genügt), eigene Seite für Rechteinhaber, EU-Vertreter, Barrierefreiheit über das Übliche hinaus | entfernt bzw. nicht nötig |
 | **Unabhängig von der App** | Arbeitsvertrag (Nebenbeschäftigung, geistiges Eigentum) prüfen, Markenprüfung «Onda» | früh |
+
+**Folgen von «kostenpflichtig» (vor dem Start):**
+1. Händlerstatus im EU-App-Store: Name, Adresse, Telefon, E-Mail werden öffentlich. Privatadresse, Geschäftsadresse/Postfach oder GmbH entscheiden.
+2. Impressum mit echten Angaben (Platzhalter füllen).
+3. Metadaten: TheTVDB-Stufe bzw. TMDB-Lizenz klären; ohne kommerzielle TMDB-Lizenz TMDB aus der App nehmen.
+4. Player-Engine: Gewinnt KSPlayer den Player-Test, ist die LGPL-Lizenz kostenpflichtig.
+5. Arbeitsvertrag prüfen, Nebenerwerb bei der Ausgleichskasse anmelden, Einnahmen versteuern. Die Mehrwertsteuer auf die Käufe rechnet Apple ab; Schweizer MWST erst ab 100'000 CHF Umsatz.
+6. Apple-Gebühr: mit dem Small Business Program 15 % statt 30 % (Anmeldung nötig).
 
 **Folgen von «kein Server»:** Der API-Schlüssel steckt in der App und lässt sich auslesen; ein Wechsel geht nur per Update; jedes Gerät fragt selbst (Cache auf dem Gerät). Die Datenschutzerklärung nennt TMDB und TheTVDB als direkte Empfänger der IP-Adresse.
 

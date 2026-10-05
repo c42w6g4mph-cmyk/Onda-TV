@@ -507,8 +507,8 @@ Für tvOS sinngemäss übernehmen; dort bleibt der Player im Vollbild.
 
 ## 11. Offene Entscheidungen
 
-- Soll Onda kostenlos, kostenpflichtig oder mit Abo erscheinen? Davon hängen die TMDB-Lizenz und das Thema Markenschutz ab.
-- TMDB-Lizenz anfragen (Preis unklar) oder TheTVDB als Hauptquelle (auch für die Popularitätswerte)?
+- **Entschieden (06.10.2026): kostenpflichtig.** Offen ist das Modell: Gratis-Download mit Einmalkauf (Vorschlag), Kaufpreis im Voraus oder Abo. Folgen siehe `Rechtliches.md`, Abschnitt 0.
+- TMDB-Lizenz anfragen (Preis unklar) oder TheTVDB als Hauptquelle (auch für die Popularitätswerte)? Vorschlag: TheTVDB als Hauptquelle (bis 50'000 USD Umsatz/Jahr gratis mit Quellenangabe), TMDB nur, wenn die Offerte passt.
 - Bei KSPlayer als Testsieger: LGPL-Lizenz kaufen (Preis anfragen)?
 - „Beliebt in deiner Mediathek“ behalten, wenn die Datenquelle Kosten verursacht? (Rückfall: Sortierung nach „Neueste“)
 - Live pausieren behalten, wenn der Puffer auf dem Gerät nur kurz ist?
